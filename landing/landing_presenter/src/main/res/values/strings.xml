@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding1_title">Emergency SOS</string>
+    <string name="onboarding1_desc">Prevent and treat heart attacks as early as possible with Internet of Things technology.</string>
+    <string name="onboarding2_title">Family Monitoring</string>
+    <string name="onboarding2_desc">Away from heart disease patients? Calm down, you can monitor their heart condition from afar.</string>
+    <string name="onboarding3_title">Daily Reminder</string>
+    <string name="onboarding3_desc">Reminding the daily activity to take medication and control with the doctor connected to the family account.</string>
+    <string name="skip">SKIP</string>
+    <string name="next">NEXT</string>
+    <string name="get_started">GET STARTED!</string>
+</resources>
