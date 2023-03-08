@@ -9,4 +9,10 @@
     <string name="skip">SKIP</string>
     <string name="next">NEXT</string>
     <string name="get_started">GET STARTED!</string>
+    <string name="login">LOGIN</string>
+    <string name="login_welcome">Hi, Welcome 👋</string>
+    <string name="login_desc">Login to your account to continue</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="dont_have_acc">Don’t have an account?</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

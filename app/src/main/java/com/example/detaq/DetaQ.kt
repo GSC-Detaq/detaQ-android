@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.detaq.navigation.Route
+import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.splash.SplashScreen
 
@@ -38,7 +39,7 @@ fun DetaQ(
                         if (shouldShowOnBoarding) {
                             navController.navigate(Route.OnBoarding.name)
                         } else {
-                            navController.navigate("")
+                            navController.navigate(Route.Home.name)
                         }
                     }
                 )
@@ -46,8 +47,22 @@ fun DetaQ(
 
             composable(Route.OnBoarding.name) {
                 OnBoardingScreen {
-                    navController.navigate(Route.Register.name)
+                    navController.navigate(Route.Login.name)
                 }
+            }
+
+            composable(Route.Login.name) {
+                LoginScreen(
+                    onForgotPassword = {
+
+                    },
+                    onSignUp = {
+                        navController.navigate(Route.Register.name)
+                    },
+                    onLogin = {
+                        navController.navigate(Route.Home.name)
+                    }
+                )
             }
             
             composable(Route.Register.name) {

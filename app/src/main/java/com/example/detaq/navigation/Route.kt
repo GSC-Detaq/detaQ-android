@@ -4,5 +4,6 @@ enum class Route {
     Splash,
     OnBoarding,
     Login,
-    Register
+    Register,
+    Home
 }

@@ -1,9 +1,7 @@
 package com.example.landing_presenter.splash
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,8 +35,8 @@ fun SplashScreen(
             painter = painterResource(id = R.drawable.detaq_logo),
             contentDescription = "DetaQ Logo",
             modifier = Modifier
-                .padding(64.dp)
-                .fillMaxSize()
+                .width(210.dp)
+                .height(60.dp)
         )
     }
 }
