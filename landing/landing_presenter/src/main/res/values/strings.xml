@@ -15,4 +15,21 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="dont_have_acc">Don’t have an account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create an account</string>
+    <string name="create_account_desc">Create an account to access all features in this app.</string>
+    <string name="have_acc">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register_phone_title">Fill in your phone number</string>
+    <string name="register_phone_desc">Please enter the phone number we will send the OTP in this phone number.</string>
+    <string name="get_otp">GET OTP</string>
+    <string name="register_otp_title">Verification code</string>
+    <string name="register_otp_desc">Please enter the OTP we sent to WhatsApp %1$s</string>
+    <string name="submit">SUBMIT</string>
+    <string name="dont_receive_otp">Didn’t receive the OTP?</string>
+    <string name="resend">Resend</string>
+    <string name="select_role_title">Select your role</string>
+    <string name="select_role_desc">One more step! Select your role to create an account.</string>
+    <string name="patient">Patient</string>
+    <string name="family">Family</string>
+    <string name="confirm">CONFIRM</string>
 </resources>

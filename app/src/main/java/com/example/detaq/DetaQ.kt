@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import com.example.detaq.navigation.Route
 import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
+import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
 
 @Composable
@@ -66,7 +67,14 @@ fun DetaQ(
             }
             
             composable(Route.Register.name) {
-                Text(text = "Register")
+                RegisterScreen(
+                    onSignIn = {
+                        navController.navigateUp()
+                    },
+                    onConfirmClick = {
+                        navController.navigate(Route.Home.name)
+                    }
+                )
             }
         }
     }
