@@ -14,6 +14,10 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core-ui" />
+            <option value="$PROJECT_DIR$/home" />
+            <option value="$PROJECT_DIR$/home/home_data" />
+            <option value="$PROJECT_DIR$/home/home_domain" />
+            <option value="$PROJECT_DIR$/home/home_presenter" />
             <option value="$PROJECT_DIR$/landing" />
             <option value="$PROJECT_DIR$/landing/landing_data" />
             <option value="$PROJECT_DIR$/landing/landing_domain" />

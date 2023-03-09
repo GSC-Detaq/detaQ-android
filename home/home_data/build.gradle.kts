@@ -22,6 +22,11 @@ dependencies {
     "implementation"(project(Modules.core))
     "implementation"(project(Modules.landingDomain))
 
+    "implementation"(Retrofit.okHttp)
+    "implementation"(Retrofit.retrofit)
+    "implementation"(Retrofit.okHttpLoggingInterceptor)
+    "implementation"(Retrofit.moshiConverter)
+
     "implementation"(Ktor.ktorClientCore)
     "implementation"(Ktor.ktorClientAndroid)
     "implementation"(Ktor.ktorSerialization)
@@ -29,4 +34,8 @@ dependencies {
     "implementation"(Ktor.ktorClientLogging)
     "implementation"(Ktor.ktorClientAuth)
     "implementation"(Ktor.logBackClassic)
+
+    "kapt"(Room.roomCompiler)
+    "implementation"(Room.roomKtx)
+    "implementation"(Room.roomRuntime)
 }
