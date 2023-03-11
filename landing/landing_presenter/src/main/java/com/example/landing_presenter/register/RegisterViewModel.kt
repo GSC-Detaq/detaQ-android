@@ -1,6 +1,7 @@
 package com.example.landing_presenter.register
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.ValidateEmail
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -106,7 +108,11 @@ class RegisterViewModel @Inject constructor(
                     currentSection = RegisterSection.SelectRole
                 )
             }
-            RegisterEvent.Register -> Unit
+            RegisterEvent.Register -> {
+                viewModelScope.launch {
+                    _uiEvent.send(UiEvent.Success)
+                }
+            }
             is RegisterEvent.UpdateSection -> {
                 _state.value = state.value.copy(
                     currentSection = event.section

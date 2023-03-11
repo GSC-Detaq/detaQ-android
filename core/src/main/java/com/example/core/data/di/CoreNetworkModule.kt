@@ -27,7 +27,7 @@ object CoreNetworkModule {
                 level = LogLevel.HEADERS
             }
 
-            install(HttpTimeout) { // Timeout
+            install(HttpTimeout) {
                 requestTimeoutMillis = 30000L
                 connectTimeoutMillis = 3000L
                 socketTimeoutMillis = 15000L

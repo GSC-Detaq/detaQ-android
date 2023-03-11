@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.ui.theme.DetaQTheme
-import com.example.landing_presenter.R
+import com.example.core_ui.R
 import kotlinx.coroutines.delay
 
 @Composable

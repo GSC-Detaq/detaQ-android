@@ -13,6 +13,30 @@ private val sansFont = FontFamily(
     Font(R.font.worksans_semibold, weight = FontWeight.SemiBold)
 )
 
+val labelTypography = TextStyle(
+    fontFamily = sansFont,
+    fontWeight = FontWeight.Normal,
+    fontSize = 14.sp
+)
+
+val placeholderTypography = TextStyle(
+    fontFamily = sansFont,
+    fontWeight = FontWeight.Normal,
+    fontSize = 16.sp
+)
+
+val hintTypography = TextStyle(
+    fontFamily = sansFont,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp
+)
+
+val navigationTypography = TextStyle(
+    fontFamily = sansFont,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp
+)
+
 val Typography = Typography(
     h1 = TextStyle(
         fontFamily = sansFont,

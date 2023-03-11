@@ -5,5 +5,5 @@ enum class Route {
     OnBoarding,
     Login,
     Register,
-    Home
+    Sos
 }

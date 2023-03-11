@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core.utils.UiEvent
 import com.example.core.utils.UiText
-import com.example.core_ui.PrimaryButton
+import com.example.landing_presenter.components.PrimaryButton
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral50
 import com.example.core_ui.ui.theme.Neutral60
 import com.example.landing_presenter.R
+import com.example.core_ui.R as RCore
 import com.example.landing_presenter.components.BasicTextField
 import com.example.landing_presenter.components.PasswordTextField
 
@@ -52,7 +53,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(64.dp))
 
         Image(
-            painter = painterResource(id = R.drawable.detaq_logo),
+            painter = painterResource(id = RCore.drawable.detaq_logo),
             contentDescription = "DetaQ Logo",
             modifier = Modifier
                 .width(210.dp)

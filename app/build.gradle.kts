@@ -67,6 +67,9 @@ dependencies {
     implementation(project(Modules.landingPresentation))
     implementation(project(Modules.landingDomain))
     implementation(project(Modules.landingData))
+    implementation(project(Modules.homePresentation))
+    implementation(project(Modules.homeDomain))
+    implementation(project(Modules.homeData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
@@ -74,6 +77,14 @@ dependencies {
     implementation(Coil.coilCompose)
 
     implementation(Google.material)
+
+    implementation(Ktor.ktorClientCore)
+    implementation(Ktor.ktorClientAndroid)
+    implementation(Ktor.ktorSerialization)
+    implementation(Ktor.ktorSerializationJson)
+    implementation(Ktor.ktorClientLogging)
+    implementation(Ktor.ktorClientAuth)
+    implementation(Ktor.logBackClassic)
 
     implementation(Retrofit.okHttp)
     implementation(Retrofit.retrofit)

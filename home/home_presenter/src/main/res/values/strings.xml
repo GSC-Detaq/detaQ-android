@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="first_aid_title">Heart Attack First Aid</string>
+    <string name="alone_title">Manage A Heart Attack When You Are Alone</string>
+    <string name="quick_help">Quick Help</string>
+    <string name="emergency_contact">Emergency Contact</string>
+    <string name="nearby_health_facility">Nearby Health Facility</string>
+    <string name="article">Article</string>
+    <string name="edit">Edit</string>
+    <string name="show_all">Show All</string>
+</resources>

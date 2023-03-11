@@ -20,7 +20,7 @@ android {
 
 dependencies {
     "implementation"(project(Modules.core))
-    "implementation"(project(Modules.landingDomain))
+    "implementation"(project(Modules.homeDomain))
 
     "implementation"(Retrofit.okHttp)
     "implementation"(Retrofit.retrofit)

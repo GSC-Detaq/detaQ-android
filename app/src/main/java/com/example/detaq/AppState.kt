@@ -5,8 +5,12 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.detaq.navigation.Route
+import com.example.detaq.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -20,6 +24,19 @@ class AppState(
             scaffoldState.snackbarHostState.showSnackbar(message)
         }
     }
+
+    val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
+
+    val shouldShowBottomBar: Boolean
+        @Composable get() = when (currentDestination?.route) {
+            TopLevelDestination.Home.name -> true
+            TopLevelDestination.History.name -> true
+            TopLevelDestination.Reminder.name -> true
+            TopLevelDestination.Profile.name -> true
+            else -> false
+        }
 }
 
 @Composable

@@ -1,6 +1,7 @@
 package com.example.landing_presenter.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.ValidateEmail
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +28,11 @@ class LoginViewModel @Inject constructor(
 
     fun onEvent(event: LoginEvent) {
         when(event) {
-            LoginEvent.Login -> Unit
+            LoginEvent.Login -> {
+                viewModelScope.launch {
+                    _uiEvent.send(UiEvent.Success)
+                }
+            }
             is LoginEvent.OnEmailChange -> {
                 _state.value = state.value.copy(
                     email = event.email

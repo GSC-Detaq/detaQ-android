@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.utils.UiText
 import com.example.core_ui.LocalGradient
-import com.example.core_ui.PrimaryButton
+import com.example.landing_presenter.components.PrimaryButton
 import com.example.core_ui.ui.theme.*
 import com.example.landing_presenter.R
 
