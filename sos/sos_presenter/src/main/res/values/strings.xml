@@ -3,4 +3,13 @@
     <string name="emergency">Emergency</string>
     <string name="need_help">Need Help?</string>
     <string name="need_help_desc">Press the SOS button then your live location will be sent to your emergency contact via Whatsapp.</string>
+    <string name="keep_calm">Keep Calm</string>
+    <string name="count_down_desc">Your SOS message and live location will be sent immediately.</string>
+    <string name="skip">SKIP</string>
+    <string name="cancel">CANCEL</string>
+    <string name="emergency_contact">Emergency Contact</string>
+    <string name="edit">Edit</string>
+    <string name="call_ambulance_title">Call Ambulance Emergency Number</string>
+    <string name="call_ambulance_sub">Call 112</string>
+    <string name="call_ambulance_desc">112 is a service used in an emergency to Call An Ambulance</string>
 </resources>
