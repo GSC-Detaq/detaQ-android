@@ -15,4 +15,8 @@ object Modules {
     const val sosData = ":sos:sos_data"
     const val sosDomain = ":sos:sos_domain"
     const val sosPresentation = ":sos:sos_presenter"
+
+    const val reminderData = ":reminder:reminder_data"
+    const val reminderDomain = ":reminder:reminder_domain"
+    const val reminderPresentation = ":reminder:reminder_presenter"
 }

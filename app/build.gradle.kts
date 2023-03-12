@@ -73,6 +73,9 @@ dependencies {
     implementation(project(Modules.sosPresentation))
     implementation(project(Modules.sosDomain))
     implementation(project(Modules.sosData))
+    implementation(project(Modules.reminderPresentation))
+    implementation(project(Modules.reminderDomain))
+    implementation(project(Modules.reminderData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
