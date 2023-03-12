@@ -1,7 +1,8 @@
-package com.example.home_presenter.first_aid.components
+package com.example.home_presenter.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -10,7 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.home_presenter.R
-import com.example.home_presenter.components.QuickHelpItem
 import com.example.home_presenter.model.QuickHelp
 
 @Composable
@@ -19,7 +19,8 @@ fun QuickHelpSection(
     quickHelps: List<QuickHelp>
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize(),
         verticalArrangement = Arrangement
             .spacedBy(8.dp),
         contentPadding = PaddingValues(16.dp)

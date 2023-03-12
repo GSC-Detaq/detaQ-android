@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core_ui.CommonHeader
 import com.example.home_presenter.R
-import com.example.home_presenter.first_aid.components.QuickHelpSection
+import com.example.home_presenter.components.QuickHelpSection
 
 @Composable
 fun IndependentHandlingScreen(

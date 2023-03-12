@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,10 +30,10 @@ import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
+import com.example.reminder_presenter.reminder.ReminderScreen
 import com.example.sos_presenter.countdown.CountDownScreen
 import com.example.sos_presenter.countdown_sent.CountDownSentScreen
 import com.example.sos_presenter.sos.SosScreen
-import timber.log.Timber
 
 @Composable
 fun DetaQ(
@@ -188,6 +191,14 @@ fun DetaQ(
 
             composable(Route.SosCountDownSent.name) {
                 CountDownSentScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(TopLevelDestination.Reminder.name) {
+                ReminderScreen(
                     onBackClick = {
                         navController.navigateUp()
                     }
