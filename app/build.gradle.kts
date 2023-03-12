@@ -70,6 +70,9 @@ dependencies {
     implementation(project(Modules.homePresentation))
     implementation(project(Modules.homeDomain))
     implementation(project(Modules.homeData))
+    implementation(project(Modules.sosPresentation))
+    implementation(project(Modules.sosDomain))
+    implementation(project(Modules.sosData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)

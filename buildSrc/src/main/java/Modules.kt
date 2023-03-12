@@ -11,4 +11,8 @@ object Modules {
     const val homeData = ":home:home_data"
     const val homeDomain = ":home:home_domain"
     const val homePresentation = ":home:home_presenter"
+
+    const val sosData = ":sos:sos_data"
+    const val sosDomain = ":sos:sos_domain"
+    const val sosPresentation = ":sos:sos_presenter"
 }
