@@ -1,6 +1,5 @@
 package com.example.detaq
 
-import android.window.SplashScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,13 +10,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.core_ui.LocalGradient
+import com.example.core_ui.R
 import com.example.detaq.components.AppBottomBar
 import com.example.detaq.navigation.Route
 import com.example.detaq.navigation.TopLevelDestination
@@ -28,6 +27,7 @@ import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
+import com.example.sos_presenter.sos.SosScreen
 
 @Composable
 fun DetaQ(
@@ -157,6 +157,17 @@ fun DetaQ(
                 IndependentHandlingScreen(
                     onBackClick = {
                         navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.Sos.name) {
+                SosScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
+                    onSosClick = {
+
                     }
                 )
             }

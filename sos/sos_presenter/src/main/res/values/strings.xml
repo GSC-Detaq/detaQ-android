@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="emergency">Emergency</string>
+    <string name="need_help">Need Help?</string>
+    <string name="need_help_desc">Press the SOS button then your live location will be sent to your emergency contact via Whatsapp.</string>
+</resources>
