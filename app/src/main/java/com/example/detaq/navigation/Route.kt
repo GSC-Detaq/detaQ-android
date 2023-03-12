@@ -8,5 +8,6 @@ enum class Route {
     Sos,
     FirstAid,
     IndependentHandling,
-    SosCountDown
+    SosCountDown,
+    SosCountDownSent
 }

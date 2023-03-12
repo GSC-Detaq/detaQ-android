@@ -28,6 +28,7 @@ import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
 import com.example.sos_presenter.countdown.CountDownScreen
+import com.example.sos_presenter.countdown_sent.CountDownSentScreen
 import com.example.sos_presenter.sos.SosScreen
 import timber.log.Timber
 
@@ -180,7 +181,15 @@ fun DetaQ(
                         navController.navigateUp()
                     },
                     onCountDownFinish = {
-                        Timber.d("COUNT DOWN FINISH!")
+                        navController.navigate(Route.SosCountDownSent.name)
+                    }
+                )
+            }
+
+            composable(Route.SosCountDownSent.name) {
+                CountDownSentScreen(
+                    onBackClick = {
+                        navController.navigateUp()
                     }
                 )
             }

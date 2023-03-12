@@ -12,4 +12,8 @@
     <string name="call_ambulance_title">Call Ambulance Emergency Number</string>
     <string name="call_ambulance_sub">Call 112</string>
     <string name="call_ambulance_desc">112 is a service used in an emergency to Call An Ambulance</string>
+    <string name="sos_sent_title">SOS Message Sent</string>
+    <string name="sos_sent_desc">Your SOS message has been sent to your Emergency contact. Stay calm and alert!</string>
+    <string name="sos_call_ambulance_desc">112 is a service used in an emergency. Please press the button below if needed as soon as possible.</string>
+    <string name="call_112">CALL 112</string>
 </resources>
