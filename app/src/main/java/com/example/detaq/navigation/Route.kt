@@ -5,5 +5,7 @@ enum class Route {
     OnBoarding,
     Login,
     Register,
-    Sos
+    Sos,
+    FirstAid,
+    IndependentHandling
 }

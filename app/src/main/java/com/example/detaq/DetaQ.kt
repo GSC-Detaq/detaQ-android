@@ -21,7 +21,9 @@ import com.example.core_ui.LocalGradient
 import com.example.detaq.components.AppBottomBar
 import com.example.detaq.navigation.Route
 import com.example.detaq.navigation.TopLevelDestination
+import com.example.home_presenter.first_aid.FirstAidScreen
 import com.example.home_presenter.home.HomeScreen
+import com.example.home_presenter.independent_handling.IndependentHandlingScreen
 import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
@@ -57,7 +59,7 @@ fun DetaQ(
                     },
                     modifier = Modifier
                         .size(56.dp)
-                        .offset(y = (56/4).dp)
+                        .offset(y = (56 / 4).dp)
                         .background(
                             localGradient.primary,
                             CircleShape
@@ -133,7 +135,30 @@ fun DetaQ(
             }
 
             composable(TopLevelDestination.Home.name) {
-                HomeScreen()
+                HomeScreen(
+                    onFirstAidClick = {
+                        navController.navigate(Route.FirstAid.name)
+                    },
+                    onAloneClick = {
+                        navController.navigate(Route.IndependentHandling.name)
+                    }
+                )
+            }
+
+            composable(Route.FirstAid.name) {
+                FirstAidScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.IndependentHandling.name) {
+                IndependentHandlingScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }

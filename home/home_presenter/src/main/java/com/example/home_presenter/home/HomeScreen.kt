@@ -21,6 +21,8 @@ import com.example.home_presenter.home.components.*
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    onFirstAidClick: () -> Unit,
+    onAloneClick: () -> Unit
 ) {
     val state = viewModel.state.collectAsState()
 
@@ -54,8 +56,8 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 QuickHelpCard(
-                    onFirstAidClick = {  },
-                    onAloneClick = {  },
+                    onFirstAidClick = onFirstAidClick,
+                    onAloneClick = onAloneClick,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                 )

@@ -9,4 +9,5 @@ dependencies {
 
     "implementation"(Coil.coilCompose)
     "implementation"(Accompanist.viewPager)
+    "implementation"(Accompanist.viewPagerIndicator)
 }
