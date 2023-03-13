@@ -1,6 +1,10 @@
 package com.example.reminder_presenter.reminder
 
 import androidx.lifecycle.ViewModel
+import com.example.reminder_presenter.reminder.doctor.AddDoctorState
+import com.example.reminder_presenter.reminder.doctor.Doctor
+import com.example.reminder_presenter.reminder.doctor.DoctorSectionEvent
+import com.example.reminder_presenter.reminder.doctor.DoctorSectionState
 import com.example.reminder_presenter.reminder.medicine.AddMedicineState
 import com.example.reminder_presenter.reminder.medicine.Medicine
 import com.example.reminder_presenter.reminder.medicine.MedicineSectionEvent
@@ -40,6 +44,7 @@ class ReminderViewModel: ViewModel() {
 
                 _medicineState.value = medicineState.value.copy(
                     medicines = newMedicines
+                        .asReversed()
                         .distinctBy { it.name },
                     addMedicineState = AddMedicineState()
                 )
@@ -57,7 +62,8 @@ class ReminderViewModel: ViewModel() {
                 _medicineState.value = medicineState.value.copy(
                     addMedicineState = medicineState.value.addMedicineState.copy(
                         time = newTimes
-                            .distinctBy { "${it.hour}:${it.minute}" }
+                            .asReversed()
+                            .distinctBy { it.hour to it.minute }
                     )
                 )
             }
@@ -105,6 +111,66 @@ class ReminderViewModel: ViewModel() {
                 _medicineState.value = medicineState.value.copy(
                     addMedicineState = medicineState.value.addMedicineState.copy(
                         time = newTimes
+                    )
+                )
+            }
+        }
+    }
+
+    private val _doctorState = MutableStateFlow(DoctorSectionState())
+    val doctorState: StateFlow<DoctorSectionState> = _doctorState.asStateFlow()
+
+    fun onEvent(event: DoctorSectionEvent) {
+        when (event) {
+            DoctorSectionEvent.AddDoctor -> {
+                val newDoctors = doctorState
+                    .value
+                    .doctors
+                    .toMutableList()
+
+                val addDoctorState = doctorState
+                    .value
+                    .addDoctorState
+
+                newDoctors.add(
+                    Doctor(
+                        name = addDoctorState.doctorName,
+                        activity = addDoctorState.activity,
+                        date = addDoctorState.date
+                    )
+                )
+
+                _doctorState.value = doctorState.value.copy(
+                    doctors = newDoctors,
+                    addDoctorState = AddDoctorState()
+                )
+            }
+            is DoctorSectionEvent.OnActivityChange -> {
+                _doctorState.value = doctorState.value.copy(
+                    addDoctorState = doctorState.value.addDoctorState.copy(
+                        activity = event.activity
+                    )
+                )
+            }
+            is DoctorSectionEvent.OnDoctorNameChange -> {
+                _doctorState.value = doctorState.value.copy(
+                    addDoctorState = doctorState.value.addDoctorState.copy(
+                        doctorName = event.name
+                    )
+                )
+            }
+            is DoctorSectionEvent.OnPickDate -> {
+                _doctorState.value = doctorState.value.copy(
+                    addDoctorState = doctorState.value.addDoctorState.copy(
+                        date = event.date
+                    )
+                )
+            }
+            is DoctorSectionEvent.OnPickTime -> {
+                _doctorState.value = doctorState.value.copy(
+                    addDoctorState = doctorState.value.addDoctorState.copy(
+                        hour = event.hour,
+                        minute = event.minute
                     )
                 )
             }

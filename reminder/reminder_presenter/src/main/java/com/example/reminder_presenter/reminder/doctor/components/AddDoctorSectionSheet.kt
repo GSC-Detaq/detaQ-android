@@ -1,20 +1,17 @@
-package com.example.reminder_presenter.reminder.medicine.components
+package com.example.reminder_presenter.reminder.doctor.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.PrimaryButton
@@ -23,17 +20,16 @@ import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral40
 import com.example.reminder_presenter.R
 import com.example.reminder_presenter.reminder.components.ClickableField
-import com.example.reminder_presenter.reminder.medicine.AddMedicineState
-import com.example.reminder_presenter.reminder.medicine.MedicineSectionEvent
+import com.example.reminder_presenter.reminder.doctor.AddDoctorState
+import com.example.reminder_presenter.reminder.doctor.DoctorSectionEvent
 import com.example.reminder_presenter.utils.asString
 import timber.log.Timber
-import java.util.*
 
 @Composable
-fun AddMedicineSheet(
+fun AddDoctorSectionSheet(
     modifier: Modifier = Modifier,
-    state: AddMedicineState,
-    onEvent: (MedicineSectionEvent) -> Unit,
+    state: AddDoctorState,
+    onEvent: (DoctorSectionEvent) -> Unit,
     onCancel: () -> Unit
 ) {
     LazyColumn(
@@ -79,7 +75,7 @@ fun AddMedicineSheet(
         item {
             Row {
                 Text(
-                    text = stringResource(id = R.string.add_medicine_title),
+                    text = stringResource(id = R.string.add_doctor_title),
                     style = MaterialTheme.typography.h3.copy(
                         color = Neutral100
                     ),
@@ -92,13 +88,13 @@ fun AddMedicineSheet(
 
         item {
             OutlinedTextField(
-                value = state.medicineName,
+                value = state.activity,
                 onValueChange = { newText ->
                     onEvent(
-                        MedicineSectionEvent.OnMedicineNameChange(newText)
+                        DoctorSectionEvent.OnActivityChange(newText)
                     )
                 },
-                label = { Text(text = "Medicine's Name") },
+                label = { Text(text = "Activity") },
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,17 +103,14 @@ fun AddMedicineSheet(
 
         item {
             OutlinedTextField(
-                value = state.drugDosage,
+                value = state.doctorName,
                 onValueChange = { newText ->
                     onEvent(
-                        MedicineSectionEvent.OnDrugDosageChange(newText)
+                        DoctorSectionEvent.OnDoctorNameChange(newText)
                     )
                 },
-                label = { Text(text = "Drug Dosage") },
+                label = { Text(text = "Doctor's Name") },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -125,8 +118,8 @@ fun AddMedicineSheet(
 
         item {
             ClickableField(
-                title = "Date Start",
-                value = state.dateStart.asString(),
+                title = "Date",
+                value = state.date.asString(),
                 onClick = {
                     Timber.d("Pick Date")
                 }
@@ -134,38 +127,14 @@ fun AddMedicineSheet(
         }
 
         item {
-            ClickableField(
-                title = "Date End",
-                value = state.dateEnd.asString(),
-                onClick = {
+            val hour = if (state.hour < 10) "0${state.hour}" else state.hour
+            val minute = if (state.minute < 10) "0${state.minute}" else state.minute
 
-                }
-            )
-        }
-
-        item {
-            val listOfTimeText = state.time.map { time ->
-                val hour = if (time.hour < 10) "0${time.hour}" else time.hour
-                val minute = if (time.minute < 10) "0${time.minute}" else time.minute
-
-                if (time.hour > 12) "$hour.$minute PM" else "$hour.$minute AM"
-            }
-
-            val textOfListTimeText = listOfTimeText.joinToString(separator = ", ")
+            val timeText = if (state.hour > 12) "$hour.$minute PM" else "$hour.$minute AM"
 
             ClickableField(
                 title = "Time",
-                value = textOfListTimeText,
-                onClick = {
-
-                }
-            )
-        }
-
-        item {
-            ClickableField(
-                title = "Use Instructions",
-                value = "",
+                value = if (state.hour == 0) "" else timeText,
                 onClick = {
 
                 }
@@ -178,7 +147,11 @@ fun AddMedicineSheet(
                 textModifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
+                    onEvent(
+                        DoctorSectionEvent.AddDoctor
+                    )
 
+                    onCancel()
                 }
             )
         }
@@ -187,10 +160,10 @@ fun AddMedicineSheet(
 
 @Preview
 @Composable
-fun AddMedicineSheetPreview() {
+fun AddDoctorSheetPreview() {
     DetaQTheme {
-        AddMedicineSheet(
-            state = AddMedicineState(),
+        AddDoctorSectionSheet(
+            state = AddDoctorState(),
             onEvent = {  },
             onCancel = {  }
         )

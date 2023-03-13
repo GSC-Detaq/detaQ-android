@@ -14,6 +14,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core_ui.ui.theme.Neutral10
 import com.example.reminder_presenter.R
 import com.example.reminder_presenter.reminder.components.ReminderHeader
+import com.example.reminder_presenter.reminder.doctor.DoctorSection
+import com.example.reminder_presenter.reminder.doctor.components.AddDoctorSectionSheet
 import com.example.reminder_presenter.reminder.medicine.MedicineSection
 import com.example.reminder_presenter.reminder.medicine.components.AddMedicineSheet
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -28,6 +30,7 @@ fun ReminderScreen(
     onBackClick: () -> Unit,
 ) {
     val medicineState by viewModel.medicineState.collectAsState()
+    val doctorState by viewModel.doctorState.collectAsState()
     val pagerState = rememberPagerState()
 
     val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
@@ -48,6 +51,18 @@ fun ReminderScreen(
             if (pagerState.currentPage == 0) {
                 AddMedicineSheet(
                     state = medicineState.addMedicineState,
+                    onEvent = viewModel::onEvent,
+                    onCancel = {
+                        coroutineScope.launch {
+                            scaffoldState.bottomSheetState.collapse()
+                        }
+                    }
+                )
+            }
+
+            if (pagerState.currentPage == 1) {
+                AddDoctorSectionSheet(
+                    state = doctorState.addDoctorState,
                     onEvent = viewModel::onEvent,
                     onCancel = {
                         coroutineScope.launch {
@@ -85,7 +100,14 @@ fun ReminderScreen(
                     )
                 }
                 1 -> {
-
+                    DoctorSection(
+                        state = doctorState,
+                        onAddReminder = {
+                            coroutineScope.launch {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    )
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.reminder_presenter.reminder.medicine
+package com.example.reminder_presenter.reminder.doctor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.OutlinedPrimaryButton
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.reminder_presenter.R
-import com.example.reminder_presenter.reminder.medicine.components.MedicineItem
+import com.example.reminder_presenter.reminder.doctor.components.DoctorItem
 
 @Composable
-fun MedicineSection(
-    state: MedicineSectionState,
+fun DoctorSection(
+    state: DoctorSectionState,
     onAddReminder: () -> Unit
 ) {
     LazyColumn(
@@ -27,10 +27,10 @@ fun MedicineSection(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            items = state.medicines,
-            key = { medicine -> medicine.name }
-        ) { medicine ->
-            MedicineItem(medicine = medicine)
+            items = state.doctors,
+            key = { doctor -> doctor.name }
+        ) { doctor ->
+            DoctorItem(doctor = doctor)
         }
 
         item {
@@ -46,10 +46,10 @@ fun MedicineSection(
 
 @Preview
 @Composable
-fun MedicineSectionPreview() {
+fun DoctorSectionPreview() {
     DetaQTheme {
-        MedicineSection(
-            state = MedicineSectionState(),
+        DoctorSection(
+            state = DoctorSectionState(),
             onAddReminder = {  }
         )
     }
