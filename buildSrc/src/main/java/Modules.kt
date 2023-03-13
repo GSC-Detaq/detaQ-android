@@ -19,4 +19,8 @@ object Modules {
     const val reminderData = ":reminder:reminder_data"
     const val reminderDomain = ":reminder:reminder_domain"
     const val reminderPresentation = ":reminder:reminder_presenter"
+
+    const val historyData = ":history:history_data"
+    const val historyDomain = ":history:history_domain"
+    const val historyPresentation = ":history:history_presenter"
 }

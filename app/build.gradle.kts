@@ -76,6 +76,9 @@ dependencies {
     implementation(project(Modules.reminderPresentation))
     implementation(project(Modules.reminderDomain))
     implementation(project(Modules.reminderData))
+    implementation(project(Modules.historyPresentation))
+    implementation(project(Modules.historyDomain))
+    implementation(project(Modules.historyData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
