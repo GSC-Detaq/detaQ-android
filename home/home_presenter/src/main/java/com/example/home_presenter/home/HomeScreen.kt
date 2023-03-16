@@ -32,7 +32,7 @@ fun HomeScreen(
                 onNotificationClick = {  }
             )
         }
-    ) {paddingValues ->
+    ) { paddingValues ->
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()

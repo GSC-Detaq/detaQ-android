@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history">History</string>
+    <string name="heart_rate_overview">Heart Rate Overview</string>
+    <string name="activity_recommendations">Activity Recommendations</string>
+</resources>

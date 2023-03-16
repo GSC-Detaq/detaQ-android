@@ -23,6 +23,7 @@ import com.example.core_ui.R
 import com.example.detaq.components.AppBottomBar
 import com.example.detaq.navigation.Route
 import com.example.detaq.navigation.TopLevelDestination
+import com.example.history_presenter.history.HistoryScreen
 import com.example.home_presenter.first_aid.FirstAidScreen
 import com.example.home_presenter.home.HomeScreen
 import com.example.home_presenter.independent_handling.IndependentHandlingScreen
@@ -199,6 +200,14 @@ fun DetaQ(
 
             composable(TopLevelDestination.Reminder.name) {
                 ReminderScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(TopLevelDestination.History.name) {
+                HistoryScreen(
                     onBackClick = {
                         navController.navigateUp()
                     }
