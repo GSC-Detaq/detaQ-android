@@ -3,11 +3,12 @@ package com.example.core.data.preferences
 import android.content.SharedPreferences
 import com.example.core.domain.preferences.Preferences
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class DefaultPreferences @Inject constructor(
-    private val sharedPref: SharedPreferences
+    @Named("sharedPreferences") private val sharedPref: SharedPreferences
 ): Preferences {
     override fun saveShouldShowOnBoarding(shouldShow: Boolean) {
         sharedPref

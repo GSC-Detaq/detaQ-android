@@ -82,6 +82,7 @@ dependencies {
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
+    implementation(AndroidX.encPreference)
 
     implementation(Coil.coilCompose)
 
