@@ -13,7 +13,7 @@ class Register @Inject constructor(
         email: String,
         password: String,
         name: String,
-        roleId: String
+        roleId: Int
     ): Resource<Unit> {
         return repository.register(
             email = email,

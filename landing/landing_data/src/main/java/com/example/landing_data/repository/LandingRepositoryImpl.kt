@@ -45,7 +45,7 @@ class LandingRepositoryImpl @Inject constructor(
         email: String,
         password: String,
         name: String,
-        roleId: String,
+        roleId: Int,
     ): Resource<Unit> {
         val request = RegisterRequest(
             email = email,

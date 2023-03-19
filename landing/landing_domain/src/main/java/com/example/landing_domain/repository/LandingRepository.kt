@@ -12,6 +12,6 @@ interface LandingRepository {
         email: String,
         password: String,
         name: String,
-        roleId: String
+        roleId: Int
     ): Resource<Unit>
 }
