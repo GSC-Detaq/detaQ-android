@@ -11,7 +11,7 @@ apply {
 
 android {
     defaultConfig {
-        buildConfigField("String", "BASE_URL", "\"localhost:8080\"")
+        buildConfigField("String", "BASE_URL", "\"10.0.2.2:8080\"")
     }
 }
 

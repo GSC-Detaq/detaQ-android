@@ -36,7 +36,7 @@ class LandingKtorApiService(
     }
 
     companion object {
-        private const val BASE_URL = BuildConfig.BASE_URL
+        private const val BASE_URL = "http://${BuildConfig.BASE_URL}"
         private const val REGISTER_URL = "$BASE_URL/user/register"
         private const val LOGIN_URL = "$BASE_URL/user/login"
     }

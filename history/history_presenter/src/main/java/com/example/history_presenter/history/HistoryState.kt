@@ -2,10 +2,14 @@ package com.example.history_presenter.history
 
 import androidx.annotation.DrawableRes
 import com.example.history_presenter.R
+import java.time.LocalDate
+import java.time.YearMonth
 
 data class HistoryState(
     val heartBpm: Int = 0,
-    val activities: List<ActivityRecommendation> = dummyRecommendations
+    val activities: List<ActivityRecommendation> = dummyRecommendations,
+    val selectedDate: LocalDate = LocalDate.now(),
+    val currentMonth: YearMonth = YearMonth.now()
 )
 
 private val dummyRecommendations = listOf(

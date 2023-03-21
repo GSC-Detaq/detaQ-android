@@ -1,7 +1,5 @@
 package com.example.history_presenter.history
 
-import android.widget.CalendarView
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core_ui.CommonHeader
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.history_presenter.R
+import com.example.history_presenter.calendar.CalendarView
 import com.example.history_presenter.history.components.ActivityItem
 import com.example.history_presenter.history.components.HeartRateCard
 
@@ -48,13 +46,18 @@ fun HistoryScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                AndroidView(
-                    { CalendarView(it) },
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(horizontal = 16.dp),
-                    update = {
-
+                CalendarView(
+                    currentMonth = state.currentMonth,
+                    selectedDate = state.selectedDate,
+                    loadDatesForMonth = {
+                        viewModel.onEvent(
+                            event = HistoryEvent.LoadNextDates(it)
+                        )
+                    },
+                    onDayClick = {
+                        viewModel.onEvent(
+                            event = HistoryEvent.SelectDate(it)
+                        )
                     }
                 )
             }
