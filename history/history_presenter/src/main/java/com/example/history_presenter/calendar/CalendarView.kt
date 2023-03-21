@@ -53,77 +53,83 @@ fun CalendarView(
         val totalDates = dateCount + dateToAppend + dateToPrepend
         val year = monthToDisplay.year
         val month = monthToDisplay.month.value
+        val rowMoreThan5 = (totalDates/7) > 5
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(),
-            elevation = 5.dp,
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Column(
+        Column {
+            Card(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                elevation = 5.dp,
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = monthToDisplay
-                        .month
-                        .name
-                        .lowercase()
-                        .replaceFirstChar { it.uppercase() },
-                    style = MaterialTheme.typography.body2
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                val calendarHeight = if((totalDates/7) == 6) 355.dp else 328.dp
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
-                    verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.Top),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    modifier = Modifier.height(calendarHeight),
-                    contentPadding = PaddingValues(8.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    items(
-                        (1..totalDates).toList()
-                    ) { i ->
-                        Column {
-                            if(i <= 7) {
-                                Text(
-                                    text = DayOfWeek
-                                        .of(i)
-                                        .name
-                                        .substring(0, 2)
-                                        .lowercase()
-                                        .replaceFirstChar { it.uppercase() },
-                                    style = MaterialTheme.typography.caption.copy(
-                                        color = Color(0xFFB3B3B3)
-                                    ),
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                            if (i > dateToAppend && i <= (dateCount + dateToAppend)) {
-                                val date = i - dateToAppend
-                                val dateString = if(date <= 9) "0$date" else date
-                                val monthString = if(month <= 9) "0$month" else month
-                                val localDate = "$year-$monthString-$dateString".toLocalDate()
+                    Text(
+                        text = monthToDisplay
+                            .month
+                            .name
+                            .lowercase()
+                            .replaceFirstChar { it.uppercase() },
+                        style = MaterialTheme.typography.body2
+                    )
 
-                                DayView(
-                                    date = localDate,
-                                    onDayClick = onDayClick,
-                                    weekDayLabel = false,
-                                    isSelected = localDate == selectedDate
-                                )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val calendarHeight = if(rowMoreThan5) 355.dp else 328.dp
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(7),
+                        verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.Top),
+                        horizontalArrangement = Arrangement.spacedBy(2.dp),
+                        modifier = Modifier.height(calendarHeight),
+                        contentPadding = PaddingValues(8.dp)
+                    ) {
+                        items(
+                            (1..totalDates).toList()
+                        ) { i ->
+                            Column {
+                                if(i <= 7) {
+                                    Text(
+                                        text = DayOfWeek
+                                            .of(i)
+                                            .name
+                                            .substring(0, 2)
+                                            .lowercase()
+                                            .replaceFirstChar { it.uppercase() },
+                                        style = MaterialTheme.typography.caption.copy(
+                                            color = Color(0xFFB3B3B3)
+                                        ),
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+
+                                if (i > dateToAppend && i <= (dateCount + dateToAppend)) {
+                                    val date = i - dateToAppend
+                                    val dateString = if(date <= 9) "0$date" else date
+                                    val monthString = if(month <= 9) "0$month" else month
+                                    val localDate = "$year-$monthString-$dateString".toLocalDate()
+
+                                    DayView(
+                                        date = localDate,
+                                        onDayClick = onDayClick,
+                                        isSelected = localDate == selectedDate
+                                    )
+                                }
                             }
                         }
                     }
                 }
+            }
+
+            if (!rowMoreThan5) {
+                Spacer(modifier = Modifier.height((355-328).dp))
             }
         }
     }
