@@ -1,11 +1,11 @@
 package com.example.reminder_presenter.utils
 
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-fun Date.asString(
+fun LocalDate.asString(
     dateFormat: String = "dd-MM-yyy"
 ): String {
-    val format = SimpleDateFormat(dateFormat, Locale.getDefault())
+    val format = DateTimeFormatter.ofPattern(dateFormat)
     return format.format(this)
 }

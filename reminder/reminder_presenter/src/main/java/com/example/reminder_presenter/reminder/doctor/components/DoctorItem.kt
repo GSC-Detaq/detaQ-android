@@ -26,6 +26,7 @@ import com.example.core_ui.ui.theme.Red50
 import com.example.reminder_presenter.R
 import com.example.reminder_presenter.reminder.doctor.Doctor
 import com.example.reminder_presenter.utils.asString
+import java.time.LocalDate
 import java.util.*
 
 @OptIn(ExperimentalTextApi::class)
@@ -117,7 +118,7 @@ fun DoctorItemPreview() {
             doctor = Doctor(
                 name = "Dr. Aisyah Jamal",
                 activity = "Monthly Control",
-                date = Date()
+                date = LocalDate.now()
             )
         )
     }

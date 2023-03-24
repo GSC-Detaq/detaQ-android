@@ -12,7 +12,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.reminder_presenter.utils.asString
-import java.util.*
+import java.time.LocalDate
 
 @Composable
 fun ClickableField(
@@ -49,7 +49,7 @@ fun ClickableFieldPreview() {
     DetaQTheme {
         ClickableField(
             title = "Date Started",
-            value = Date().asString(),
+            value = LocalDate.now().asString(),
             onClick = {  }
         )
     }

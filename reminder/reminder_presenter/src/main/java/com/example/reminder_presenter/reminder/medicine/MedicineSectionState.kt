@@ -1,7 +1,7 @@
 package com.example.reminder_presenter.reminder.medicine
 
 import java.time.DayOfWeek
-import java.util.Date
+import java.time.LocalDate
 
 data class MedicineSectionState(
     val medicines: List<Medicine> = dummyMedicine,
@@ -12,8 +12,8 @@ private val dummyMedicine = listOf(
     Medicine(
         name = "Morphin X",
         dosage = 2,
-        dateStart = Date(),
-        dateEnd = Date(),
+        dateStart = LocalDate.now(),
+        dateEnd = LocalDate.now(),
         time = listOf(
             Time(
                 hour = 9,
@@ -34,8 +34,8 @@ private val dummyMedicine = listOf(
     Medicine(
         name = "Morphin Y",
         dosage = 1,
-        dateStart = Date(),
-        dateEnd = Date(),
+        dateStart = LocalDate.now(),
+        dateEnd = LocalDate.now(),
         time = listOf(
             Time(
                 hour = 9,
@@ -58,8 +58,8 @@ private val dummyMedicine = listOf(
 data class AddMedicineState(
     val medicineName: String = "",
     val drugDosage: String = "",
-    val dateStart: Date = Date(),
-    val dateEnd: Date = Date(),
+    val dateStart: LocalDate = LocalDate.now(),
+    val dateEnd: LocalDate = LocalDate.now(),
     val time: List<Time> = emptyList(),
     val instructions: List<String> = emptyList()
 )
@@ -67,8 +67,8 @@ data class AddMedicineState(
 data class Medicine(
     val name: String,
     val dosage: Int,
-    val dateStart: Date,
-    val dateEnd: Date,
+    val dateStart: LocalDate,
+    val dateEnd: LocalDate,
     val time: List<Time>,
     val day: List<DayOfWeek>
 )

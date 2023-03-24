@@ -1,14 +1,14 @@
 package com.example.reminder_presenter.reminder.doctor
 
-import java.util.*
+import com.example.reminder_presenter.model.Time
+import java.time.LocalDate
 
 sealed class DoctorSectionEvent {
     object AddDoctor: DoctorSectionEvent()
     data class OnActivityChange(val activity: String): DoctorSectionEvent()
     data class OnDoctorNameChange(val name: String): DoctorSectionEvent()
-    data class OnPickDate(val date: Date): DoctorSectionEvent()
+    data class OnPickDate(val date: LocalDate): DoctorSectionEvent()
     data class OnPickTime(
-        val hour: Int,
-        val minute: Int
+        val time: Time
     ): DoctorSectionEvent()
 }

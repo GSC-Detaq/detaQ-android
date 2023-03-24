@@ -1,9 +1,9 @@
-package com.example.history_presenter.history.utils
+package com.example.core.utils
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-internal fun String.toLocalDate(): LocalDate {
+fun String.toLocalDate(): LocalDate {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     return LocalDate.parse(this, formatter)

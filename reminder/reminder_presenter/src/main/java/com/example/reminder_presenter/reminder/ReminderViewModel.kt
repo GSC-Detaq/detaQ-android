@@ -12,7 +12,6 @@ import com.example.reminder_presenter.reminder.medicine.MedicineSectionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.DayOfWeek
 
 class ReminderViewModel: ViewModel() {
     private val _medicineState = MutableStateFlow(MedicineSectionState())
@@ -37,7 +36,7 @@ class ReminderViewModel: ViewModel() {
                             dateEnd = addMedicineState.dateEnd,
                             time = addMedicineState.time,
                             day = listOf(
-                                DayOfWeek.of(addMedicineState.dateStart.day)
+                                addMedicineState.dateStart.dayOfWeek
                             )
                         )
                     )
@@ -169,8 +168,7 @@ class ReminderViewModel: ViewModel() {
             is DoctorSectionEvent.OnPickTime -> {
                 _doctorState.value = doctorState.value.copy(
                     addDoctorState = doctorState.value.addDoctorState.copy(
-                        hour = event.hour,
-                        minute = event.minute
+                        time = event.time
                     )
                 )
             }

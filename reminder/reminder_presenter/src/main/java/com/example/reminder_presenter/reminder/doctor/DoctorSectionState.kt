@@ -1,6 +1,7 @@
 package com.example.reminder_presenter.reminder.doctor
 
-import java.util.Date
+import com.example.reminder_presenter.model.Time
+import java.time.LocalDate
 
 data class DoctorSectionState(
     val doctors: List<Doctor> = dummyDoctors,
@@ -11,25 +12,24 @@ private val dummyDoctors = listOf(
     Doctor(
         name = "Dr. Aisyah Jamal",
         activity = "Monthly Control",
-        date = Date()
+        date = LocalDate.now()
     ),
     Doctor(
         name = "Dr. Budi",
         activity = "Monthly Control",
-        date = Date()
+        date = LocalDate.now()
     )
 )
 
 data class Doctor(
     val name: String,
     val activity: String,
-    val date: Date
+    val date: LocalDate
 )
 
 data class AddDoctorState(
     val activity: String = "",
     val doctorName: String = "",
-    val date: Date = Date(),
-    val hour: Int = 0,
-    val minute: Int = 0
+    val date: LocalDate = LocalDate.now(),
+    val time: Time = Time(hour = 0, minute = 0)
 )

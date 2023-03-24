@@ -27,7 +27,7 @@ import com.example.reminder_presenter.R
 import com.example.reminder_presenter.reminder.medicine.Medicine
 import com.example.reminder_presenter.reminder.medicine.Time
 import java.time.DayOfWeek
-import java.util.*
+import java.time.LocalDate
 
 @Composable
 fun MedicineItem(
@@ -229,8 +229,8 @@ fun MedicineItemPreview() {
             medicine = Medicine(
                 name = "Morphin",
                 dosage = 2,
-                dateStart = Date(),
-                dateEnd = Date(),
+                dateStart = LocalDate.now(),
+                dateEnd = LocalDate.now(),
                 time = listOf(
                     Time(
                         hour = 9,
