@@ -1,5 +1,6 @@
 package com.example.detaq
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.example.core_ui.LocalGradient
 import com.example.core_ui.R
 import com.example.detaq.components.AppBottomBar
@@ -198,7 +200,15 @@ fun DetaQ(
                 )
             }
 
-            composable(TopLevelDestination.Reminder.name) {
+            composable(
+                route = TopLevelDestination.Reminder.name,
+                deepLinks = listOf(
+                    navDeepLink {
+                        action = Intent.ACTION_VIEW
+                        uriPattern = "detaq://reminder"
+                    }
+                )
+            ) {
                 ReminderScreen(
                     onBackClick = {
                         navController.navigateUp()

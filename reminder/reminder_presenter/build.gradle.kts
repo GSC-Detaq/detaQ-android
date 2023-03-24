@@ -1,3 +1,7 @@
+plugins {
+    id("dagger.hilt.android.plugin")
+}
+
 apply {
     from("$rootDir/compose-module.gradle")
 }
