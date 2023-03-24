@@ -1,15 +1,17 @@
 package com.example.reminder_presenter.utils
 
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.Manifest
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.example.reminder_presenter.model.Time
@@ -178,6 +180,22 @@ class ReminderReceiver: BroadcastReceiver() {
             )
 
             alarmManager?.cancel(pendingIntent)
+        }
+
+        fun hasSchedulePermission(context: Context): Boolean {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ContextCompat.checkSelfPermission(context, Manifest.permission.SCHEDULE_EXACT_ALARM) ==
+                        PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+        }
+
+        @RequiresApi(Build.VERSION_CODES.S)
+        fun requestSchedulePermission(context: Context, activity: Activity) {
+            if (!hasSchedulePermission(context)) {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.SCHEDULE_EXACT_ALARM), 1)
+            }
         }
     }
 }

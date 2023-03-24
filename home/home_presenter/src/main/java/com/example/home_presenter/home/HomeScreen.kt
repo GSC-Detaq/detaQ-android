@@ -1,5 +1,15 @@
 package com.example.home_presenter.home
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.ContactsContract
+import android.provider.ContactsContract.CommonDataKinds.Phone
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,12 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.home_presenter.R
 import com.example.home_presenter.home.components.*
+import timber.log.Timber
 
 @Composable
 fun HomeScreen(
@@ -25,6 +39,38 @@ fun HomeScreen(
     onAloneClick: () -> Unit
 ) {
     val state = viewModel.state.collectAsState()
+
+    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
+    val contactPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val uri = result.data?.data
+
+        uri?.let { data ->
+            val cursor = context.contentResolver.query(
+                data,
+                null,
+                null,
+                null,
+                null
+            )
+
+            if (cursor != null && cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndexOrThrow(Phone.DISPLAY_NAME)
+                val name = cursor.getString(nameIndex)
+
+                Timber.d(name)
+
+                val numberIndex = cursor.getColumnIndexOrThrow(Phone.NUMBER)
+                val number = cursor.getString(numberIndex)
+
+                Timber.d(number)
+
+                cursor.close()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -85,7 +131,18 @@ fun HomeScreen(
                             color = MaterialTheme.colors.secondary
                         ),
                         modifier = Modifier
-                            .clickable {  }
+                            .clickable {
+                                if (hasContactPermission(context)) {
+                                    val intent = Intent(
+                                        Intent.ACTION_PICK,
+                                        Phone.CONTENT_URI
+                                    )
+
+                                    contactPicker.launch(intent)
+                                } else {
+                                    requestContactPermission(context, activity)
+                                }
+                            }
                     )
                 }
 
@@ -156,5 +213,16 @@ fun HomeScreen(
                 ArticleSection()
             }
         }
+    }
+}
+
+fun hasContactPermission(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) ==
+            PackageManager.PERMISSION_GRANTED;
+}
+
+fun requestContactPermission(context: Context, activity: Activity) {
+    if (!hasContactPermission(context)) {
+        ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CONTACTS), 1)
     }
 }
