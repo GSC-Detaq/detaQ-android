@@ -79,6 +79,9 @@ dependencies {
     implementation(project(Modules.historyPresentation))
     implementation(project(Modules.historyDomain))
     implementation(project(Modules.historyData))
+    implementation(project(Modules.profilePresentation))
+    implementation(project(Modules.profileDomain))
+    implementation(project(Modules.profileData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)

@@ -23,4 +23,8 @@ object Modules {
     const val historyData = ":history:history_data"
     const val historyDomain = ":history:history_domain"
     const val historyPresentation = ":history:history_presenter"
+
+    const val profileData = ":profile:profile_data"
+    const val profileDomain = ":profile:profile_domain"
+    const val profilePresentation = ":profile:profile_presenter"
 }

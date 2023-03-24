@@ -26,6 +26,10 @@
             <option value="$PROJECT_DIR$/landing/landing_data" />
             <option value="$PROJECT_DIR$/landing/landing_domain" />
             <option value="$PROJECT_DIR$/landing/landing_presenter" />
+            <option value="$PROJECT_DIR$/profile" />
+            <option value="$PROJECT_DIR$/profile/profile_data" />
+            <option value="$PROJECT_DIR$/profile/profile_domain" />
+            <option value="$PROJECT_DIR$/profile/profile_presenter" />
             <option value="$PROJECT_DIR$/reminder" />
             <option value="$PROJECT_DIR$/reminder/reminder_data" />
             <option value="$PROJECT_DIR$/reminder/reminder_domain" />
