@@ -1,5 +1,6 @@
 package com.example.landing_data.remote.source
 
+import com.example.core.data.remote.utils.tryCatch
 import com.example.core.data.utils.ApiResponse
 import com.example.core.domain.dispatchers.DispatchersProvider
 import com.example.landing_data.remote.dto.request.LoginRequest
@@ -7,14 +8,12 @@ import com.example.landing_data.remote.dto.request.RegisterRequest
 import com.example.landing_data.remote.dto.response.LoginResponse
 import com.example.landing_data.remote.dto.response.RegisterResponse
 import com.example.landing_data.remote.service.LandingApiService
-import io.ktor.client.plugins.*
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteDataSource @Inject constructor(
+class LandingRemoteDataSource @Inject constructor(
     private val apiService: LandingApiService,
     private val dispatchers: DispatchersProvider
 ) {
@@ -50,28 +49,9 @@ class RemoteDataSource @Inject constructor(
                     } ?: ApiResponse.Error("data null")
                 }
                 else {
-                    ApiResponse.Error("")
+                    ApiResponse.Error(result.meta.message)
                 }
             }
         }
     }
-
-    private suspend fun <T> tryCatch(
-        httpCall: suspend () -> ApiResponse<T>
-    ): ApiResponse<T> =
-        try {
-            httpCall()
-        } catch (e: RedirectResponseException) {
-            Timber.e("Error: ${e.response.status.description}")
-            ApiResponse.Error("Error: ${e.response.status.description}")
-        } catch (e: ClientRequestException) {
-            Timber.e("Error: ${e.response.status.description}")
-            ApiResponse.Error("Error: ${e.response.status.description}")
-        } catch (e: ServerResponseException) {
-            Timber.e("Error: ${e.response.status.description}")
-            ApiResponse.Error("Error: ${e.response.status.description}")
-        } catch (e: Exception) {
-            Timber.e("Error: ${e.message}")
-            ApiResponse.Error("Error: ${e.message}")
-        }
 }

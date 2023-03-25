@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core.utils.toLocalDate
+import com.example.core.utils.extensions.toLocalDate
 import com.example.core_ui.ui.theme.DetaQTheme
 import java.time.DayOfWeek
 import java.time.LocalDate

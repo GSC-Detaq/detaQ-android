@@ -5,14 +5,14 @@ import com.example.core.data.utils.ApiResponse
 import com.example.core.utils.Resource
 import com.example.landing_data.remote.dto.request.LoginRequest
 import com.example.landing_data.remote.dto.request.RegisterRequest
-import com.example.landing_data.remote.source.RemoteDataSource
+import com.example.landing_data.remote.source.LandingRemoteDataSource
 import com.example.landing_domain.repository.LandingRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class LandingRepositoryImpl @Inject constructor(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: LandingRemoteDataSource,
     private val tokenPreferences: TokenPreferences
 ): LandingRepository {
     override suspend fun login(

@@ -1,4 +1,4 @@
-package com.example.core.utils
+package com.example.core.utils.extensions
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

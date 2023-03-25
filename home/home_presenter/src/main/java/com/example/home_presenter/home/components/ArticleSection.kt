@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core.utils.formattedDate
+import com.example.core.utils.extensions.formattedDate
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral50
 import com.example.home_presenter.R

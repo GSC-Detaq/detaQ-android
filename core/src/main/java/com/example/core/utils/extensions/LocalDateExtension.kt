@@ -1,8 +1,6 @@
-package com.example.core.utils
+package com.example.core.utils.extensions
 
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.util.Locale
 
 fun LocalDateTime.formattedDate(): String {
     val month = this.month.name.lowercase().replaceFirstChar { it.uppercase() }
