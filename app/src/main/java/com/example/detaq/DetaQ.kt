@@ -33,6 +33,8 @@ import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
+import com.example.profile_presenter.connect.ConnectScreen
+import com.example.profile_presenter.profile.ProfileScreen
 import com.example.reminder_presenter.reminder.ReminderScreen
 import com.example.sos_presenter.countdown.CountDownScreen
 import com.example.sos_presenter.countdown_sent.CountDownSentScreen
@@ -218,6 +220,22 @@ fun DetaQ(
 
             composable(TopLevelDestination.History.name) {
                 HistoryScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(TopLevelDestination.Profile.name) {
+                ProfileScreen(
+                    onConnectClick = {
+                        navController.navigate(Route.ConnectWithFamily.name)
+                    }
+                )
+            }
+
+            composable(Route.ConnectWithFamily.name) {
+                ConnectScreen(
                     onBackClick = {
                         navController.navigateUp()
                     }

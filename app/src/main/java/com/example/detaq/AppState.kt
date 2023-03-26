@@ -9,7 +9,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.detaq.navigation.Route
 import com.example.detaq.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 class AppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
-    val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope
 ) {
     fun showSnackBar(message: String) {
         coroutineScope.launch {

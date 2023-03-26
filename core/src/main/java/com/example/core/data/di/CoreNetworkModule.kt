@@ -1,8 +1,8 @@
 package com.example.core.data.di
 
-import com.example.core.data.preferences.TokenPreferences
 import com.example.core.data.remote.service.contact.ContactApiService
 import com.example.core.data.remote.service.contact.ContactKtorApiService
+import com.example.core.domain.preferences.TokenPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

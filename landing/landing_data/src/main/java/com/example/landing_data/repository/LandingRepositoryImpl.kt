@@ -1,7 +1,7 @@
 package com.example.landing_data.repository
 
-import com.example.core.data.preferences.TokenPreferences
 import com.example.core.data.utils.ApiResponse
+import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.utils.Resource
 import com.example.landing_data.remote.dto.request.LoginRequest
 import com.example.landing_data.remote.dto.request.RegisterRequest

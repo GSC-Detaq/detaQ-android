@@ -2,17 +2,18 @@ package com.example.core.data.preferences
 
 import android.content.SharedPreferences
 import com.example.core.BuildConfig
+import com.example.core.domain.preferences.TokenPreferences
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-class TokenPreferences @Inject constructor(
+class EncTokenPreferences @Inject constructor(
     @Named("encryptedPreferences") private val preferences: SharedPreferences
-) {
-    fun getToken(): String = preferences.getString(BuildConfig.TOKEN_KEY, "") ?: ""
+): TokenPreferences {
+    override fun getToken(): String = preferences.getString(BuildConfig.TOKEN_KEY, "") ?: ""
 
-    fun setToken(
+    override fun setToken(
         token: String
     ) {
         preferences.edit()
