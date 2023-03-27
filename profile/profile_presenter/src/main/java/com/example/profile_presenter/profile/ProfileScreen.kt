@@ -30,7 +30,8 @@ import com.example.profile_presenter.profile.components.ProfileButton
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    onConnectClick: () -> Unit
+    onConnectClick: () -> Unit,
+    onMyFamilyClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -129,10 +130,10 @@ fun ProfileScreen(
 
             ProfileButton(
                 iconRes = R.drawable.my_family_icon,
-                textRes = R.string.connect_btn,
-                enabled = false
+                textRes = R.string.my_family,
+                enabled = true
             ) {
-
+                onMyFamilyClick()
             }
         }
 

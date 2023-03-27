@@ -34,6 +34,7 @@ import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
 import com.example.profile_presenter.connect.ConnectScreen
+import com.example.profile_presenter.my_family.MyFamilyScreen
 import com.example.profile_presenter.profile.ProfileScreen
 import com.example.reminder_presenter.reminder.ReminderScreen
 import com.example.sos_presenter.countdown.CountDownScreen
@@ -230,12 +231,23 @@ fun DetaQ(
                 ProfileScreen(
                     onConnectClick = {
                         navController.navigate(Route.ConnectWithFamily.name)
+                    },
+                    onMyFamilyClick = {
+                        navController.navigate(Route.MyFamily.name)
                     }
                 )
             }
 
             composable(Route.ConnectWithFamily.name) {
                 ConnectScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.MyFamily.name) {
+                MyFamilyScreen(
                     onBackClick = {
                         navController.navigateUp()
                     }

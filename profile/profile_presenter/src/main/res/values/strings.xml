@@ -16,4 +16,8 @@
     <string name="personal">Personal</string>
     <string name="general">General</string>
     <string name="add">ADD</string>
+    <string name="patient">Patient</string>
+    <string name="family">Family</string>
+    <string name="edit">EDIT</string>
+    <string name="cancel">CANCEL</string>
 </resources>

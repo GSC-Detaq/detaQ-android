@@ -10,5 +10,6 @@ enum class Route {
     IndependentHandling,
     SosCountDown,
     SosCountDownSent,
-    ConnectWithFamily
+    ConnectWithFamily,
+    MyFamily
 }
