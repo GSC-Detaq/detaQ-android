@@ -1,6 +1,5 @@
 package com.example.sos_presenter.countdown_sent
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,10 +20,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core_ui.CommonHeader
 import com.example.core_ui.ui.theme.Neutral10
 import com.example.core_ui.ui.theme.Neutral100
-import com.example.core_ui.ui.theme.Red10
 import com.example.core_ui.ui.theme.Red60
 import com.example.sos_presenter.R
 import com.example.sos_presenter.countdown_sent.components.SosSection
+import com.google.maps.android.compose.GoogleMap
 
 @Composable
 fun CountDownSentScreen(
@@ -46,10 +45,9 @@ fun CountDownSentScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Box(
+            GoogleMap(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Red10)
             )
 
             TextField(

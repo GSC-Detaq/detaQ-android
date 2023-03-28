@@ -31,7 +31,8 @@ import com.example.profile_presenter.profile.components.ProfileButton
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onConnectClick: () -> Unit,
-    onMyFamilyClick: () -> Unit
+    onMyFamilyClick: () -> Unit,
+    onLogOut: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -39,7 +40,9 @@ fun ProfileScreen(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when(event) {
-                is UiEvent.Success -> Unit
+                is UiEvent.Success -> {
+                    onLogOut()
+                }
                 else -> Unit
             }
         }
@@ -47,61 +50,70 @@ fun ProfileScreen(
 
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp)
+            .fillMaxSize()
     ) {
         item {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 8.dp)
                     .background(Red10),
-                verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Row(
                     modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop,
-                    model = ImageRequest
-                        .Builder(context)
-                        .data(state.user?.profilePic)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "User Profile Picture"
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = state.user?.name ?: "null",
-                        style = MaterialTheme.typography.h4.copy(
-                            color = Neutral100
-                        )
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        model = ImageRequest
+                            .Builder(context)
+                            .data(state.user?.profilePic)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "User Profile Picture"
                     )
 
-                    Text(
-                        text = state.user?.email ?: "null",
-                        style = MaterialTheme.typography.body2.copy(
-                            color = Neutral60
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = state.user?.name ?: "null",
+                            style = MaterialTheme.typography.h4.copy(
+                                color = Neutral100
+                            )
                         )
-                    )
+
+                        Text(
+                            text = state.user?.email ?: "null",
+                            style = MaterialTheme.typography.body2.copy(
+                                color = Neutral60
+                            )
+                        )
+                    }
                 }
+                
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
 
         item {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedPrimaryButton(
                 textRes = R.string.connect_btn,
                 textModifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
                 onConnectClick()
             }
@@ -114,14 +126,18 @@ fun ProfileScreen(
                 text = stringResource(id = R.string.personal),
                 style = MaterialTheme.typography.h3.copy(
                     color = Neutral50
-                )
+                ),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             ProfileButton(
                 iconRes = R.drawable.account_icon,
-                textRes = R.string.account
+                textRes = R.string.account,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -131,7 +147,9 @@ fun ProfileScreen(
             ProfileButton(
                 iconRes = R.drawable.my_family_icon,
                 textRes = R.string.my_family,
-                enabled = true
+                enabled = true,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
                 onMyFamilyClick()
             }
@@ -144,14 +162,18 @@ fun ProfileScreen(
                 text = stringResource(id = R.string.general),
                 style = MaterialTheme.typography.h3.copy(
                     color = Neutral50
-                )
+                ),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             ProfileButton(
                 iconRes = R.drawable.settings_icon,
-                textRes = R.string.settings
+                textRes = R.string.settings,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -160,7 +182,9 @@ fun ProfileScreen(
 
             ProfileButton(
                 iconRes = R.drawable.security_icon,
-                textRes = R.string.security
+                textRes = R.string.security,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -169,7 +193,9 @@ fun ProfileScreen(
 
             ProfileButton(
                 iconRes = R.drawable.terms_and_con_icon,
-                textRes = R.string.terms_and_con
+                textRes = R.string.terms_and_con,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -178,7 +204,9 @@ fun ProfileScreen(
 
             ProfileButton(
                 iconRes = R.drawable.help_icon,
-                textRes = R.string.help
+                textRes = R.string.help,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -187,7 +215,9 @@ fun ProfileScreen(
 
             ProfileButton(
                 iconRes = R.drawable.about_icon,
-                textRes = R.string.about
+                textRes = R.string.about,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
 
             }
@@ -199,7 +229,9 @@ fun ProfileScreen(
             ProfileButton(
                 iconRes = R.drawable.log_out_icon,
                 textRes = R.string.log_out,
-                color = Negative60
+                color = Negative60,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
             ) {
                 viewModel.onEvent(
                     event = ProfileEvent.ToggleDialog(true)

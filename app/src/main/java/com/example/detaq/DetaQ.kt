@@ -234,6 +234,13 @@ fun DetaQ(
                     },
                     onMyFamilyClick = {
                         navController.navigate(Route.MyFamily.name)
+                    },
+                    onLogOut = {
+                        navController.navigate(Route.Login.name) {
+                            popUpTo(Route.Splash.name) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }

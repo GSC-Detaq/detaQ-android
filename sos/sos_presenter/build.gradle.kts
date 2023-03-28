@@ -8,4 +8,6 @@ dependencies {
     "implementation"(project(Modules.sosDomain))
 
     "implementation"(Coil.coilCompose)
+    "implementation"(Google.mapsCompose)
+    "implementation"(Google.playServicesMaps)
 }

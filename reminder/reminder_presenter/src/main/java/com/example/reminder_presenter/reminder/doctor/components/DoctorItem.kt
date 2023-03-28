@@ -16,10 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.core_ui.LocalGradient
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Red50
@@ -27,16 +25,12 @@ import com.example.reminder_presenter.R
 import com.example.reminder_presenter.reminder.doctor.Doctor
 import com.example.reminder_presenter.utils.asString
 import java.time.LocalDate
-import java.util.*
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun DoctorItem(
     modifier: Modifier = Modifier,
     doctor: Doctor
 ) {
-    val localGradient = LocalGradient.current
-
     Card(
         modifier = modifier
             .fillMaxWidth(),
@@ -80,7 +74,7 @@ fun DoctorItem(
                     Text(
                         text = doctor.date.asString("EEEE, dd MMMM yyy"),
                         style = MaterialTheme.typography.caption.copy(
-                            brush = localGradient.primary
+                            color = Red50
                         )
                     )
                 }
