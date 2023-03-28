@@ -9,7 +9,8 @@ sealed class RegisterEvent {
     object OnSendOtp: RegisterEvent()
     data class OnOtpChange(val otp: String): RegisterEvent()
     object OnVerifyOtp: RegisterEvent()
-    data class OnPickRole(val role: UserRole): RegisterEvent()
+    data class OnPickRole(val role: Role): RegisterEvent()
+    data class ToggleRoleDropDown(val isOpen: Boolean): RegisterEvent()
     data class UpdateSection(val section: RegisterSection): RegisterEvent()
     object Register: RegisterEvent()
 }

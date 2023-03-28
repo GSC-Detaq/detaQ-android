@@ -18,10 +18,25 @@ data class RegisterState(
     val otpError: ValidationError? = null,
     val otpSendCount: Int = 0,
     val otpCountDown: Int = 0,
-    val role: UserRole? = null,
+    val role: Role? = null,
     val roleError: ValidationError? = null,
+    val roleDropDownOpen: Boolean = false,
     val registerError: String? = null
 )
+
+enum class Role {
+    Patient,
+    Family,
+    Others;
+
+    fun getRoleId(): Int {
+        return when(this) {
+            Patient -> 1
+            Family -> 2
+            Others -> 3
+        }
+    }
+}
 
 enum class UserRole {
     Patient,

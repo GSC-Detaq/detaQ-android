@@ -15,7 +15,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,18 +27,19 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.core.utils.UiEvent
 import com.example.home_presenter.R
 import com.example.home_presenter.home.components.*
-import timber.log.Timber
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
     onFirstAidClick: () -> Unit,
     onAloneClick: () -> Unit
 ) {
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
@@ -58,14 +61,31 @@ fun HomeScreen(
                 val nameIndex = cursor.getColumnIndexOrThrow(Phone.DISPLAY_NAME)
                 val name = cursor.getString(nameIndex)
 
-                Timber.d(name)
-
                 val numberIndex = cursor.getColumnIndexOrThrow(Phone.NUMBER)
                 val number = cursor.getString(numberIndex)
 
-                Timber.d(number)
-
                 cursor.close()
+
+                viewModel.onEvent(
+                    event = HomeEvent.AddContact(
+                        number = number,
+                        name = name
+                    )
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Success -> Unit
+                is UiEvent.ShowSnackBar -> {
+                    showSnackBar(
+                        event.message.asString(context)
+                    )
+                }
+                else -> Unit
             }
         }
     }
@@ -123,30 +143,40 @@ fun HomeScreen(
                     )
 
                     Text(
-                        text = stringResource(id = R.string.edit),
+                        text = stringResource(
+                            id = if (state.isEditingContact) R.string.cancel else R.string.edit
+                        ),
                         style = MaterialTheme.typography.caption.copy(
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colors.secondary
                         ),
                         modifier = Modifier
                             .clickable {
-                                if (hasContactPermission(context)) {
-                                    val intent = Intent(
-                                        Intent.ACTION_PICK,
-                                        Phone.CONTENT_URI
-                                    )
-
-                                    contactPicker.launch(intent)
-                                } else {
-                                    requestContactPermission(context, activity)
-                                }
+                                viewModel.onEvent(
+                                    event = HomeEvent.ToggleEditContact
+                                )
                             }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                EmergencyContactSection()
+                EmergencyContactSection(
+                    isDeleteVisible = state.isEditingContact,
+                    onAddClick = {
+                        if (hasContactPermission(context)) {
+                            val intent = Intent(
+                                Intent.ACTION_PICK,
+                                Phone.CONTENT_URI
+                            )
+
+                            contactPicker.launch(intent)
+                        } else {
+                            requestContactPermission(context, activity)
+                        }
+                    },
+                    onDelete = {  }
+                )
             }
 
             item {

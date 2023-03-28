@@ -148,6 +148,9 @@ fun DetaQ(
 
             composable(TopLevelDestination.Home.name) {
                 HomeScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
                     onFirstAidClick = {
                         navController.navigate(Route.FirstAid.name)
                     },

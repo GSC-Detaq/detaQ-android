@@ -2,15 +2,11 @@ package com.example.landing_presenter.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.data.preferences.DefaultPreferences
 import com.example.core.domain.preferences.Preferences
 import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.LandingUseCases
-import com.example.landing_domain.use_cases.ValidateEmail
-import com.example.landing_domain.use_cases.ValidateNumber
-import com.example.landing_domain.use_cases.ValidatePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
@@ -99,6 +94,11 @@ class RegisterViewModel @Inject constructor(
             is RegisterEvent.OnPickRole -> {
                 _state.value = state.value.copy(
                     role = event.role
+                )
+            }
+            is RegisterEvent.ToggleRoleDropDown -> {
+                _state.value = state.value.copy(
+                    roleDropDownOpen = event.isOpen
                 )
             }
             RegisterEvent.OnSendOtp -> Unit
