@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id ("com.android.application")
     kotlin("android")
@@ -14,6 +16,9 @@ android {
         targetSdk = ProjectConfig.targetSdk
         versionCode = ProjectConfig.versionCode
         versionName = ProjectConfig.versionName
+
+        val mapApiKey = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
+        manifestPlaceholders["MAPS_API_KEY"] = mapApiKey
 
         vectorDrawables {
             useSupportLibrary = true
