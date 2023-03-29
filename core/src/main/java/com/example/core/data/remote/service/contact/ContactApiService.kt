@@ -2,6 +2,7 @@ package com.example.core.data.remote.service.contact
 
 import com.example.core.data.remote.dto.request.InsertContactRequest
 import com.example.core.data.remote.dto.response.ContactByIdResponse
+import com.example.core.data.remote.dto.response.ContactsResponse
 import com.example.core.data.remote.dto.response.InsertContactResponse
 
 interface ContactApiService {
@@ -10,5 +11,5 @@ interface ContactApiService {
 
     suspend fun getContactById(id: String): ContactByIdResponse
 
-    suspend fun getAllContacts()
+    suspend fun getAllContacts(): ContactsResponse
 }

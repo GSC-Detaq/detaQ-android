@@ -2,14 +2,22 @@ package com.example.sos_presenter.countdown
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.domain.use_cases.GetContacts
+import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
-class CountDownViewModel: ViewModel() {
+@HiltViewModel
+class CountDownViewModel @Inject constructor(
+    private val getContacts: GetContacts
+): ViewModel() {
     private val _state = MutableStateFlow(CountDownState())
     val state: StateFlow<CountDownState> = _state.asStateFlow()
 
@@ -20,6 +28,7 @@ class CountDownViewModel: ViewModel() {
 
     init {
         countDown()
+        initGetContacts()
     }
 
     fun onEvent(event: CountDownEvent) {
@@ -34,7 +43,7 @@ class CountDownViewModel: ViewModel() {
                     .toMutableList()
 
                 newContacts
-                    .removeIf { it == event.contact }
+                    .removeIf { it.id == event.contact }
 
                 _state.value = state.value.copy(
                     contacts = newContacts.toList()
@@ -74,6 +83,23 @@ class CountDownViewModel: ViewModel() {
                         _uiEvent.send(UiEvent.Success)
                     }
                 }
+        }
+    }
+
+    private fun initGetContacts() {
+        viewModelScope.launch {
+
+            when(val result = getContacts()) {
+                is Resource.Error -> {
+                    Timber.d(result.message)
+                }
+                is Resource.Loading -> Unit
+                is Resource.Success -> {
+                    _state.value = state.value.copy(
+                        contacts = result.data ?: emptyList()
+                    )
+                }
+            }
         }
     }
 }

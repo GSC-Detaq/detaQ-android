@@ -1,13 +1,9 @@
 package com.example.sos_presenter.countdown
 
+import com.example.core.domain.model.Contact
+
 data class CountDownState(
     val countDown: Int = 5,
-    val contacts: List<String> = dummyListOfContacts,
+    val contacts: List<Contact> = emptyList(),
     val isCallAmbulance: Boolean = false
-)
-
-private val dummyListOfContacts = listOf(
-    "Mom",
-    "Adam",
-    "Grace"
 )

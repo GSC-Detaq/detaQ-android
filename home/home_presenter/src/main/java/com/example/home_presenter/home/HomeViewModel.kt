@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +25,10 @@ class HomeViewModel @Inject constructor(
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    init {
+        getContacts()
+    }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
@@ -64,6 +69,23 @@ class HomeViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun getContacts() {
+        viewModelScope.launch {
+
+            when(val result = coreUseCases.getContacts()) {
+                is Resource.Error -> {
+                    Timber.d(result.message)
+                }
+                is Resource.Loading -> Unit
+                is Resource.Success -> {
+                    _state.value = state.value.copy(
+                        emergencyContacts = result.data ?: emptyList()
+                    )
                 }
             }
         }

@@ -51,4 +51,22 @@ class CoreRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getContacts(): Resource<List<Contact>> {
+        return when(val result = remoteDataSource.getContacts()) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(
+                    result.data.map {
+                        it.toContact()
+                    }
+                )
+            }
+        }
+    }
 }

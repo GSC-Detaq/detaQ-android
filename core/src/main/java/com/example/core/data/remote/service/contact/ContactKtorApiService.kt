@@ -3,6 +3,7 @@ package com.example.core.data.remote.service.contact
 import com.example.core.BuildConfig
 import com.example.core.data.remote.dto.request.InsertContactRequest
 import com.example.core.data.remote.dto.response.ContactByIdResponse
+import com.example.core.data.remote.dto.response.ContactsResponse
 import com.example.core.data.remote.dto.response.InsertContactResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -34,13 +35,13 @@ class ContactKtorApiService(
         return result.body()
     }
 
-    override suspend fun getAllContacts() {
+    override suspend fun getAllContacts(): ContactsResponse {
         val result = client.get {
             url(ALL_CONTACT_URL)
             contentType(ContentType.Application.Json)
         }
 
-//        return result.body()
+        return result.body()
     }
 
     companion object {

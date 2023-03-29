@@ -162,6 +162,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 EmergencyContactSection(
+                    contacts = state.emergencyContacts,
                     isDeleteVisible = state.isEditingContact,
                     onAddClick = {
                         if (hasContactPermission(context)) {

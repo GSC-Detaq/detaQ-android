@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.core.domain.model.Contact
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Negative60
 import com.example.core_ui.ui.theme.Neutral10
@@ -24,13 +25,14 @@ import com.example.core_ui.ui.theme.Neutral10
 @Composable
 fun EmergencyContactSection(
     modifier: Modifier = Modifier,
-    contacts: List<String> = dummyListOfContacts,
+    contacts: List<Contact>,
     isDeleteVisible: Boolean,
     onAddClick: () -> Unit,
     onDelete: (String) -> Unit
 ) {
     LazyRow(
-        modifier = modifier,
+        modifier = modifier
+            .height(100.dp), // optional
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         contentPadding = PaddingValues(horizontal = 16.dp)
@@ -59,12 +61,12 @@ fun EmergencyContactSection(
 
         items(
             items = contacts,
-            key = { contact -> contact }
+            key = { contact -> contact.id }
         ) { contact ->
             EmergencyContactCard(
                 contact = contact,
                 isDeleteVisible = isDeleteVisible,
-                onDelete = { onDelete(contact) }
+                onDelete = { onDelete(contact.id) }
             )
         }
     }
@@ -73,7 +75,7 @@ fun EmergencyContactSection(
 @Composable
 private fun EmergencyContactCard(
     modifier: Modifier = Modifier,
-    contact: String,
+    contact: Contact,
     isDeleteVisible: Boolean,
     onDelete: () -> Unit
 ) {
@@ -97,7 +99,7 @@ private fun EmergencyContactCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = contact.first().uppercase(),
+                        text = contact.name.first().uppercase(),
                         style = MaterialTheme.typography.h1.copy(
                             fontSize = 32.sp,
                             color = Neutral10
@@ -108,7 +110,7 @@ private fun EmergencyContactCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = contact,
+                    text = contact.name.substringBefore(" "),
                     style = MaterialTheme.typography.h5
                 )
             }
@@ -134,7 +136,11 @@ private fun EmergencyContactCard(
 fun EmergencyContactCardPreview() {
     DetaQTheme {
         EmergencyContactCard(
-            contact = "Adam",
+            contact = Contact(
+                id = "1",
+                name = "Adam",
+                number = "08"
+            ),
             isDeleteVisible = true,
             onDelete = {  }
         )
@@ -146,6 +152,7 @@ fun EmergencyContactCardPreview() {
 fun EmergencyContactSectionPreview() {
     DetaQTheme {
         EmergencyContactSection(
+            contacts = dummyListOfContacts,
             onAddClick = {  },
             isDeleteVisible = true,
             onDelete = {  }
@@ -154,7 +161,19 @@ fun EmergencyContactSectionPreview() {
 }
 
 private val dummyListOfContacts = listOf(
-    "Mom",
-    "Adam",
-    "Grace"
+    Contact(
+        id = "1",
+        name = "Fahmi",
+        number = "08"
+    ),
+    Contact(
+        id = "2",
+        name = "Dea",
+        number = "08"
+    ),
+    Contact(
+        id = "3",
+        name = "Itsar",
+        number = "08"
+    )
 )

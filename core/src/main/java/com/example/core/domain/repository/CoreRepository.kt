@@ -12,4 +12,6 @@ interface CoreRepository {
     suspend fun getContactById(
         id: String
     ): Resource<Contact>
+
+    suspend fun getContacts(): Resource<List<Contact>>
 }

@@ -1,7 +1,7 @@
 package com.example.core.data.remote.source
 
 import com.example.core.data.remote.dto.request.InsertContactRequest
-import com.example.core.data.remote.dto.response.ContactByIdResponse
+import com.example.core.data.remote.dto.response.ContactData
 import com.example.core.data.remote.service.contact.ContactApiService
 import com.example.core.data.remote.utils.tryCatch
 import com.example.core.data.utils.ApiResponse
@@ -34,12 +34,27 @@ class CoreRemoteDataSource @Inject constructor(
 
     suspend fun getContactById(
         id: String
-    ): ApiResponse<ContactByIdResponse.Data> {
+    ): ApiResponse<ContactData> {
         return withContext(dispatchers.io) {
             tryCatch {
                 val result = contactApiService.getContactById(
                     id = id
                 )
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.data)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
+
+    suspend fun getContacts(): ApiResponse<List<ContactData>> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = contactApiService.getAllContacts()
 
                 if (result.meta.success) {
                     ApiResponse.Success(result.data)

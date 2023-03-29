@@ -1,9 +1,9 @@
 package com.example.core.data.mapper
 
-import com.example.core.data.remote.dto.response.ContactByIdResponse
+import com.example.core.data.remote.dto.response.ContactData
 import com.example.core.domain.model.Contact
 
-fun ContactByIdResponse.Data.toContact(): Contact {
+fun ContactData.toContact(): Contact {
     return Contact(
         id = this.contact_id,
         number = this.contact,
