@@ -75,7 +75,7 @@ fun CreateAccount(
         Spacer(modifier = Modifier.height(16.dp))
 
         BasicTextField(
-            label = "Full Name",
+            label = "Username",
             text = state.name,
             onTextChange = {
                 onEvent(

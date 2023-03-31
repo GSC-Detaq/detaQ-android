@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DialogTheme" parent="android:Theme.Material.Dialog">
+        <item name="android:colorAccent">@color/red_60</item>
+    </style>
+</resources>

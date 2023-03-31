@@ -1,6 +1,6 @@
 package com.example.detaq
 
-import android.window.SplashScreen
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,24 +8,38 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.example.core_ui.LocalGradient
+import com.example.core_ui.R
 import com.example.detaq.components.AppBottomBar
 import com.example.detaq.navigation.Route
 import com.example.detaq.navigation.TopLevelDestination
+import com.example.history_presenter.history.HistoryScreen
+import com.example.home_presenter.first_aid.FirstAidScreen
 import com.example.home_presenter.home.HomeScreen
+import com.example.home_presenter.independent_handling.IndependentHandlingScreen
 import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
+import com.example.profile_presenter.connect.ConnectScreen
+import com.example.profile_presenter.my_family.MyFamilyScreen
+import com.example.profile_presenter.profile.ProfileScreen
+import com.example.reminder_presenter.reminder.ReminderScreen
+import com.example.sos_presenter.countdown.CountDownScreen
+import com.example.sos_presenter.countdown_sent.CountDownSentScreen
+import com.example.sos_presenter.sos.SosScreen
 
 @Composable
 fun DetaQ(
@@ -57,7 +71,7 @@ fun DetaQ(
                     },
                     modifier = Modifier
                         .size(56.dp)
-                        .offset(y = (56/4).dp)
+                        .offset(y = (56 / 4).dp)
                         .background(
                             localGradient.primary,
                             CircleShape
@@ -133,7 +147,124 @@ fun DetaQ(
             }
 
             composable(TopLevelDestination.Home.name) {
-                HomeScreen()
+                HomeScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
+                    onFirstAidClick = {
+                        navController.navigate(Route.FirstAid.name)
+                    },
+                    onAloneClick = {
+                        navController.navigate(Route.IndependentHandling.name)
+                    }
+                )
+            }
+
+            composable(Route.FirstAid.name) {
+                FirstAidScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.IndependentHandling.name) {
+                IndependentHandlingScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.Sos.name) {
+                SosScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
+                    onSosClick = {
+                        navController.navigate(Route.SosCountDown.name)
+                    }
+                )
+            }
+
+            composable(Route.SosCountDown.name) {
+                CountDownScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
+                    onCountDownFinish = {
+                        navController.navigate(Route.SosCountDownSent.name)
+                    }
+                )
+            }
+
+            composable(Route.SosCountDownSent.name) {
+                CountDownSentScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(
+                route = TopLevelDestination.Reminder.name,
+                deepLinks = listOf(
+                    navDeepLink {
+                        action = Intent.ACTION_VIEW
+                        uriPattern = "detaq://reminder"
+                    }
+                )
+            ) {
+                ReminderScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(TopLevelDestination.History.name) {
+                HistoryScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(TopLevelDestination.Profile.name) {
+                ProfileScreen(
+                    onConnectClick = {
+                        navController.navigate(Route.ConnectWithFamily.name)
+                    },
+                    onMyFamilyClick = {
+                        navController.navigate(Route.MyFamily.name)
+                    },
+                    onLogOut = {
+                        navController.navigate(Route.Login.name) {
+                            popUpTo(Route.Splash.name) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+
+            composable(Route.ConnectWithFamily.name) {
+                ConnectScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.MyFamily.name) {
+                MyFamilyScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }

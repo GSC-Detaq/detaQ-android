@@ -2,10 +2,12 @@ package com.example.landing_presenter.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.domain.preferences.Preferences
+import com.example.core.domain.use_cases.ValidateEmail
+import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
-import com.example.landing_domain.use_cases.ValidateEmail
-import com.example.landing_domain.use_cases.ValidatePassword
+import com.example.landing_domain.use_cases.LandingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val landingUseCases: LandingUseCases,
     private val validateEmail: ValidateEmail,
-    private val validatePassword: ValidatePassword
+    private val preferences: Preferences
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
@@ -30,7 +33,25 @@ class LoginViewModel @Inject constructor(
         when(event) {
             LoginEvent.Login -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UiEvent.Success)
+                    val result = landingUseCases.login(
+                        email = state.value.email,
+                        password = state.value.password
+                    )
+
+                    when(result) {
+                        is Resource.Error -> {
+                            _state.value = state.value.copy(
+                                loginError = result.message
+                            )
+                        }
+                        is Resource.Loading -> Unit
+                        is Resource.Success -> {
+                            preferences.saveShouldShowOnBoarding(
+                                shouldShow = false
+                            )
+                            _uiEvent.send(UiEvent.Success)
+                        }
+                    }
                 }
             }
             is LoginEvent.OnEmailChange -> {
@@ -57,7 +78,7 @@ class LoginViewModel @Inject constructor(
                     password = event.password
                 )
 
-                val isValid = validatePassword(password = event.password)
+                val isValid = landingUseCases.validatePassword(password = event.password)
 
                 if (isValid.isSuccess) {
                     _state.value = state.value.copy(

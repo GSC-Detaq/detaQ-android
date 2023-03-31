@@ -2,11 +2,12 @@ package com.example.landing_presenter.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.domain.preferences.Preferences
+import com.example.core.domain.use_cases.ValidateEmail
+import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
-import com.example.landing_domain.use_cases.ValidateEmail
-import com.example.landing_domain.use_cases.ValidateNumber
-import com.example.landing_domain.use_cases.ValidatePassword
+import com.example.landing_domain.use_cases.LandingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,9 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    private val landingUseCases: LandingUseCases,
     private val validateEmail: ValidateEmail,
-    private val validatePassword: ValidatePassword,
-    private val validateNumber: ValidateNumber
+    private val preferences: Preferences
 ): ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
     val state: StateFlow<RegisterState> = _state.asStateFlow()
@@ -59,7 +60,7 @@ class RegisterViewModel @Inject constructor(
                     number = event.number
                 )
 
-                val isValid = validateNumber(number = event.number)
+                val isValid = landingUseCases.validateNumber(number = event.number)
 
                 if (isValid.isSuccess) {
                     _state.value = state.value.copy(
@@ -78,7 +79,7 @@ class RegisterViewModel @Inject constructor(
                     password = event.password
                 )
 
-                val isValid = validatePassword(password = event.password)
+                val isValid = landingUseCases.validatePassword(password = event.password)
 
                 if (isValid.isSuccess) {
                     _state.value = state.value.copy(
@@ -97,6 +98,11 @@ class RegisterViewModel @Inject constructor(
                     role = event.role
                 )
             }
+            is RegisterEvent.ToggleRoleDropDown -> {
+                _state.value = state.value.copy(
+                    roleDropDownOpen = event.isOpen
+                )
+            }
             RegisterEvent.OnSendOtp -> Unit
             is RegisterEvent.OnOtpChange -> {
                 _state.value = state.value.copy(
@@ -110,7 +116,27 @@ class RegisterViewModel @Inject constructor(
             }
             RegisterEvent.Register -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UiEvent.Success)
+                    val result = landingUseCases.register(
+                        email = state.value.email,
+                        password = state.value.password,
+                        name = state.value.name,
+                        roleId = state.value.role?.getRoleId() ?: return@launch
+                    )
+
+                    when(result) {
+                        is Resource.Error -> {
+                            _state.value = state.value.copy(
+                                registerError = result.message
+                            )
+                        }
+                        is Resource.Loading -> Unit
+                        is Resource.Success -> {
+                            preferences.saveShouldShowOnBoarding(
+                                shouldShow = false
+                            )
+                            _uiEvent.send(UiEvent.Success)
+                        }
+                    }
                 }
             }
             is RegisterEvent.UpdateSection -> {

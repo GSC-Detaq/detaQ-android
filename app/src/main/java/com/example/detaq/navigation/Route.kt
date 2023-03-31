@@ -5,5 +5,11 @@ enum class Route {
     OnBoarding,
     Login,
     Register,
-    Sos
+    Sos,
+    FirstAid,
+    IndependentHandling,
+    SosCountDown,
+    SosCountDownSent,
+    ConnectWithFamily,
+    MyFamily
 }

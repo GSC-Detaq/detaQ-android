@@ -1,8 +1,11 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id ("com.android.application")
     kotlin("android")
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -14,6 +17,9 @@ android {
         targetSdk = ProjectConfig.targetSdk
         versionCode = ProjectConfig.versionCode
         versionName = ProjectConfig.versionName
+
+        val mapApiKey = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
+        manifestPlaceholders["MAPS_API_KEY"] = mapApiKey
 
         vectorDrawables {
             useSupportLibrary = true
@@ -70,13 +76,29 @@ dependencies {
     implementation(project(Modules.homePresentation))
     implementation(project(Modules.homeDomain))
     implementation(project(Modules.homeData))
+    implementation(project(Modules.sosPresentation))
+    implementation(project(Modules.sosDomain))
+    implementation(project(Modules.sosData))
+    implementation(project(Modules.reminderPresentation))
+    implementation(project(Modules.reminderDomain))
+    implementation(project(Modules.reminderData))
+    implementation(project(Modules.historyPresentation))
+    implementation(project(Modules.historyDomain))
+    implementation(project(Modules.historyData))
+    implementation(project(Modules.profilePresentation))
+    implementation(project(Modules.profileDomain))
+    implementation(project(Modules.profileData))
 
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
+    implementation(AndroidX.encPreference)
 
     implementation(Coil.coilCompose)
 
     implementation(Google.material)
+    implementation(Google.mapsCompose)
+    implementation(Google.playServicesMaps)
+    implementation(Google.playServicesLocation)
 
     implementation(Ktor.ktorClientCore)
     implementation(Ktor.ktorClientAndroid)
@@ -120,4 +142,8 @@ dependencies {
     androidTestImplementation(Testing.hiltTesting)
     kaptAndroidTest(DaggerHilt.hiltCompiler)
     androidTestImplementation(Testing.testRunner)
+
+    // firebase
+    implementation(platform(Firebase.firebaseBom))
+    implementation(Firebase.firebaseCloudMessaging)
 }

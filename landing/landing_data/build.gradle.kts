@@ -11,10 +11,7 @@ apply {
 
 android {
     defaultConfig {
-        val apiKey = gradleLocalProperties(rootDir).getProperty("API_KEY")
-
-        buildConfigField("String", "API_KEY", "\"${apiKey}\"")
-        buildConfigField("String", "base_url", "\"my.base.url\"")
+        buildConfigField("String", "BASE_URL", "\"10.0.2.2:8080\"")
     }
 }
 

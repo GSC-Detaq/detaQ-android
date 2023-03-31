@@ -32,4 +32,7 @@
     <string name="patient">Patient</string>
     <string name="family">Family</string>
     <string name="confirm">CONFIRM</string>
+    <string name="role">Role</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

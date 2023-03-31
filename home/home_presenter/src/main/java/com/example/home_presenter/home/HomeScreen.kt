@@ -1,5 +1,13 @@
 package com.example.home_presenter.home
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.provider.ContactsContract.CommonDataKinds.Phone
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,13 +15,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.core.utils.UiEvent
 import com.example.home_presenter.R
 import com.example.home_presenter.home.components.*
 
@@ -21,8 +35,60 @@ import com.example.home_presenter.home.components.*
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
+    onFirstAidClick: () -> Unit,
+    onAloneClick: () -> Unit
 ) {
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
+    val contactPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val uri = result.data?.data
+
+        uri?.let { data ->
+            val cursor = context.contentResolver.query(
+                data,
+                null,
+                null,
+                null,
+                null
+            )
+
+            if (cursor != null && cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndexOrThrow(Phone.DISPLAY_NAME)
+                val name = cursor.getString(nameIndex)
+
+                val numberIndex = cursor.getColumnIndexOrThrow(Phone.NUMBER)
+                val number = cursor.getString(numberIndex)
+
+                cursor.close()
+
+                viewModel.onEvent(
+                    event = HomeEvent.AddContact(
+                        number = number,
+                        name = name
+                    )
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Success -> Unit
+                is UiEvent.ShowSnackBar -> {
+                    showSnackBar(
+                        event.message.asString(context)
+                    )
+                }
+                else -> Unit
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -30,7 +96,7 @@ fun HomeScreen(
                 onNotificationClick = {  }
             )
         }
-    ) {paddingValues ->
+    ) { paddingValues ->
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -54,8 +120,8 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 QuickHelpCard(
-                    onFirstAidClick = {  },
-                    onAloneClick = {  },
+                    onFirstAidClick = onFirstAidClick,
+                    onAloneClick = onAloneClick,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                 )
@@ -77,19 +143,41 @@ fun HomeScreen(
                     )
 
                     Text(
-                        text = stringResource(id = R.string.edit),
+                        text = stringResource(
+                            id = if (state.isEditingContact) R.string.cancel else R.string.edit
+                        ),
                         style = MaterialTheme.typography.caption.copy(
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colors.secondary
                         ),
                         modifier = Modifier
-                            .clickable {  }
+                            .clickable {
+                                viewModel.onEvent(
+                                    event = HomeEvent.ToggleEditContact
+                                )
+                            }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                EmergencyContactSection()
+                EmergencyContactSection(
+                    contacts = state.emergencyContacts,
+                    isDeleteVisible = state.isEditingContact,
+                    onAddClick = {
+                        if (hasContactPermission(context)) {
+                            val intent = Intent(
+                                Intent.ACTION_PICK,
+                                Phone.CONTENT_URI
+                            )
+
+                            contactPicker.launch(intent)
+                        } else {
+                            requestContactPermission(context, activity)
+                        }
+                    },
+                    onDelete = {  }
+                )
             }
 
             item {
@@ -154,5 +242,16 @@ fun HomeScreen(
                 ArticleSection()
             }
         }
+    }
+}
+
+fun hasContactPermission(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) ==
+            PackageManager.PERMISSION_GRANTED
+}
+
+fun requestContactPermission(context: Context, activity: Activity) {
+    if (!hasContactPermission(context)) {
+        ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CONTACTS), 1)
     }
 }

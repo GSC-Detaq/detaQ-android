@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Reminder</string>
+    <string name="drug_dosage">Drug Dosage : %1$d</string>
+    <string name="add_reminder">+ ADD REMINDER</string>
+    <string name="add">ADD</string>
+    <string name="add_medicine_title">New Take Medicine Schedule</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_doctor_title">New Doctor\'s Control Schedule</string>
+    <string name="activity">Activity : %1$s</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>
