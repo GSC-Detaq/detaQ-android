@@ -21,17 +21,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core.utils.extensions.asString
 import com.example.core.utils.extensions.toLocalDate
 import com.example.core_ui.PrimaryButton
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral40
 import com.example.reminder_presenter.R
+import com.example.reminder_domain.model.Time
 import com.example.reminder_presenter.reminder.components.ClickableField
 import com.example.reminder_presenter.reminder.medicine.AddMedicineState
 import com.example.reminder_presenter.reminder.medicine.MedicineSectionEvent
-import com.example.reminder_presenter.reminder.medicine.Time
-import com.example.reminder_presenter.utils.asString
 import java.util.*
 import com.example.core_ui.R as RCore
 
@@ -56,8 +56,9 @@ fun AddMedicineSheet(
         context,
         RCore.style.Theme_DialogTheme,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else mDayOfMonth
-            val monthString = if(mMonth <= 9) "0$mMonth" else mMonth
+            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else "$mDayOfMonth"
+            val month = mMonth + 1
+            val monthString = if(month <= 9) "0$month" else "$month"
 
             onEvent(
                 MedicineSectionEvent.OnPickDateStart(
@@ -83,8 +84,9 @@ fun AddMedicineSheet(
         context,
         RCore.style.Theme_DialogTheme,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else mDayOfMonth
-            val monthString = if(mMonth <= 9) "0$mMonth" else mMonth
+            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else "$mDayOfMonth"
+            val month = mMonth + 1
+            val monthString = if(month <= 9) "0$month" else "$month"
 
             onEvent(
                 MedicineSectionEvent.OnPickDateEnd(
@@ -111,8 +113,7 @@ fun AddMedicineSheet(
                 MedicineSectionEvent.OnAddTime(
                     Time(
                         hour = mHour,
-                        minute = mMinute,
-                        afterEat = false
+                        minute = mMinute
                     )
                 )
             )
@@ -236,7 +237,7 @@ fun AddMedicineSheet(
                 val hour = if (time.hour < 10) "0${time.hour}" else time.hour
                 val minute = if (time.minute < 10) "0${time.minute}" else time.minute
 
-                if (time.hour > 12) "$hour.$minute PM" else "$hour.$minute AM"
+                if (time.hour >= 12) "$hour.$minute PM" else "$hour.$minute AM"
             }
 
             val textOfListTimeText = listOfTimeText.joinToString(separator = ", ")
@@ -251,11 +252,23 @@ fun AddMedicineSheet(
         }
 
         item {
-            ClickableField(
-                title = "Use Instructions",
-                value = "",
+            InstructionDropDown(
+                instruction = state.instructions,
+                isOpen = state.isInstructionOpen,
                 onClick = {
-
+                    onEvent(
+                        MedicineSectionEvent.ToggleInstructionDropDown(true)
+                    )
+                },
+                onDismiss = {
+                    onEvent(
+                        MedicineSectionEvent.ToggleInstructionDropDown(false)
+                    )
+                },
+                onSelectInstruction = {
+                    onEvent(
+                        MedicineSectionEvent.OnPickInstruction(it)
+                    )
                 }
             )
         }
@@ -266,7 +279,9 @@ fun AddMedicineSheet(
                 textModifier = Modifier
                     .fillMaxWidth(),
                 onClick = {
-
+                    onEvent(
+                        MedicineSectionEvent.AddMedicine
+                    )
                 }
             )
         }

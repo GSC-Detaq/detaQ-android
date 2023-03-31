@@ -8,4 +8,6 @@
     <string name="cancel">Cancel</string>
     <string name="add_doctor_title">New Doctor\'s Control Schedule</string>
     <string name="activity">Activity : %1$s</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

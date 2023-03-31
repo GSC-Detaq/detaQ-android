@@ -2,7 +2,6 @@ package com.example.reminder_presenter.reminder.medicine
 
 import android.app.Activity
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +35,7 @@ fun MedicineSection(
     ) {
         items(
             items = state.medicines,
-            key = { medicine -> medicine.name }
+            key = { medicine -> medicine.reminderId }
         ) { medicine ->
             MedicineItem(medicine = medicine)
         }

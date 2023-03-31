@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -14,7 +15,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
-import com.example.reminder_presenter.model.Time
+import com.example.reminder_domain.model.Time
 import com.example.core_ui.R as coreR
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,23 +36,20 @@ class ReminderReceiver: BroadcastReceiver() {
     ) {
         val title = intent?.getStringExtra(TITLE) ?: "Reminder"
         val description = intent?.getStringExtra(DESCRIPTION) ?: "Click to open and see!"
-        val requestCode = intent?.getIntExtra(REQUEST_CODE, 0) ?: 0
 
         sendNotification(
             context = context ?: appContext,
             title = title,
-            message = description,
-            requestCode = requestCode
+            message = description
         )
     }
 
     private fun sendNotification(
         context: Context,
         title: String,
-        message:String,
-        requestCode: Int
+        message:String
     ){
-        val pendingIntent = getPendingIntent(context, requestCode)
+        val pendingIntent = getPendingIntent(context)
         val notificationManager = context.getSystemService<NotificationManager>()
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -72,13 +70,13 @@ class ReminderReceiver: BroadcastReceiver() {
         }
 
         val notification = builder.build()
+        val notificationId = ((Date().time / 1000L) % Integer.MAX_VALUE).toInt()
 
-        notificationManager?.notify(requestCode, notification)
+        notificationManager?.notify(notificationId, notification)
     }
 
     private fun getPendingIntent(
-        context: Context,
-        requestCode: Int
+        context: Context
     ): PendingIntent? {
         val intent = Intent(
             Intent.ACTION_VIEW,
@@ -87,7 +85,7 @@ class ReminderReceiver: BroadcastReceiver() {
 
         return TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(intent)
-            getPendingIntent(requestCode, PendingIntent.FLAG_UPDATE_CURRENT)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
     }
 
@@ -96,7 +94,6 @@ class ReminderReceiver: BroadcastReceiver() {
         private const val CHANNEL_NAME = "daily_reminder"
         private const val TITLE = "REMINDER_TITLE"
         private const val DESCRIPTION = "REMINDER_DESCRIPTION"
-        private const val REQUEST_CODE = "REMINDER_REQUEST_CODE"
 
         fun setReminders(
             context: Context,
@@ -104,11 +101,11 @@ class ReminderReceiver: BroadcastReceiver() {
             times: List<Time>,
             title: String,
             description: String,
-            id: Int
+            id: String
         ) {
             dates.forEachIndexed { iDate, date ->
                 times.forEachIndexed { iTime, time ->
-                    val reminderId = (id * 100) + (10 * iDate) + iTime
+                    val reminderId = "$id-$iDate-$iTime"
 
                     setReminder(
                         context = context,
@@ -126,7 +123,7 @@ class ReminderReceiver: BroadcastReceiver() {
             context: Context,
             date: LocalDate,
             time: Time,
-            id: Int,
+            id: String,
             title: String,
             description: String
         ){
@@ -145,13 +142,14 @@ class ReminderReceiver: BroadcastReceiver() {
             val intent = Intent(context, ReminderReceiver::class.java)
             intent.putExtra(TITLE, title)
             intent.putExtra(DESCRIPTION, description)
-            intent.putExtra(REQUEST_CODE, id)
+
+            intent.data = Uri.parse("scheme://$id")
 
             val pendingIntent = PendingIntent.getBroadcast(
                 context,
-                id,
+                0,
                 intent,
-                0
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
             alarmManager?.setExactAndAllowWhileIdle(
@@ -160,26 +158,31 @@ class ReminderReceiver: BroadcastReceiver() {
                 pendingIntent
             )
 
-            Timber.d("Alarm Set: $calendarInMillis")
+            Timber.d("Alarm Set: $calendarInMillis id: $id")
         }
 
         fun cancelReminder(
             context: Context,
             dateIndex: Int,
             timeIndex: Int,
-            id: Int
+            id: String
         ) {
             val alarmManager = context.getSystemService<AlarmManager>()
-            val reminderId = (id * 100) + (10 * dateIndex) + timeIndex
+            val reminderId = "$id-$dateIndex-$timeIndex"
+
             val intent = Intent(context, ReminderReceiver::class.java)
+            intent.data = Uri.parse("scheme://$reminderId")
+
             val pendingIntent =  PendingIntent.getBroadcast(
                 context,
-                reminderId,
+                0,
                 intent,
-                0
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
             alarmManager?.cancel(pendingIntent)
+
+            Timber.d("Alarm Canceled id: $id-$dateIndex-$timeIndex")
         }
 
         fun hasSchedulePermission(context: Context): Boolean {

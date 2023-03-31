@@ -23,16 +23,15 @@ import com.example.core_ui.LocalGradient
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral10
 import com.example.core_ui.ui.theme.Neutral100
+import com.example.reminder_domain.model.MedicineReminder
 import com.example.reminder_presenter.R
-import com.example.reminder_presenter.reminder.medicine.Medicine
-import com.example.reminder_presenter.reminder.medicine.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
 fun MedicineItem(
     modifier: Modifier = Modifier,
-    medicine: Medicine
+    medicine: MedicineReminder
 ) {
     Card(
         modifier = modifier
@@ -59,21 +58,21 @@ fun MedicineItem(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                WeekMarker(
-                    reminderDay = medicine.day
-                )
+//                WeekMarker(
+//                    reminderDay = medicine.
+//                )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = medicine.name,
+                    text = medicine.medicineName,
                     style = MaterialTheme.typography.h4.copy(
                         color = Neutral100
                     )
                 )
 
                 Text(
-                    text = stringResource(id = R.string.drug_dosage, medicine.dosage),
+                    text = stringResource(id = R.string.drug_dosage, medicine.medicineDosage),
                     style = MaterialTheme.typography.caption.copy(
                         color = Color(0xFFB3B3B3)
                     )
@@ -144,7 +143,7 @@ fun WeekMarker(
 @Composable
 fun TimeItem(
     modifier: Modifier = Modifier,
-    time: Time
+    time: MedicineReminder.Time
 ) {
     val timeModifier = if (time.afterEat) {
         modifier
@@ -163,7 +162,7 @@ fun TimeItem(
 
     val hour = if (time.hour < 10) "0${time.hour}" else time.hour
     val minute = if (time.minute < 10) "0${time.minute}" else time.minute
-    val timeText = if (time.hour > 12) "$hour.$minute PM" else "$hour.$minute AM"
+    val timeText = if (time.hour >= 12) "$hour.$minute PM" else "$hour.$minute AM"
 
     Box(
         modifier = timeModifier,
@@ -185,7 +184,7 @@ fun TimeItem(
 fun TimeItemAfterEatPreview() {
     DetaQTheme {
         TimeItem(
-            time = Time(
+            time = MedicineReminder.Time(
                 hour = 9,
                 minute = 10,
                 afterEat = true
@@ -199,7 +198,7 @@ fun TimeItemAfterEatPreview() {
 fun TimeItemPreview() {
     DetaQTheme {
         TimeItem(
-            time = Time(
+            time = MedicineReminder.Time(
                 hour = 9,
                 minute = 10,
                 afterEat = false
@@ -226,26 +225,22 @@ fun WeekMarkerPreview() {
 fun MedicineItemPreview() {
     DetaQTheme {
         MedicineItem(
-            medicine = Medicine(
-                name = "Morphin",
-                dosage = 2,
-                dateStart = LocalDate.now(),
-                dateEnd = LocalDate.now(),
+            medicine = MedicineReminder(
+                reminderId = "123",
+                medicineName = "Morphin",
+                medicineDosage = 2,
+                dates = listOf(LocalDate.now()),
                 time = listOf(
-                    Time(
+                    MedicineReminder.Time(
                         hour = 9,
                         minute = 0,
                         afterEat = false
                     ),
-                    Time(
+                    MedicineReminder.Time(
                         hour = 18,
                         minute = 0,
                         afterEat = true
                     )
-                ),
-                day = listOf(
-                    DayOfWeek.MONDAY,
-                    DayOfWeek.SATURDAY
                 )
             )
         )

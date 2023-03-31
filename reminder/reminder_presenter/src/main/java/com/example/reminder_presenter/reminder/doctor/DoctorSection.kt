@@ -35,7 +35,7 @@ fun DoctorSection(
     ) {
         items(
             items = state.doctors,
-            key = { doctor -> doctor.name }
+            key = { doctor -> doctor.reminderId }
         ) { doctor ->
             DoctorItem(doctor = doctor)
         }

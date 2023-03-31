@@ -1,6 +1,6 @@
 package com.example.reminder_presenter.reminder.doctor
 
-import com.example.reminder_presenter.model.Time
+import com.example.reminder_domain.model.Time
 import java.time.LocalDate
 
 sealed class DoctorSectionEvent {
@@ -11,4 +11,6 @@ sealed class DoctorSectionEvent {
     data class OnPickTime(
         val time: Time
     ): DoctorSectionEvent()
+
+    object ResetAddState: DoctorSectionEvent()
 }

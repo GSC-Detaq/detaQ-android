@@ -1,4 +1,4 @@
-package com.example.reminder_presenter.model
+package com.example.reminder_domain.model
 
 data class Time(
     val hour: Int,

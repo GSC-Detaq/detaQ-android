@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.library")
     kotlin("plugin.serialization") version Kotlin.version
@@ -11,7 +9,7 @@ apply {
 
 android {
     defaultConfig {
-        buildConfigField("String", "base_url", "\"my.base.url\"")
+        buildConfigField("String", "BASE_URL", "\"10.0.2.2:8080\"")
     }
 }
 

@@ -1,5 +1,7 @@
 package com.example.reminder_presenter.reminder.medicine
 
+import com.example.reminder_domain.model.Instruction
+import com.example.reminder_domain.model.Time
 import java.time.LocalDate
 
 sealed class MedicineSectionEvent {
@@ -10,4 +12,7 @@ sealed class MedicineSectionEvent {
     data class OnPickDateEnd(val date: LocalDate): MedicineSectionEvent()
     data class OnAddTime(val time: Time): MedicineSectionEvent()
     data class OnRemoveTime(val time: Time): MedicineSectionEvent()
+    data class OnPickInstruction(val instruction: Instruction): MedicineSectionEvent()
+    data class ToggleInstructionDropDown(val isOpen: Boolean): MedicineSectionEvent()
+    object ResetAddState: MedicineSectionEvent()
 }

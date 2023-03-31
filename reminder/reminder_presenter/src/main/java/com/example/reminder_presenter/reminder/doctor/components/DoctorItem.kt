@@ -18,18 +18,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core.utils.extensions.asString
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Red50
+import com.example.reminder_domain.model.DoctorReminder
+import com.example.reminder_domain.model.Time
 import com.example.reminder_presenter.R
-import com.example.reminder_presenter.reminder.doctor.Doctor
-import com.example.reminder_presenter.utils.asString
 import java.time.LocalDate
 
 @Composable
 fun DoctorItem(
     modifier: Modifier = Modifier,
-    doctor: Doctor
+    doctor: DoctorReminder
 ) {
     Card(
         modifier = modifier
@@ -80,7 +81,7 @@ fun DoctorItem(
                 }
                 
                 Text(
-                    text = doctor.name,
+                    text = doctor.doctorName,
                     style = MaterialTheme.typography.h4.copy(
                         color = Neutral100
                     )
@@ -109,10 +110,12 @@ fun DoctorItem(
 fun DoctorItemPreview() {
     DetaQTheme {
         DoctorItem(
-            doctor = Doctor(
-                name = "Dr. Aisyah Jamal",
+            doctor = DoctorReminder(
+                reminderId = "123",
+                doctorName = "Dr. Aisyah Jamal",
                 activity = "Monthly Control",
-                date = LocalDate.now()
+                date = LocalDate.now(),
+                time = Time(0, 0)
             )
         )
     }

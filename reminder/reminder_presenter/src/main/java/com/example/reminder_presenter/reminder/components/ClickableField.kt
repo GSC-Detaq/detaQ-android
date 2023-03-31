@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.core.utils.extensions.asString
 import com.example.core_ui.ui.theme.DetaQTheme
-import com.example.reminder_presenter.utils.asString
 import java.time.LocalDate
 
 @Composable

@@ -19,17 +19,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.core.utils.extensions.asString
 import com.example.core.utils.extensions.toLocalDate
 import com.example.core_ui.PrimaryButton
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral40
 import com.example.reminder_presenter.R
-import com.example.reminder_presenter.model.Time
+import com.example.reminder_domain.model.Time
 import com.example.reminder_presenter.reminder.components.ClickableField
 import com.example.reminder_presenter.reminder.doctor.AddDoctorState
 import com.example.reminder_presenter.reminder.doctor.DoctorSectionEvent
-import com.example.reminder_presenter.utils.asString
 import java.util.*
 import com.example.core_ui.R as RCore
 
@@ -54,8 +54,9 @@ fun AddDoctorSectionSheet(
         context,
         RCore.style.Theme_DialogTheme,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else mDayOfMonth
-            val monthString = if(mMonth <= 9) "0$mMonth" else mMonth
+            val dateString = if(mDayOfMonth <= 9) "0$mDayOfMonth" else "$mDayOfMonth"
+            val month = mMonth + 1
+            val monthString = if(month <= 9) "0$month" else "$month"
 
             onEvent(
                 DoctorSectionEvent.OnPickDate(
@@ -194,7 +195,7 @@ fun AddDoctorSectionSheet(
             val hour = if (stateHour < 10) "0${stateHour}" else stateHour
             val minute = if (stateMinute < 10) "0${stateMinute}" else stateMinute
 
-            val timeText = if (stateHour > 12) "$hour.$minute PM" else "$hour.$minute AM"
+            val timeText = if (stateHour >= 12) "$hour.$minute PM" else "$hour.$minute AM"
 
             ClickableField(
                 title = "Time",
@@ -214,8 +215,6 @@ fun AddDoctorSectionSheet(
                     onEvent(
                         DoctorSectionEvent.AddDoctor
                     )
-
-                    onCancel()
                 }
             )
         }
