@@ -2,13 +2,14 @@ package com.example.core_ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -47,7 +48,9 @@ fun PrimaryButton(
         Text(
             text = stringResource(id = textRes),
             style = MaterialTheme.typography.button,
-            modifier = textModifier,
+            modifier = textModifier
+                .height(ButtonDefaults.MinHeight)
+                .wrapContentHeight(Alignment.CenterVertically),
             textAlign = textAlign
         )
     }

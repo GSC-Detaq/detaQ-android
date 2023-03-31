@@ -1,12 +1,15 @@
 package com.example.sos_presenter.countdown_sent.components
 
 import android.location.Location
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.*
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun SosLocation(
@@ -23,8 +26,10 @@ fun SosLocation(
 
     GoogleMap(
         modifier = modifier
-            .fillMaxSize(),
-        cameraPositionState = cameraPositionState
+            .fillMaxWidth()
+            .fillMaxHeight(0.75f),
+        cameraPositionState = cameraPositionState,
+        properties = MapProperties(isMyLocationEnabled = true)
     )
 //    {
 //        Marker(
