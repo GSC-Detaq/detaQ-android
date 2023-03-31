@@ -34,7 +34,7 @@ class CountDownViewModel @Inject constructor(
     fun onEvent(event: CountDownEvent) {
         when(event) {
             CountDownEvent.Cancel -> {
-                countDownJob = null
+                countDownJob?.cancel()
             }
             is CountDownEvent.RemoveContact -> {
                 val newContacts = state
@@ -50,7 +50,7 @@ class CountDownViewModel @Inject constructor(
                 )
             }
             CountDownEvent.Skip -> {
-                countDownJob = null
+                countDownJob?.cancel()
 
                 viewModelScope.launch {
                     _uiEvent.send(UiEvent.Success)
@@ -65,6 +65,7 @@ class CountDownViewModel @Inject constructor(
     }
 
     private fun countDown() {
+        countDownJob?.cancel()
         countDownJob = viewModelScope.launch {
             flow {
                 var currentValue = state.value.countDown

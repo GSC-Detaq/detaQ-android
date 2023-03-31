@@ -34,7 +34,6 @@ import com.example.sos_presenter.R
 import com.example.sos_presenter.countdown_sent.components.SosLocation
 import com.example.sos_presenter.countdown_sent.components.SosSection
 import com.google.android.gms.location.*
-import com.google.maps.android.compose.GoogleMap
 
 @Composable
 fun CountDownSentScreen(
@@ -130,14 +129,7 @@ fun CountDownSentScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            if (state.userLocation != null) {
-                SosLocation(location = state.userLocation!!)
-            } else {
-                GoogleMap(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                )
-            }
+            SosLocation(location = state.userLocation)
 
             TextField(
                 value = state.searchText,

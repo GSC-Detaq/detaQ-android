@@ -4,7 +4,9 @@ import android.location.Location
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -14,14 +16,36 @@ import com.google.maps.android.compose.rememberCameraPositionState
 @Composable
 fun SosLocation(
     modifier: Modifier = Modifier,
-    location: Location
+    location: Location?
 ) {
-    val userLocation = LatLng(
-        location.latitude,
-        location.longitude
+    val defaultLocation = LatLng(
+        -6.2088,
+        106.8456
     )
+
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(userLocation, 15f)
+        position = CameraPosition.fromLatLngZoom(defaultLocation, 12.5f)
+    }
+
+    LaunchedEffect(key1 = location) {
+        location?.let { location ->
+            val userLocation = LatLng(
+                location.latitude,
+                location.longitude
+            )
+
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newCameraPosition(
+                    CameraPosition(
+                        userLocation,
+                        12.5f,
+                        0f,
+                        0f
+                    )
+                ),
+                durationMs = 1000
+            )
+        }
     }
 
     GoogleMap(
@@ -29,7 +53,7 @@ fun SosLocation(
             .fillMaxWidth()
             .fillMaxHeight(0.75f),
         cameraPositionState = cameraPositionState,
-        properties = MapProperties(isMyLocationEnabled = true)
+        properties = MapProperties(isMyLocationEnabled = location != null)
     )
 //    {
 //        Marker(
