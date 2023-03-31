@@ -5,11 +5,11 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
-import androidx.core.net.toUri
 import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.domain.use_cases.UpdateFcmToken
 import com.example.core_ui.R
@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -57,7 +58,8 @@ class SosMessagingService: FirebaseMessagingService() {
 
         sendNotification(
             title = message.notification?.title ?: "Sos!",
-            message = message.notification?.body ?: "Sos notification!"
+            message = message.notification?.body ?: "Sos notification!",
+            link = message.notification?.link
         )
     }
 
@@ -68,9 +70,13 @@ class SosMessagingService: FirebaseMessagingService() {
 
     private fun sendNotification(
         title: String,
-        message:String
+        message:String,
+        link: Uri?
     ){
-        val pendingIntent = getPendingIntent(appContext)
+        val pendingIntent = getPendingIntent(
+            context = appContext,
+            uri = link
+        )
         val notificationManager = appContext.getSystemService<NotificationManager>()
 
         val builder = NotificationCompat.Builder(appContext, CHANNEL_ID)
@@ -97,11 +103,14 @@ class SosMessagingService: FirebaseMessagingService() {
     }
 
     private fun getPendingIntent(
-        context: Context
+        context: Context,
+        uri: Uri?
     ): PendingIntent? {
+        Timber.d(uri.toString())
+
         val intent = Intent(
             Intent.ACTION_VIEW,
-            "detaq://reminder".toUri()
+            uri
         )
 
         return TaskStackBuilder.create(context).run {

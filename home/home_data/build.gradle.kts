@@ -11,7 +11,7 @@ apply {
 
 android {
     defaultConfig {
-        buildConfigField("String", "base_url", "\"my.base.url\"")
+        buildConfigField("String", "base_url", "\"103.117.56.227:8080\"")
     }
 }
 
