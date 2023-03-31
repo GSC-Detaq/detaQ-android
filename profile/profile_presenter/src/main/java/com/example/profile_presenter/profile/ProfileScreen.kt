@@ -13,13 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.core.utils.UiEvent
 import com.example.core_ui.NegativeConfirmationDialog
 import com.example.core_ui.OutlinedPrimaryButton
@@ -35,7 +32,6 @@ fun ProfileScreen(
     onLogOut: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -62,23 +58,27 @@ fun ProfileScreen(
                 
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AsyncImage(
+                    Box(
                         modifier = Modifier
                             .size(80.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop,
-                        model = ImageRequest
-                            .Builder(context)
-                            .data(state.user?.profilePic)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "User Profile Picture"
-                    )
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colors.secondary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = state.user?.name?.first()?.uppercase() ?: "",
+                            style = MaterialTheme.typography.h1.copy(
+                                fontSize = 32.sp,
+                                color = Neutral10
+                            )
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
                     Column(
                         modifier = Modifier
@@ -86,14 +86,14 @@ fun ProfileScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = state.user?.name ?: "null",
+                            text = if (state.isFetchingUser) "loading..." else state.user?.name ?: "null",
                             style = MaterialTheme.typography.h4.copy(
                                 color = Neutral100
                             )
                         )
 
                         Text(
-                            text = state.user?.email ?: "null",
+                            text = if (state.isFetchingUser) "loading..." else state.user?.email ?: "null",
                             style = MaterialTheme.typography.body2.copy(
                                 color = Neutral60
                             )
