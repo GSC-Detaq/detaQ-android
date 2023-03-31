@@ -2,14 +2,12 @@ package com.example.landing_presenter.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.data.preferences.DefaultPreferences
 import com.example.core.domain.preferences.Preferences
+import com.example.core.domain.use_cases.ValidateEmail
 import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.LandingUseCases
-import com.example.landing_domain.use_cases.ValidateEmail
-import com.example.landing_domain.use_cases.ValidatePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val landingUseCases: LandingUseCases,
+    private val validateEmail: ValidateEmail,
     private val preferences: Preferences
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginState())
@@ -60,7 +59,7 @@ class LoginViewModel @Inject constructor(
                     email = event.email
                 )
 
-                val isValid = landingUseCases.validateEmail(email = event.email)
+                val isValid = validateEmail(email = event.email)
 
                 if (isValid.isSuccess) {
                     _state.value = state.value.copy(

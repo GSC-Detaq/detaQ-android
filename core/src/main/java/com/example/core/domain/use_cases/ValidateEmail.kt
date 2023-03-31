@@ -1,4 +1,4 @@
-package com.example.landing_domain.use_cases
+package com.example.core.domain.use_cases
 
 import com.example.core.utils.errors.ValidationError
 import dagger.hilt.android.scopes.ViewModelScoped

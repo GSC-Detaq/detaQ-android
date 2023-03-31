@@ -1,10 +1,7 @@
 package com.example.core.domain.di
 
 import com.example.core.domain.repository.CoreRepository
-import com.example.core.domain.use_cases.CoreUseCases
-import com.example.core.domain.use_cases.GetContactById
-import com.example.core.domain.use_cases.GetContacts
-import com.example.core.domain.use_cases.InsertContact
+import com.example.core.domain.use_cases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +20,8 @@ object CoreUseCaseModule {
         return CoreUseCases(
             insertContact = InsertContact(repository = repository),
             getContactById = GetContactById(repository = repository),
-            getContacts = GetContacts(repository = repository)
+            getContacts = GetContacts(repository = repository),
+            validateEmail = ValidateEmail(),
         )
     }
 }

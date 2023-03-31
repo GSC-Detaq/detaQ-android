@@ -3,6 +3,7 @@ package com.example.landing_presenter.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.preferences.Preferences
+import com.example.core.domain.use_cases.ValidateEmail
 import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val landingUseCases: LandingUseCases,
+    private val validateEmail: ValidateEmail,
     private val preferences: Preferences
 ): ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
@@ -34,7 +36,7 @@ class RegisterViewModel @Inject constructor(
                     email = event.email
                 )
 
-                val isValid = landingUseCases.validateEmail(email = event.email)
+                val isValid = validateEmail(email = event.email)
 
                 if (isValid.isSuccess) {
                     _state.value = state.value.copy(

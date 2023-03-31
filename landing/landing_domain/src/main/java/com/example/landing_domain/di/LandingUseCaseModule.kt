@@ -20,7 +20,6 @@ object LandingUseCaseModule {
         return LandingUseCases(
             login = Login(repository = repository),
             register = Register(repository = repository),
-            validateEmail = ValidateEmail(),
             validateNumber = ValidateNumber(),
             validatePassword = ValidatePassword()
         )

@@ -5,12 +5,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.core.utils.UiEvent
 import com.example.core_ui.CommonHeader
 import com.example.core_ui.PrimaryButton
 import com.example.core_ui.ui.theme.Neutral100
@@ -21,9 +24,24 @@ import com.example.profile_presenter.connect.components.SearchTextField
 @Composable
 fun ConnectScreen(
     viewModel: ConnectViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.ShowSnackBar -> {
+                    showSnackBar(
+                        event.message.asString(context)
+                    )
+                }
+                else -> Unit
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -61,7 +79,7 @@ fun ConnectScreen(
                         event = ConnectEvent.OnUsernameChange(it)
                     )
                 },
-                error = state.searchError
+                error = state.searchError?.message
             )
 
             PrimaryButton(

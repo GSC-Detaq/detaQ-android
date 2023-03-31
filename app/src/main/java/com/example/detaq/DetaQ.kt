@@ -250,6 +250,9 @@ fun DetaQ(
 
             composable(Route.ConnectWithFamily.name) {
                 ConnectScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
                     onBackClick = {
                         navController.navigateUp()
                     }

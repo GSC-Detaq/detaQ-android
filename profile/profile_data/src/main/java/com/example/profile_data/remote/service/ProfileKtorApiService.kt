@@ -1,6 +1,7 @@
 package com.example.profile_data.remote.service
 
 import com.example.profile_data.BuildConfig
+import com.example.profile_data.remote.dto.request.AddNewFamilyResponse
 import com.example.profile_data.remote.dto.response.UserResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -19,8 +20,20 @@ class ProfileKtorApiService(
         return result.body()
     }
 
+    override suspend fun addNewFamily(
+        email: String
+    ): AddNewFamilyResponse {
+        val result = client.get {
+            url(ADD_NEW_FAMILY + "email=$email")
+            contentType(ContentType.Application.Json)
+        }
+
+        return result.body()
+    }
+
     companion object {
         private const val BASE_URL = "http://${BuildConfig.BASE_URL}"
         private const val GET_USER_PERSONAL = "$BASE_URL/user/myuser"
+        private const val ADD_NEW_FAMILY = "$BASE_URL/family/add?"
     }
 }

@@ -28,4 +28,22 @@ class ProfileRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun addNewFamily(email: String): Resource<Unit> {
+        return when(
+            val result = remoteDataSource.addNewFamily(
+                email = email
+            )
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(Unit)
+            }
+        }
+    }
 }

@@ -28,4 +28,23 @@ class ProfileRemoteDataSource @Inject constructor(
             }
         }
     }
+
+    suspend fun addNewFamily(
+        email: String
+    ): ApiResponse<Unit> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.addNewFamily(
+                    email = email
+                )
+
+                if (result.meta.success) {
+                    ApiResponse.Success(Unit)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
 }
