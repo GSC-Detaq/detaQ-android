@@ -1,7 +1,6 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     id("com.android.library")
+    id("com.google.gms.google-services")
     kotlin("plugin.serialization") version Kotlin.version
 }
 
@@ -35,4 +34,7 @@ dependencies {
     "kapt"(Room.roomCompiler)
     "implementation"(Room.roomKtx)
     "implementation"(Room.roomRuntime)
+
+    "implementation"(platform(Firebase.firebaseBom))
+    "implementation"(Firebase.firebaseRealtimeDatabase)
 }

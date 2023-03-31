@@ -4,4 +4,5 @@ object Firebase {
     const val firebaseBom = "com.google.firebase:firebase-bom:$firebaseBomVersion"
 
     const val firebaseCloudMessaging = "com.google.firebase:firebase-messaging-ktx"
+    const val firebaseRealtimeDatabase = "com.google.firebase:firebase-database-ktx"
 }

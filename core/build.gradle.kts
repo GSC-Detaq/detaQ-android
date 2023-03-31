@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("com.google.gms.google-services")
     kotlin("plugin.serialization") version Kotlin.version
 }
 
@@ -30,4 +31,6 @@ dependencies {
     "implementation"(Ktor.logBackClassic)
 
     "implementation"(AndroidX.encPreference)
+    "implementation"(platform(Firebase.firebaseBom))
+    "implementation"(Firebase.firebaseRealtimeDatabase)
 }
