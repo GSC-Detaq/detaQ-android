@@ -2,6 +2,8 @@ package com.example.core.data.di
 
 import com.example.core.data.remote.service.contact.ContactApiService
 import com.example.core.data.remote.service.contact.ContactKtorApiService
+import com.example.core.data.remote.service.fcm.FcmApiService
+import com.example.core.data.remote.service.fcm.FcmKtorApiService
 import com.example.core.domain.preferences.TokenPreferences
 import dagger.Module
 import dagger.Provides
@@ -66,6 +68,14 @@ object CoreNetworkModule {
     fun provideKtorContactApiService(
         client: HttpClient
     ): ContactApiService = ContactKtorApiService(
+        client = client
+    )
+
+    @Singleton
+    @Provides
+    fun provideKtorFcmApiService(
+        client: HttpClient
+    ): FcmApiService = FcmKtorApiService(
         client = client
     )
 

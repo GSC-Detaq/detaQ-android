@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -31,10 +33,18 @@ fun SplashScreen(
     val activity = LocalContext.current as Activity
 
     LaunchedEffect(true) {
-        requestContactPermission(
+        requestLocationPermission(
             context = context,
             activity = activity
         )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPushNotificationPermission(
+                context = context,
+                activity = activity
+            )
+        }
+
         delay(2000)
         currentOnFinish()
     }
@@ -71,11 +81,28 @@ fun hasLocationPermission(context: Context): Boolean {
             PackageManager.PERMISSION_GRANTED
 }
 
-fun requestContactPermission(context: Context, activity: Activity) {
+fun requestLocationPermission(context: Context, activity: Activity) {
     if (!hasLocationPermission(context)) {
         ActivityCompat.requestPermissions(
             activity,
             arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            1
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+fun hasPushNotificationPermission(context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+fun requestPushNotificationPermission(context: Context, activity: Activity) {
+    if (!hasPushNotificationPermission(context)) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
             1
         )
     }

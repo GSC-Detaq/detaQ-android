@@ -14,4 +14,8 @@ interface CoreRepository {
     ): Resource<Contact>
 
     suspend fun getContacts(): Resource<List<Contact>>
+
+    suspend fun updateFcmToken(
+        token: String
+    ): Resource<Unit>
 }

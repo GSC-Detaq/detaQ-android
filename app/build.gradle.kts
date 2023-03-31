@@ -144,5 +144,6 @@ dependencies {
     androidTestImplementation(Testing.testRunner)
 
     // firebase
-    platform(Firebase.firebaseBom)
+    implementation(platform(Firebase.firebaseBom))
+    implementation(Firebase.firebaseCloudMessaging)
 }

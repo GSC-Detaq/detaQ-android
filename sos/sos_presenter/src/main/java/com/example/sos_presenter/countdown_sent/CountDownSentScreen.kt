@@ -46,7 +46,7 @@ fun CountDownSentScreen(
     val activity = LocalContext.current as Activity
 
     LaunchedEffect(true) {
-        requestContactPermission(
+        requestLocationPermission(
             context = context,
             activity = activity
         )
@@ -136,7 +136,7 @@ fun hasLocationPermission(context: Context): Boolean {
             PackageManager.PERMISSION_GRANTED
 }
 
-fun requestContactPermission(context: Context, activity: Activity) {
+fun requestLocationPermission(context: Context, activity: Activity) {
     if (!hasLocationPermission(context)) {
         ActivityCompat.requestPermissions(
             activity,

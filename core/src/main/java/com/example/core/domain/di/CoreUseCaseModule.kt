@@ -22,6 +22,7 @@ object CoreUseCaseModule {
             getContactById = GetContactById(repository = repository),
             getContacts = GetContacts(repository = repository),
             validateEmail = ValidateEmail(),
+            updateFcmToken = UpdateFcmToken(repository = repository)
         )
     }
 }

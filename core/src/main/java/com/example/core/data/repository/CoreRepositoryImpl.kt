@@ -2,6 +2,7 @@ package com.example.core.data.repository
 
 import com.example.core.data.mapper.toContact
 import com.example.core.data.remote.dto.request.InsertContactRequest
+import com.example.core.data.remote.dto.request.UpdateFcmTokenRequest
 import com.example.core.data.remote.source.CoreRemoteDataSource
 import com.example.core.data.utils.ApiResponse
 import com.example.core.domain.model.Contact
@@ -66,6 +67,26 @@ class CoreRepositoryImpl @Inject constructor(
                         it.toContact()
                     }
                 )
+            }
+        }
+    }
+
+    override suspend fun updateFcmToken(token: String): Resource<Unit> {
+        val request = UpdateFcmTokenRequest(
+            fcm_token = token
+        )
+
+        return when(
+            val result = remoteDataSource.updateFcmToken(request)
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(Unit)
             }
         }
     }

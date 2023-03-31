@@ -4,5 +4,6 @@ data class CoreUseCases(
     val insertContact: InsertContact,
     val getContactById: GetContactById,
     val getContacts: GetContacts,
-    val validateEmail: ValidateEmail
+    val validateEmail: ValidateEmail,
+    val updateFcmToken: UpdateFcmToken
 )
