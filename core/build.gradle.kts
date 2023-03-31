@@ -14,6 +14,7 @@ android {
 
         buildConfigField("String", "ENC_PREF_NAME", "\"DETAQ_ENC_PREFERENCE\"")
         buildConfigField("String", "TOKEN_KEY", "\"TOKEN\"")
+        buildConfigField("String", "FCM_TOKEN_KEY", "\"FCM_TOKEN\"")
 
         buildConfigField("String", "CONTACT_BASE_URL", "\"10.0.2.2:8080\"")
     }

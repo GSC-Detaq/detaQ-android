@@ -20,4 +20,12 @@ class EncTokenPreferences @Inject constructor(
             .putString(BuildConfig.TOKEN_KEY, token)
             .apply()
     }
+
+    override fun getFcmToken(): String = preferences.getString(BuildConfig.FCM_TOKEN_KEY, "") ?: ""
+
+    override fun setFcmToken(token: String) {
+        preferences.edit()
+            .putString(BuildConfig.FCM_TOKEN_KEY, token)
+            .apply()
+    }
 }

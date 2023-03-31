@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
+import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.domain.use_cases.UpdateFcmToken
 import com.example.core_ui.R
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -33,15 +34,22 @@ class SosMessagingService: FirebaseMessagingService() {
     @Inject
     lateinit var updateFcmToken: UpdateFcmToken
 
+    @Inject
+    lateinit var tokenPreferences: TokenPreferences
+
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        scope.launch {
-            updateFcmToken(token)
+        if (tokenPreferences.getToken().isNotEmpty()) {
+            scope.launch {
+                updateFcmToken(token)
+            }
         }
+
+        tokenPreferences.setFcmToken(token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

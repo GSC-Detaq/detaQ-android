@@ -1,5 +1,7 @@
 package com.example.landing_data.repository
 
+import com.example.core.data.remote.dto.request.UpdateFcmTokenRequest
+import com.example.core.data.remote.source.CoreRemoteDataSource
 import com.example.core.data.utils.ApiResponse
 import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.utils.Resource
@@ -13,6 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class LandingRepositoryImpl @Inject constructor(
     private val remoteDataSource: LandingRemoteDataSource,
+    private val coreRemoteDataSource: CoreRemoteDataSource,
     private val tokenPreferences: TokenPreferences
 ): LandingRepository {
     override suspend fun login(
@@ -34,6 +37,12 @@ class LandingRepositoryImpl @Inject constructor(
             is ApiResponse.Success -> {
                 tokenPreferences.setToken(
                     token = result.data.token
+                )
+
+                coreRemoteDataSource.updateFcmToken(
+                    request = UpdateFcmTokenRequest(
+                        fcm_token = tokenPreferences.getFcmToken()
+                    )
                 )
 
                 Resource.Success(Unit)
@@ -64,6 +73,12 @@ class LandingRepositoryImpl @Inject constructor(
             is ApiResponse.Success -> {
                 tokenPreferences.setToken(
                     token = result.data.token
+                )
+
+                coreRemoteDataSource.updateFcmToken(
+                    request = UpdateFcmTokenRequest(
+                        fcm_token = tokenPreferences.getFcmToken()
+                    )
                 )
 
                 Resource.Success(Unit)
