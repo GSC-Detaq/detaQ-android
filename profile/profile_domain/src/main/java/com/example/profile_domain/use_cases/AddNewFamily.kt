@@ -11,7 +11,7 @@ class AddNewFamily @Inject constructor(
 ) {
     suspend operator fun invoke(
         email: String
-    ): Resource<Unit> {
+    ): Resource<String> {
         return repository.addNewFamily(
             email = email
         )

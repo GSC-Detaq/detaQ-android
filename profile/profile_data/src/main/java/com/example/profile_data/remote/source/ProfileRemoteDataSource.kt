@@ -31,7 +31,7 @@ class ProfileRemoteDataSource @Inject constructor(
 
     suspend fun addNewFamily(
         email: String
-    ): ApiResponse<Unit> {
+    ): ApiResponse<String> {
         return withContext(dispatchers.io) {
             tryCatch {
                 val result = apiService.addNewFamily(
@@ -39,7 +39,7 @@ class ProfileRemoteDataSource @Inject constructor(
                 )
 
                 if (result.meta.success) {
-                    ApiResponse.Success(Unit)
+                    ApiResponse.Success(result.meta.message)
                 }
                 else {
                     ApiResponse.Error(result.meta.message)

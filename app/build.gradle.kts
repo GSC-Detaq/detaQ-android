@@ -96,6 +96,9 @@ dependencies {
     implementation(Coil.coilCompose)
 
     implementation(Google.material)
+    implementation(Google.mapsCompose)
+    implementation(Google.playServicesMaps)
+    implementation(Google.playServicesLocation)
 
     implementation(Ktor.ktorClientCore)
     implementation(Ktor.ktorClientAndroid)

@@ -10,4 +10,5 @@ dependencies {
     "implementation"(Coil.coilCompose)
     "implementation"(Google.mapsCompose)
     "implementation"(Google.playServicesMaps)
+    "implementation"(Google.playServicesLocation)
 }

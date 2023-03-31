@@ -3,7 +3,6 @@ package com.example.sos_presenter.countdown_sent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sos_presenter.countdown.CountDownState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -33,6 +32,11 @@ class CountDownSentViewModel @Inject constructor(
                 searchJob = viewModelScope.launch {
                     delay(500L)
                 }
+            }
+            is CountDownSentEvent.UpdateLocation -> {
+                _state.value = state.value.copy(
+                    userLocation = event.location
+                )
             }
         }
     }

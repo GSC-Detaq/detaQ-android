@@ -29,7 +29,7 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addNewFamily(email: String): Resource<Unit> {
+    override suspend fun addNewFamily(email: String): Resource<String> {
         return when(
             val result = remoteDataSource.addNewFamily(
                 email = email
@@ -42,7 +42,7 @@ class ProfileRepositoryImpl @Inject constructor(
                 Resource.Error(result.errorMessage)
             }
             is ApiResponse.Success -> {
-                Resource.Success(Unit)
+                Resource.Success(result.data)
             }
         }
     }

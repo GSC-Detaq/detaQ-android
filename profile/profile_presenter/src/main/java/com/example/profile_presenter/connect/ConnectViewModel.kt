@@ -45,7 +45,9 @@ class ConnectViewModel @Inject constructor(
                         is Resource.Success -> {
                             _uiEvent.send(
                                 UiEvent.ShowSnackBar(
-                                    UiText.DynamicString("Add New Family Succeed")
+                                    UiText.DynamicString(
+                                        result.data ?: "Add New Family Succeed"
+                                    )
                                 )
                             )
                         }
