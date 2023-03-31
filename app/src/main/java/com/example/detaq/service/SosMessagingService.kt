@@ -120,7 +120,7 @@ class SosMessagingService: FirebaseMessagingService() {
     }
 
     companion object {
-        private const val CHANNEL_ID = "channel_01"
-        private const val CHANNEL_NAME = "daily_reminder"
+        private const val CHANNEL_ID = "channel_sos"
+        private const val CHANNEL_NAME = "emergency_sos"
     }
 }

@@ -200,6 +200,9 @@ fun DetaQ(
 
             composable(Route.SosCountDownSent.name) {
                 CountDownSentScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
                     onBackClick = {
                         navController.navigateUp()
                     }

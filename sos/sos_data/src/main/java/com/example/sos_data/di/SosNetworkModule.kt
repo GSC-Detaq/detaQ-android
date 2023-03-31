@@ -1,7 +1,7 @@
-package com.example.profile_data.di
+package com.example.sos_data.di
 
-import com.example.profile_data.remote.service.ProfileApiService
-import com.example.profile_data.remote.service.ProfileKtorApiService
+import com.example.sos_data.remote.service.SosApiService
+import com.example.sos_data.remote.service.SosKtorApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,13 +11,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ProfileNetworkModule {
+object SosNetworkModule {
 
     @Singleton
     @Provides
-    fun provideKtorProfileApiService(
+    fun provideKtorSosApiService(
         client: HttpClient
-    ): ProfileApiService = ProfileKtorApiService(
+    ): SosApiService = SosKtorApiService(
         client = client
     )
 }

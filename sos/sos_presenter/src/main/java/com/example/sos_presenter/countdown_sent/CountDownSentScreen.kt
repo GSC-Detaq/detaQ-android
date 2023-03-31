@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.example.core.utils.UiEvent
 import com.example.core_ui.CommonHeader
 import com.example.core_ui.ui.theme.Neutral10
 import com.example.core_ui.ui.theme.Neutral100
@@ -38,6 +39,7 @@ import com.google.android.gms.location.*
 @Composable
 fun CountDownSentScreen(
     viewModel: CountDownSentViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -53,6 +55,25 @@ fun CountDownSentScreen(
                         location = lo
                     )
                 )
+
+                viewModel.onEvent(
+                    event = CountDownSentEvent.SendSos(
+                        location = lo
+                    )
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.ShowSnackBar -> {
+                    showSnackBar(
+                        event.message.asString(context)
+                    )
+                }
+                else -> Unit
             }
         }
     }
@@ -156,6 +177,7 @@ fun CountDownSentScreen(
                     disabledIndicatorColor = Color.Transparent
                 ),
                 shape = RoundedCornerShape(8.dp),
+                maxLines = 1,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

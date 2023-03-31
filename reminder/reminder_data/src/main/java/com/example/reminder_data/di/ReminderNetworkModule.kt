@@ -15,7 +15,7 @@ object ReminderNetworkModule {
 
     @Singleton
     @Provides
-    fun provideKtorLandingApiService(
+    fun provideKtorReminderApiService(
         client: HttpClient
     ): ReminderApiService = ReminderKtorApiService(
         client = client

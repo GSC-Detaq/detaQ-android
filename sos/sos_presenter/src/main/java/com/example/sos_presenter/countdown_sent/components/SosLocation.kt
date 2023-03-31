@@ -24,7 +24,7 @@ fun SosLocation(
     )
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(defaultLocation, 12.5f)
+        position = CameraPosition.fromLatLngZoom(defaultLocation, 15f)
     }
 
     LaunchedEffect(key1 = location) {
