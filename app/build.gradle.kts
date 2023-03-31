@@ -18,9 +18,6 @@ android {
         versionCode = ProjectConfig.versionCode
         versionName = ProjectConfig.versionName
 
-        val mapApiKey = gradleLocalProperties(rootDir).getProperty("MAPS_API_KEY")
-        manifestPlaceholders["MAPS_API_KEY"] = mapApiKey
-
         vectorDrawables {
             useSupportLibrary = true
         }
