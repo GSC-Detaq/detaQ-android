@@ -28,7 +28,6 @@ class RegisterViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private var sendOtpJob: Job? = null
     private var verifyOtpJob: Job? = null
 
     fun onEvent(event: RegisterEvent) {
@@ -105,58 +104,46 @@ class RegisterViewModel @Inject constructor(
                     roleDropDownOpen = event.isOpen
                 )
             }
-            RegisterEvent.OnSendOtp -> {
-                if (state.value.sendOtpLoading) {
-                    return
-                }
+            is RegisterEvent.OnSendOtpResult -> {
 
-                sendOtpJob?.cancel()
-                sendOtpJob = viewModelScope.launch {
-                    landingUseCases
-                        .sendOtp(
-                            number = state.value.number
+                when (val result = event.result) {
+                    is Resource.Error -> {
+                        Timber.d(result.message)
+                        _state.value = state.value.copy(
+                            sendOtpError = result.message,
+                            sendOtpLoading = false
                         )
-                        .collectLatest { result ->
-                            when (result) {
-                                is Resource.Error -> {
-                                    Timber.d(result.message)
-                                    _state.value = state.value.copy(
-                                        sendOtpError = result.message,
-                                        sendOtpLoading = false
-                                    )
-                                }
-                                is Resource.Loading -> {
-                                    _state.value = state.value.copy(
-                                        sendOtpLoading = true
-                                    )
-                                }
-                                is Resource.Success -> {
-                                    if (result.data == null) {
-                                        _state.value = state.value.copy(
-                                            sendOtpError = "Unexpected Error",
-                                            sendOtpLoading = false
-                                        )
+                    }
+                    is Resource.Loading -> {
+                        _state.value = state.value.copy(
+                            sendOtpLoading = true
+                        )
+                    }
+                    is Resource.Success -> {
+                        if (result.data == null) {
+                            _state.value = state.value.copy(
+                                sendOtpError = "Unexpected Error",
+                                sendOtpLoading = false
+                            )
 
-                                        return@collectLatest
-                                    }
-
-                                    if (result.data?.isVerificationCompleted == true) {
-                                        _state.value = state.value.copy(
-                                            sendOtpError = null,
-                                            sendOtpLoading = false,
-                                            currentSection = RegisterSection.SelectRole
-                                        )
-                                    } else {
-                                        _state.value = state.value.copy(
-                                            sendOtpError = null,
-                                            sendOtpLoading = false,
-                                            currentSection = RegisterSection.NumberVerification,
-                                            verificationId = result.data?.verificationId
-                                        )
-                                    }
-                                }
-                            }
+                            return
                         }
+
+                        if (result.data?.isVerificationCompleted == true) {
+                            _state.value = state.value.copy(
+                                sendOtpError = null,
+                                sendOtpLoading = false,
+                                currentSection = RegisterSection.SelectRole
+                            )
+                        } else {
+                            _state.value = state.value.copy(
+                                sendOtpError = null,
+                                sendOtpLoading = false,
+                                currentSection = RegisterSection.NumberVerification,
+                                verificationId = result.data?.verificationId
+                            )
+                        }
+                    }
                 }
             }
             is RegisterEvent.OnOtpChange -> {

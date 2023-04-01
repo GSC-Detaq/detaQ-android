@@ -1,5 +1,6 @@
 package com.example.landing_presenter.register.section
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -9,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,12 +27,15 @@ import com.example.landing_presenter.register.RegisterEvent
 import com.example.landing_presenter.register.RegisterSection
 import com.example.landing_presenter.register.RegisterState
 import com.example.landing_presenter.register.components.RegisterHeader
+import com.example.landing_presenter.register.utils.sendOtp
 
 @Composable
 fun FillNumber(
     state: RegisterState,
     onEvent: (RegisterEvent) -> Unit
 ) {
+    val activity = LocalContext.current as Activity
+
     Scaffold(
         topBar = {
             RegisterHeader(
@@ -98,7 +103,7 @@ fun FillNumber(
                 },
                 error = state.numberError,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword
+                    keyboardType = KeyboardType.Phone
                 )
             )
 
@@ -109,12 +114,15 @@ fun FillNumber(
                 textModifier = Modifier
                     .fillMaxWidth()
             ) {
-                onEvent(
-                    RegisterEvent.OnSendOtp
-                )
-
-                onEvent(
-                    RegisterEvent.UpdateSection(RegisterSection.NumberVerification)
+                sendOtp(
+                    number = state.number,
+                    activity = activity,
+                    enabled = !state.sendOtpLoading,
+                    onResult = {
+                        onEvent(
+                            RegisterEvent.OnSendOtpResult(it)
+                        )
+                    }
                 )
             }
         }

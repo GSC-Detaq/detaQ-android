@@ -1,5 +1,6 @@
 package com.example.landing_presenter.register.section
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,12 +27,15 @@ import com.example.landing_presenter.register.RegisterSection
 import com.example.landing_presenter.register.RegisterState
 import com.example.landing_presenter.register.components.OtpTextField
 import com.example.landing_presenter.register.components.RegisterHeader
+import com.example.landing_presenter.register.utils.sendOtp
 
 @Composable
 fun NumberVerification(
     state: RegisterState,
     onEvent: (RegisterEvent) -> Unit
 ) {
+    val activity = LocalContext.current as Activity
+
     Scaffold(
         topBar = {
             RegisterHeader(
@@ -133,8 +138,15 @@ fun NumberVerification(
                     ),
                     modifier = Modifier
                         .clickable {
-                            onEvent(
-                                RegisterEvent.OnSendOtp
+                            sendOtp(
+                                number = state.number,
+                                activity = activity,
+                                enabled = !state.sendOtpLoading,
+                                onResult = {
+                                    onEvent(
+                                        RegisterEvent.OnSendOtpResult(it)
+                                    )
+                                }
                             )
                         }
                 )

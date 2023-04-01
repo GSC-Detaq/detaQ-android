@@ -10,7 +10,6 @@ import com.example.landing_data.remote.dto.response.LoginResponse
 import com.example.landing_data.remote.dto.response.RegisterResponse
 import com.example.landing_data.remote.firebase.LandingFirebaseSource
 import com.example.landing_data.remote.service.LandingApiService
-import com.example.landing_domain.model.OtpResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -58,14 +57,6 @@ class LandingRemoteDataSource @Inject constructor(
                 }
             }
         }
-    }
-
-    fun sendOtp(
-        number: String
-    ): Flow<Resource<OtpResult>> {
-        return firebaseSource.sendOtp(
-            number = number
-        )
     }
 
     fun verifyOtp(
