@@ -25,9 +25,9 @@ private val dummyNotification = listOf(
         time = Time(hour = 9, minute = 43)
     ),
     Notification(
-        icon = R.drawable.sos_icon,
-        title = "Aspirin",
-        description = "Drink your medicine!",
+        icon = R.drawable.notif_sos_icon,
+        title = "SOS",
+        description = "Help!",
         time = Time(hour = 9, minute = 43),
         lat = -6.2088,
         long = 106.8456

@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -73,12 +76,26 @@ fun NotificationItem(
             )
         }
 
-        Text(
-            text = timeText,
-            style = MaterialTheme.typography.caption.copy(
-                color = Neutral60
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                text = timeText,
+                style = MaterialTheme.typography.caption.copy(
+                    color = Neutral60
+                )
             )
-        )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            if (notification.lat != null && notification.long != null) {
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = null,
+                    tint = Neutral60
+                )
+            }
+        }
     }
 }
 
@@ -104,9 +121,9 @@ fun SosNotificationItemPreview() {
     DetaQTheme {
         NotificationItem(
             notification = Notification(
-                icon = R.drawable.sos_icon,
-                title = "Aspirin",
-                description = "Drink your medicine!",
+                icon = R.drawable.notif_sos_icon,
+                title = "SOS",
+                description = "Help!",
                 time = Time(hour = 9, minute = 43),
                 lat = -6.2088,
                 long = 106.8456
