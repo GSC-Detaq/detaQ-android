@@ -24,6 +24,6 @@ class SosKtorApiService(
 
     companion object {
         private const val BASE_URL = "http://${BuildConfig.BASE_URL}"
-        private const val SEND_SOS_URL = "$BASE_URL/fcm/sendnotif"
+        private const val SEND_SOS_URL = "$BASE_URL/fcm/sendnotif/families"
     }
 }
