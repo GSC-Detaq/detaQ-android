@@ -10,9 +10,9 @@ class ValidateNumber @Inject constructor() {
     operator fun invoke(
         number: String
     ): Result<Unit> {
-        if (!number.startsWith("08")) {
+        if (!number.startsWith("+")) {
             return Result.failure(
-                ValidationError("Number should starts with \"08\"")
+                ValidationError("Number should starts with \"+\"")
             )
         }
 
