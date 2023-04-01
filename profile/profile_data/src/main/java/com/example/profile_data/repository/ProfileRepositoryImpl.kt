@@ -46,4 +46,22 @@ class ProfileRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun connectWristband(code: String): Resource<String> {
+        return when(
+            val result = remoteDataSource.connectWristband(
+                code = code
+            )
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(result.data)
+            }
+        }
+    }
 }

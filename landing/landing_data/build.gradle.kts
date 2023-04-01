@@ -2,6 +2,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     id("com.android.library")
+    id("com.google.gms.google-services")
     kotlin("plugin.serialization") version Kotlin.version
 }
 
@@ -26,4 +27,7 @@ dependencies {
     "implementation"(Ktor.ktorClientLogging)
     "implementation"(Ktor.ktorClientAuth)
     "implementation"(Ktor.logBackClassic)
+
+    "implementation"(platform(Firebase.firebaseBom))
+    "implementation"(Firebase.firebaseAuth)
 }

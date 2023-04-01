@@ -1,5 +1,7 @@
 package com.example.landing_data.di
 
+import com.example.landing_data.remote.firebase.LandingFirebaseSource
+import com.example.landing_data.remote.firebase.LandingFirebaseSourceImpl
 import com.example.landing_data.remote.service.LandingApiService
 import com.example.landing_data.remote.service.LandingKtorApiService
 import dagger.Module
@@ -20,4 +22,10 @@ object LandingNetworkModule {
     ): LandingApiService = LandingKtorApiService(
         client = client
     )
+
+    @Singleton
+    @Provides
+    fun provideFirebaseSource(): LandingFirebaseSource {
+        return LandingFirebaseSourceImpl()
+    }
 }

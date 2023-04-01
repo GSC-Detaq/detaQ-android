@@ -9,12 +9,11 @@ import com.example.core.utils.UiEvent
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.LandingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +27,9 @@ class RegisterViewModel @Inject constructor(
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    private var sendOtpJob: Job? = null
+    private var verifyOtpJob: Job? = null
 
     fun onEvent(event: RegisterEvent) {
         when(event) {
@@ -103,16 +105,110 @@ class RegisterViewModel @Inject constructor(
                     roleDropDownOpen = event.isOpen
                 )
             }
-            RegisterEvent.OnSendOtp -> Unit
+            RegisterEvent.OnSendOtp -> {
+                if (state.value.sendOtpLoading) {
+                    return
+                }
+
+                sendOtpJob?.cancel()
+                sendOtpJob = viewModelScope.launch {
+                    landingUseCases
+                        .sendOtp(
+                            number = state.value.number
+                        )
+                        .collectLatest { result ->
+                            when (result) {
+                                is Resource.Error -> {
+                                    Timber.d(result.message)
+                                    _state.value = state.value.copy(
+                                        sendOtpError = result.message,
+                                        sendOtpLoading = false
+                                    )
+                                }
+                                is Resource.Loading -> {
+                                    _state.value = state.value.copy(
+                                        sendOtpLoading = true
+                                    )
+                                }
+                                is Resource.Success -> {
+                                    if (result.data == null) {
+                                        _state.value = state.value.copy(
+                                            sendOtpError = "Unexpected Error",
+                                            sendOtpLoading = false
+                                        )
+
+                                        return@collectLatest
+                                    }
+
+                                    if (result.data?.isVerificationCompleted == true) {
+                                        _state.value = state.value.copy(
+                                            sendOtpError = null,
+                                            sendOtpLoading = false,
+                                            currentSection = RegisterSection.SelectRole
+                                        )
+                                    } else {
+                                        _state.value = state.value.copy(
+                                            sendOtpError = null,
+                                            sendOtpLoading = false,
+                                            currentSection = RegisterSection.NumberVerification,
+                                            verificationId = result.data?.verificationId
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                }
+            }
             is RegisterEvent.OnOtpChange -> {
                 _state.value = state.value.copy(
                     otp = event.otp
                 )
             }
             RegisterEvent.OnVerifyOtp -> {
-                _state.value = state.value.copy(
-                    currentSection = RegisterSection.SelectRole
-                )
+                if (state.value.verifyOtpLoading) {
+                    return
+                }
+
+                verifyOtpJob?.cancel()
+                verifyOtpJob = viewModelScope.launch {
+                    landingUseCases
+                        .verifyOtp(
+                            verificationId = state.value.verificationId ?: return@launch,
+                            otp = state.value.otp
+                        )
+                        .collectLatest { result ->
+                            when (result) {
+                                is Resource.Error -> {
+                                    Timber.d(result.message)
+                                    _state.value = state.value.copy(
+                                        verifyOtpError = result.message,
+                                        verifyOtpLoading = false
+                                    )
+                                }
+                                is Resource.Loading -> {
+                                    _state.value = state.value.copy(
+                                        verifyOtpLoading = true
+                                    )
+                                }
+                                is Resource.Success -> {
+                                    if (result.data == null) {
+                                        _state.value = state.value.copy(
+                                            verifyOtpError = "Unexpected Error",
+                                            verifyOtpLoading = false
+                                        )
+
+                                        return@collectLatest
+                                    }
+
+                                    _state.value = state.value.copy(
+                                        verifyOtpError = null,
+                                        verifyOtpLoading = false,
+                                        currentSection = RegisterSection.SelectRole
+                                    )
+                                }
+                            }
+                        }
+                }
             }
             RegisterEvent.Register -> {
                 viewModelScope.launch {

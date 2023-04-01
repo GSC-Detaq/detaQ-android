@@ -3,11 +3,15 @@ package com.example.landing_data.remote.source
 import com.example.core.data.remote.utils.tryCatch
 import com.example.core.data.utils.ApiResponse
 import com.example.core.domain.dispatchers.DispatchersProvider
+import com.example.core.utils.Resource
 import com.example.landing_data.remote.dto.request.LoginRequest
 import com.example.landing_data.remote.dto.request.RegisterRequest
 import com.example.landing_data.remote.dto.response.LoginResponse
 import com.example.landing_data.remote.dto.response.RegisterResponse
+import com.example.landing_data.remote.firebase.LandingFirebaseSource
 import com.example.landing_data.remote.service.LandingApiService
+import com.example.landing_domain.model.OtpResult
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,6 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class LandingRemoteDataSource @Inject constructor(
     private val apiService: LandingApiService,
+    private val firebaseSource: LandingFirebaseSource,
     private val dispatchers: DispatchersProvider
 ) {
     suspend fun register(
@@ -53,5 +58,23 @@ class LandingRemoteDataSource @Inject constructor(
                 }
             }
         }
+    }
+
+    fun sendOtp(
+        number: String
+    ): Flow<Resource<OtpResult>> {
+        return firebaseSource.sendOtp(
+            number = number
+        )
+    }
+
+    fun verifyOtp(
+        verificationId: String,
+        otp: String
+    ): Flow<Resource<Unit>> {
+        return firebaseSource.verifyOtp(
+            verificationId = verificationId,
+            otp = otp
+        )
     }
 }

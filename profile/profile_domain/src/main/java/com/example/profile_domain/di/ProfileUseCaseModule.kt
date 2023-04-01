@@ -2,6 +2,7 @@ package com.example.profile_domain.di
 
 import com.example.profile_domain.repository.ProfileRepository
 import com.example.profile_domain.use_cases.AddNewFamily
+import com.example.profile_domain.use_cases.ConnectWristband
 import com.example.profile_domain.use_cases.GetUserPersonal
 import com.example.profile_domain.use_cases.ProfileUseCases
 import dagger.Module
@@ -24,6 +25,9 @@ object ProfileUseCaseModule {
                 repository = repository
             ),
             addNewFamily = AddNewFamily(
+                repository = repository
+            ),
+            connectWristband = ConnectWristband(
                 repository = repository
             )
         )

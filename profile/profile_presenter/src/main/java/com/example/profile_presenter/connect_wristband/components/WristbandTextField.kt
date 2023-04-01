@@ -1,4 +1,4 @@
-package com.example.landing_presenter.register.components
+package com.example.profile_presenter.connect_wristband.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -19,31 +19,31 @@ import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral40
 
 @Composable
-fun OtpTextField(
+fun WristbandTextField(
     modifier: Modifier = Modifier,
-    otpText: String,
-    otpCount: Int = 6,
+    codeText: String,
+    codeCount: Int = 5,
     error: ValidationError?,
     onOtpTextChange: (String) -> Unit
 ) {
     BasicTextField(
         modifier = modifier,
-        value = otpText,
+        value = codeText,
         onValueChange = {
-            if (it.length <= otpCount) {
+            if (it.length <= codeCount) {
                 onOtpTextChange.invoke(it)
             }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
         decorationBox = {
             Row(horizontalArrangement = Arrangement.Center) {
-                repeat(otpCount) { index ->
+                repeat(codeCount) { index ->
                     CharView(
                         index = index,
-                        text = otpText
+                        text = codeText
                     )
 
-                    if (index+1 != otpCount) {
+                    if (index+1 != codeCount) {
                         Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
@@ -98,8 +98,8 @@ private fun CharView(
 @Composable
 fun OtpTextFieldPreview() {
     DetaQTheme {
-        OtpTextField(
-            otpText = "",
+        WristbandTextField(
+            codeText = "",
             onOtpTextChange = {  },
             error = null
         )

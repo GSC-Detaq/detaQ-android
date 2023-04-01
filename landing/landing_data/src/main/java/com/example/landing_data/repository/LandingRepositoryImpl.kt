@@ -8,7 +8,9 @@ import com.example.core.utils.Resource
 import com.example.landing_data.remote.dto.request.LoginRequest
 import com.example.landing_data.remote.dto.request.RegisterRequest
 import com.example.landing_data.remote.source.LandingRemoteDataSource
+import com.example.landing_domain.model.OtpResult
 import com.example.landing_domain.repository.LandingRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -84,5 +86,18 @@ class LandingRepositoryImpl @Inject constructor(
                 Resource.Success(Unit)
             }
         }
+    }
+
+    override fun sendOtp(number: String): Flow<Resource<OtpResult>> {
+        return remoteDataSource.sendOtp(
+            number = number
+        )
+    }
+
+    override fun verifyOtp(verificationId: String, otp: String): Flow<Resource<Unit>> {
+        return remoteDataSource.verifyOtp(
+            verificationId = verificationId,
+            otp = otp
+        )
     }
 }

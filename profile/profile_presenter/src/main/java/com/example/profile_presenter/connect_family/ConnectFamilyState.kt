@@ -1,8 +1,8 @@
-package com.example.profile_presenter.connect
+package com.example.profile_presenter.connect_family
 
 import com.example.core.utils.errors.ValidationError
 
-data class ConnectState(
+data class ConnectFamilyState(
     val searchText: String = "",
     val searchError: ValidationError? = null
 )

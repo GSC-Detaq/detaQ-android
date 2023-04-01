@@ -21,6 +21,11 @@ data class RegisterState(
     val role: Role? = null,
     val roleError: ValidationError? = null,
     val roleDropDownOpen: Boolean = false,
+    val verificationId: String? = null,
+    val sendOtpError: String? = null,
+    val sendOtpLoading: Boolean = false,
+    val verifyOtpError: String? = null,
+    val verifyOtpLoading: Boolean = false,
     val registerError: String? = null
 )
 

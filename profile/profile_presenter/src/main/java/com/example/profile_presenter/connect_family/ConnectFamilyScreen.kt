@@ -1,4 +1,4 @@
-package com.example.profile_presenter.connect
+package com.example.profile_presenter.connect_family
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -19,11 +19,11 @@ import com.example.core_ui.PrimaryButton
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral60
 import com.example.profile_presenter.R
-import com.example.profile_presenter.connect.components.SearchTextField
+import com.example.profile_presenter.connect_family.components.SearchTextField
 
 @Composable
-fun ConnectScreen(
-    viewModel: ConnectViewModel = hiltViewModel(),
+fun ConnectFamilyScreen(
+    viewModel: ConnectFamilyViewModel = hiltViewModel(),
     showSnackBar: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -76,7 +76,7 @@ fun ConnectScreen(
                 text = state.searchText,
                 onTextChange = {
                     viewModel.onEvent(
-                        event = ConnectEvent.OnUsernameChange(it)
+                        event = ConnectFamilyEvent.OnEmailChange(it)
                     )
                 },
                 error = state.searchError?.message
@@ -88,7 +88,7 @@ fun ConnectScreen(
                     .fillMaxWidth()
             ) {
                 viewModel.onEvent(
-                    event = ConnectEvent.AddUsername
+                    event = ConnectFamilyEvent.AddEmail
                 )
             }
         }

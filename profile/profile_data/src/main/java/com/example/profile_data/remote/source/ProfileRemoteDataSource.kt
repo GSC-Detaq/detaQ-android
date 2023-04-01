@@ -47,4 +47,23 @@ class ProfileRemoteDataSource @Inject constructor(
             }
         }
     }
+
+    suspend fun connectWristband(
+        code: String
+    ): ApiResponse<String> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.connectWristband(
+                    code = code
+                )
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.meta.message)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
 }

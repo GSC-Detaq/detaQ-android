@@ -33,7 +33,8 @@ import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
 import com.example.landing_presenter.splash.SplashScreen
-import com.example.profile_presenter.connect.ConnectScreen
+import com.example.profile_presenter.connect_family.ConnectFamilyScreen
+import com.example.profile_presenter.connect_wristband.ConnectWristbandScreen
 import com.example.profile_presenter.my_family.MyFamilyScreen
 import com.example.profile_presenter.profile.ProfileScreen
 import com.example.reminder_presenter.reminder.ReminderScreen
@@ -241,6 +242,9 @@ fun DetaQ(
                     onMyFamilyClick = {
                         navController.navigate(Route.MyFamily.name)
                     },
+                    onConnectWristbandClick = {
+                        navController.navigate(Route.ConnectWristband.name)
+                    },
                     onLogOut = {
                         navController.navigate(Route.Login.name) {
                             popUpTo(Route.Splash.name) {
@@ -252,7 +256,18 @@ fun DetaQ(
             }
 
             composable(Route.ConnectWithFamily.name) {
-                ConnectScreen(
+                ConnectFamilyScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.ConnectWristband.name) {
+                ConnectWristbandScreen(
                     showSnackBar = {
                         appState.showSnackBar(it)
                     },

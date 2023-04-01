@@ -1,4 +1,4 @@
-package com.example.profile_presenter.connect.components
+package com.example.profile_presenter.connect_family.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons

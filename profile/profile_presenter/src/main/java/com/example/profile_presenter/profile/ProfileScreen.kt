@@ -29,6 +29,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onConnectClick: () -> Unit,
     onMyFamilyClick: () -> Unit,
+    onConnectWristbandClick: () -> Unit,
     onLogOut: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -152,6 +153,17 @@ fun ProfileScreen(
                     .padding(horizontal = 16.dp)
             ) {
                 onMyFamilyClick()
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            ProfileButton(
+                iconRes = R.drawable.wristband_icon,
+                textRes = R.string.connect_wristband,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+            ) {
+                onConnectWristbandClick()
             }
         }
 

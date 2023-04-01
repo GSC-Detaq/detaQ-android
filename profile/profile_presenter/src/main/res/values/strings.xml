@@ -2,8 +2,12 @@
 <resources>
     <string name="connect_btn">CONNECT WITH MY FAMILY</string>
     <string name="connect_title">Connect With Family</string>
+    <string name="connect_wristband_title">Connect Your Wristband</string>
+    <string name="connect_wristband_sub">Wristband Code</string>
+    <string name="connect_wristband_desc">Please enter your wristband code</string>
     <string name="account">Account</string>
     <string name="my_family">My Family</string>
+    <string name="connect_wristband">Connect Your Wristband</string>
     <string name="settings">Settings</string>
     <string name="security">Security</string>
     <string name="terms_and_con">Terms and Conditions</string>
@@ -11,8 +15,8 @@
     <string name="about">About</string>
     <string name="log_out">Log Out</string>
     <string name="add_family_title">Add Family</string>
-    <string name="add_family_desc">Add your family with their DetaQ Tag. It’s cAsE sEnSitIvE!</string>
-    <string name="add_family_hint">Enter a Username#0000</string>
+    <string name="add_family_desc">Add your family with their DetaQ email. It’s cAsE sEnSitIvE!</string>
+    <string name="add_family_hint">Enter an Email</string>
     <string name="personal">Personal</string>
     <string name="general">General</string>
     <string name="add">ADD</string>

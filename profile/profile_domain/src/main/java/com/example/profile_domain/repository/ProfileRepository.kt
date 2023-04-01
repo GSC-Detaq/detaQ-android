@@ -7,4 +7,6 @@ interface ProfileRepository {
     suspend fun getUserPersonal(): Resource<User>
 
     suspend fun addNewFamily(email: String): Resource<String>
+
+    suspend fun connectWristband(code: String): Resource<String>
 }
