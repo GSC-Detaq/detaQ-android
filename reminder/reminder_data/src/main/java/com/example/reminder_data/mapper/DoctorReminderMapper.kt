@@ -3,7 +3,7 @@ package com.example.reminder_data.mapper
 import com.example.core.utils.extensions.toLocalDate
 import com.example.reminder_data.remote.dto.response.DoctorReminderResponse
 import com.example.reminder_domain.model.DoctorReminder
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 
 fun DoctorReminderResponse.Data.toDoctorReminder(): DoctorReminder {
     val hour = time.substringBefore(":").removePrefix("0").toIntOrNull() ?: 0

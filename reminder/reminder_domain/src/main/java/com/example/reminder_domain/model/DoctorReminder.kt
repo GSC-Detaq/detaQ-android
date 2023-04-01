@@ -1,5 +1,6 @@
 package com.example.reminder_domain.model
 
+import com.example.core.domain.model.Time
 import java.time.LocalDate
 
 data class DoctorReminder(

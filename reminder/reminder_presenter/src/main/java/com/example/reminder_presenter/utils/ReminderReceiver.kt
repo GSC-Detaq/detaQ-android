@@ -15,7 +15,7 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 import com.example.core_ui.R as coreR
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext

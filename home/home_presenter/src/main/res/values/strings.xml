@@ -35,4 +35,5 @@
     <string name="independent_handling_description_4">After taking blood thinners or heart medications that are usually provided by doctors for emergency heart attack situations, lie down and rest while waiting for help to arrive.</string>
     <string name="first_aid">First Aid</string>
     <string name="independent_handling">Independent Handling</string>
+    <string name="notification">Notification</string>
 </resources>

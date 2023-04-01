@@ -36,6 +36,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     showSnackBar: (String) -> Unit,
+    onNotificationClick: () -> Unit,
     onFirstAidClick: () -> Unit,
     onAloneClick: () -> Unit
 ) {
@@ -93,7 +94,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             HomeHeader(
-                onNotificationClick = {  }
+                onNotificationClick = onNotificationClick
             )
         }
     ) { paddingValues ->

@@ -1,7 +1,7 @@
 package com.example.reminder_presenter.reminder.medicine
 
 import com.example.reminder_domain.model.Instruction
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 import java.time.LocalDate
 
 sealed class MedicineSectionEvent {

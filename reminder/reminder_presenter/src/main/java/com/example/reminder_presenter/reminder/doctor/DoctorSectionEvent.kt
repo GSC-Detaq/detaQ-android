@@ -1,6 +1,6 @@
 package com.example.reminder_presenter.reminder.doctor
 
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 import java.time.LocalDate
 
 sealed class DoctorSectionEvent {

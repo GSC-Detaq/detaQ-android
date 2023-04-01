@@ -26,7 +26,7 @@ import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral40
 import com.example.reminder_presenter.R
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 import com.example.reminder_presenter.reminder.components.ClickableField
 import com.example.reminder_presenter.reminder.doctor.AddDoctorState
 import com.example.reminder_presenter.reminder.doctor.DoctorSectionEvent

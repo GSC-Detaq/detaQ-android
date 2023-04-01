@@ -12,5 +12,6 @@ enum class Route {
     SosCountDownSent,
     ConnectWithFamily,
     ConnectWristband,
-    MyFamily
+    MyFamily,
+    Notification
 }

@@ -29,6 +29,7 @@ import com.example.history_presenter.history.HistoryScreen
 import com.example.home_presenter.first_aid.FirstAidScreen
 import com.example.home_presenter.home.HomeScreen
 import com.example.home_presenter.independent_handling.IndependentHandlingScreen
+import com.example.home_presenter.notification.NotificationScreen
 import com.example.landing_presenter.login.LoginScreen
 import com.example.landing_presenter.onboarding.OnBoardingScreen
 import com.example.landing_presenter.register.RegisterScreen
@@ -151,6 +152,9 @@ fun DetaQ(
                 HomeScreen(
                     showSnackBar = {
                         appState.showSnackBar(it)
+                    },
+                    onNotificationClick = {
+                        navController.navigate(Route.Notification.name)
                     },
                     onFirstAidClick = {
                         navController.navigate(Route.FirstAid.name)
@@ -279,6 +283,17 @@ fun DetaQ(
 
             composable(Route.MyFamily.name) {
                 MyFamilyScreen(
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(Route.Notification.name) {
+                NotificationScreen(
+                    onSosClick = { _, _ ->
+
+                    },
                     onBackClick = {
                         navController.navigateUp()
                     }

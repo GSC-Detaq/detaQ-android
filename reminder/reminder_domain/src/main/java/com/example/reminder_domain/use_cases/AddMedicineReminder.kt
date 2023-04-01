@@ -3,7 +3,7 @@ package com.example.reminder_domain.use_cases
 import com.example.core.utils.Resource
 import com.example.core.utils.extensions.asString
 import com.example.reminder_domain.model.Instruction
-import com.example.reminder_domain.model.Time
+import com.example.core.domain.model.Time
 import com.example.reminder_domain.repository.ReminderRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
