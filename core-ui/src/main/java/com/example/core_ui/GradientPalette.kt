@@ -1,6 +1,5 @@
 package com.example.core_ui
 
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 
