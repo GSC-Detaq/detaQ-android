@@ -17,9 +17,7 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.example.core.domain.dispatchers.DispatchersProvider
 import com.example.core.domain.model.Time
-import com.example.reminder_domain.use_cases.AddDoctorReminderNotification
-import com.example.reminder_domain.use_cases.AddMedicineReminderNotification
-import com.example.core_ui.R as coreR
+import com.example.reminder_domain.use_cases.ReminderUseCases
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +27,7 @@ import timber.log.Timber
 import java.time.LocalDate
 import java.util.*
 import javax.inject.Inject
+import com.example.core_ui.R as coreR
 
 @AndroidEntryPoint
 class ReminderReceiver: BroadcastReceiver() {
@@ -40,10 +39,7 @@ class ReminderReceiver: BroadcastReceiver() {
     lateinit var dispatchers: DispatchersProvider
 
     @Inject
-    lateinit var addMedicineReminderNotification: AddMedicineReminderNotification
-
-    @Inject
-    lateinit var addDoctorReminderNotification: AddDoctorReminderNotification
+    lateinit var reminderUseCases: ReminderUseCases
 
     override fun onReceive(
         context: Context?,
@@ -52,6 +48,8 @@ class ReminderReceiver: BroadcastReceiver() {
         val title = intent?.getStringExtra(TITLE) ?: "Reminder"
         val description = intent?.getStringExtra(DESCRIPTION) ?: "Click to open and see!"
         val type = intent?.getStringExtra(TYPE) ?: "1"
+        val endTime = intent?.getLongExtra(END_TIME, 0) ?: 0
+        val reminderId = intent?.getStringExtra(REMINDER_ID) ?: ""
 
         sendNotification(
             context = context ?: appContext,
@@ -62,18 +60,36 @@ class ReminderReceiver: BroadcastReceiver() {
         CoroutineScope(dispatchers.io).launch {
             try {
                 if (type == "1") {
-                    addMedicineReminderNotification(
+                    reminderUseCases.addMedicineReminderNotification(
                         title = title,
                         body = description
                     )
                 } else {
-                    addDoctorReminderNotification(
+                    reminderUseCases.addDoctorReminderNotification(
                         title = title,
                         body = description
                     )
                 }
             } finally {
                 cancel()
+            }
+        }
+
+        if (endTime >= System.currentTimeMillis()) {
+            CoroutineScope(dispatchers.io).launch {
+                try {
+                    if (type == "1") {
+                        reminderUseCases.endMedicineReminder(
+                            reminderId = reminderId
+                        )
+                    } else {
+                        reminderUseCases.endDoctorReminder(
+                            reminderId = reminderId
+                        )
+                    }
+                } finally {
+                    cancel()
+                }
             }
         }
     }
@@ -129,6 +145,8 @@ class ReminderReceiver: BroadcastReceiver() {
         private const val TITLE = "REMINDER_TITLE"
         private const val DESCRIPTION = "REMINDER_DESCRIPTION"
         private const val TYPE = "REMINDER_TYPE"
+        private const val END_TIME = "END_TIME"
+        private const val REMINDER_ID = "REMINDER_ID"
 
         // type
         // 1 -> medicine, 2 -> doctor
@@ -142,6 +160,16 @@ class ReminderReceiver: BroadcastReceiver() {
             type: String,
             id: String
         ) {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, dates.last().year)
+            calendar.set(Calendar.MONTH, dates.last().month.value - 1)
+            calendar.set(Calendar.DAY_OF_MONTH, dates.last().dayOfMonth)
+            calendar.set(Calendar.HOUR_OF_DAY, times.last().hour)
+            calendar.set(Calendar.MINUTE, times.last().minute)
+            calendar.set(Calendar.SECOND, 0)
+
+            val calendarInMillis = calendar.timeInMillis
+
             dates.forEachIndexed { iDate, date ->
                 times.forEachIndexed { iTime, time ->
                     val reminderId = "$id-$iDate-$iTime"
@@ -153,7 +181,9 @@ class ReminderReceiver: BroadcastReceiver() {
                         id = reminderId,
                         title = title,
                         type = type,
-                        description = description
+                        description = description,
+                        endTime = calendarInMillis,
+                        reminderId = id
                     )
                 }
             }
@@ -165,8 +195,10 @@ class ReminderReceiver: BroadcastReceiver() {
             time: Time,
             id: String,
             title: String,
+            description: String,
             type: String,
-            description: String
+            endTime: Long,
+            reminderId: String
         ){
             val alarmManager = context.getSystemService<AlarmManager>()
 
@@ -184,6 +216,8 @@ class ReminderReceiver: BroadcastReceiver() {
             intent.putExtra(TITLE, title)
             intent.putExtra(DESCRIPTION, description)
             intent.putExtra(TYPE, type)
+            intent.putExtra(END_TIME, endTime)
+            intent.putExtra(REMINDER_ID, reminderId)
 
             intent.data = Uri.parse("scheme://$id")
 

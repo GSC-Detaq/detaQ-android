@@ -4,10 +4,7 @@ import com.example.reminder_data.BuildConfig
 import com.example.reminder_data.remote.dto.request.AddDoctorReminderRequest
 import com.example.reminder_data.remote.dto.request.AddMedicineReminderRequest
 import com.example.reminder_data.remote.dto.request.AddReminderNotificationRequest
-import com.example.reminder_data.remote.dto.response.AddReminderNotificationResponse
-import com.example.reminder_data.remote.dto.response.AddReminderResponse
-import com.example.reminder_data.remote.dto.response.DoctorReminderResponse
-import com.example.reminder_data.remote.dto.response.MedicineReminderResponse
+import com.example.reminder_data.remote.dto.response.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -49,6 +46,15 @@ class ReminderKtorApiService(
         return result.body()
     }
 
+    override suspend fun endMedicineReminder(reminderId: String): EndReminderResponse {
+        val result = client.get {
+            url(END_MEDICINE_REMINDER + "reminder_id=$reminderId")
+            contentType(ContentType.Application.Json)
+        }
+
+        return result.body()
+    }
+
     override suspend fun addDoctorReminder(request: AddDoctorReminderRequest): AddReminderResponse {
         val result = client.post {
             url(ADD_DOCTOR_REMINDER_URL)
@@ -82,6 +88,15 @@ class ReminderKtorApiService(
         return result.body()
     }
 
+    override suspend fun endDoctorReminder(reminderId: String): EndReminderResponse {
+        val result = client.get {
+            url(END_DOCTOR_REMINDER + "reminder_id=$reminderId")
+            contentType(ContentType.Application.Json)
+        }
+
+        return result.body()
+    }
+
     companion object {
         private const val BASE_URL = "http://${BuildConfig.BASE_URL}"
         private const val ADD_MEDICINE_REMINDER_URL = "$BASE_URL/med_reminder/add"
@@ -90,6 +105,8 @@ class ReminderKtorApiService(
         private const val GET_DOCTOR_REMINDER_URL = "$BASE_URL/doc_reminder/all"
         private const val ADD_MEDICINE_REMINDER_NOTIFICATION = "$BASE_URL/notif/add/reminder/medicine"
         private const val ADD_DOCTOR_REMINDER_NOTIFICATION = "$BASE_URL/notif/add/reminder/doctor"
+        private const val END_MEDICINE_REMINDER = "$BASE_URL/med_reminder/end?"
+        private const val END_DOCTOR_REMINDER = "$BASE_URL/doc_reminder/end?"
     }
 
 }

@@ -27,6 +27,9 @@ object ReminderUseCaseModule {
             addMedicineReminderNotification = AddMedicineReminderNotification(
                 repository = repository
             ),
+            endMedicineReminder = EndMedicineReminder(
+                repository = repository
+            ),
             addDoctorReminder = AddDoctorReminder(
                 repository = repository
             ),
@@ -36,6 +39,9 @@ object ReminderUseCaseModule {
             addDoctorReminderNotification = AddDoctorReminderNotification(
                 repository = repository
             ),
+            endDoctorReminder = EndDoctorReminder(
+                repository = repository
+            )
         )
     }
 }

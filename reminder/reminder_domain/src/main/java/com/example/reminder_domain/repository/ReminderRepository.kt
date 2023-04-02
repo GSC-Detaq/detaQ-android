@@ -22,6 +22,10 @@ interface ReminderRepository {
         body: String
     ): Resource<String>
 
+    suspend fun endMedicineReminder(
+        reminderId: String
+    ): Resource<String>
+
     suspend fun addDoctorReminder(
         activity: String,
         doctorName: String,
@@ -34,5 +38,9 @@ interface ReminderRepository {
     suspend fun addDoctorReminderNotification(
         title: String,
         body: String
+    ): Resource<String>
+
+    suspend fun endDoctorReminder(
+        reminderId: String
     ): Resource<String>
 }

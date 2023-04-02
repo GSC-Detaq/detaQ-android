@@ -92,6 +92,25 @@ class ReminderRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun endDoctorReminder(reminderId: String): Resource<String> {
+        return when(
+            val result = remoteDataSource
+                .endMedicineReminder(
+                    reminderId = reminderId
+                )
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(result.data)
+            }
+        }
+    }
+
     override suspend fun addDoctorReminder(
         activity: String,
         doctorName: String,
@@ -149,6 +168,25 @@ class ReminderRepositoryImpl @Inject constructor(
         return when(
             val result = remoteDataSource
                 .addDoctorReminderNotification(request)
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(result.data)
+            }
+        }
+    }
+
+    override suspend fun endMedicineReminder(reminderId: String): Resource<String> {
+        return when(
+            val result = remoteDataSource
+                .endDoctorReminder(
+                    reminderId = reminderId
+                )
         ) {
             ApiResponse.Empty -> {
                 Resource.Error("Unexpected Error")

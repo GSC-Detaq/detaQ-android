@@ -68,6 +68,25 @@ class ReminderRemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun endMedicineReminder(
+        reminderId: String
+    ): ApiResponse<String> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.endMedicineReminder(
+                    reminderId = reminderId
+                )
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.meta.message)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
+
     suspend fun addDoctorReminder(
         request: AddDoctorReminderRequest
     ): ApiResponse<AddReminderResponse.Data> {
@@ -106,6 +125,25 @@ class ReminderRemoteDataSource @Inject constructor(
         return withContext(dispatchers.io) {
             tryCatch {
                 val result = apiService.addDoctorReminderNotification(request)
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.meta.message)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
+
+    suspend fun endDoctorReminder(
+        reminderId: String
+    ): ApiResponse<String> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.endDoctorReminder(
+                    reminderId = reminderId
+                )
 
                 if (result.meta.success) {
                     ApiResponse.Success(result.meta.message)
