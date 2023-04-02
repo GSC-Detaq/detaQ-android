@@ -16,4 +16,6 @@
     <string name="sos_sent_desc">Your SOS message has been sent to your Emergency contact. Stay calm and alert!</string>
     <string name="sos_call_ambulance_desc">112 is a service used in an emergency. Please press the button below if needed as soon as possible.</string>
     <string name="call_112">CALL 112</string>
+    <string name="open_map">OPEN MAP</string>
+    <string name="sos_map">Sos Map</string>
 </resources>

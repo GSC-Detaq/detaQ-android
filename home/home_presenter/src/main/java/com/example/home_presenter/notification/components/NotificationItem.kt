@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CircleNotifications
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,6 +18,7 @@ import com.example.core.domain.model.Time
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral60
+import com.example.core_ui.ui.theme.Red60
 import com.example.home_domain.model.Notification
 import com.example.home_presenter.R
 import java.time.LocalDateTime
@@ -77,12 +81,26 @@ fun NotificationItem(
             )
         }
 
-        Text(
-            text = timeText,
-            style = MaterialTheme.typography.caption.copy(
-                color = Neutral60
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                text = timeText,
+                style = MaterialTheme.typography.caption.copy(
+                    color = Neutral60
+                )
             )
-        )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            if (!notification.opened) {
+                Icon(
+                    imageVector = Icons.Default.CircleNotifications,
+                    contentDescription = null,
+                    tint = Red60
+                )
+            }
+        }
     }
 }
 

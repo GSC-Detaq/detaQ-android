@@ -27,6 +27,7 @@ fun OutlinedPrimaryButton(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
+    isEnabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     val localGradient = LocalGradient.current
@@ -41,6 +42,7 @@ fun OutlinedPrimaryButton(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp
         ),
+        enabled = isEnabled,
         modifier = modifier
             .background(
                 color = Color.Transparent,

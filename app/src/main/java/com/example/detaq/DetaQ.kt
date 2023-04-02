@@ -17,8 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.example.core_ui.LocalGradient
 import com.example.core_ui.R
@@ -42,6 +44,7 @@ import com.example.reminder_presenter.reminder.ReminderScreen
 import com.example.sos_presenter.countdown.CountDownScreen
 import com.example.sos_presenter.countdown_sent.CountDownSentScreen
 import com.example.sos_presenter.sos.SosScreen
+import com.example.sos_presenter.sos_map.SosMapScreen
 
 @Composable
 fun DetaQ(
@@ -302,9 +305,32 @@ fun DetaQ(
                     onReminderClick = {
                         navController.navigate(TopLevelDestination.Reminder.name)
                     },
-                    onSosClick = { _, _ ->
-
+                    onSosClick = { lat, long ->
+                        navController.navigate(Route.SosMap.name + "/$lat/$long")
                     },
+                    onBackClick = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+
+            composable(
+                route = Route.SosMap.name + "/{lat}/{long}",
+                arguments = listOf(
+                    navArgument("lat") {
+                        type = NavType.StringType
+                    },
+                    navArgument("long") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { navBackStackEntry ->
+                val lat = navBackStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
+                val long = navBackStackEntry.arguments?.getString("long")?.toDoubleOrNull()
+
+                SosMapScreen(
+                    lat = lat,
+                    long = long,
                     onBackClick = {
                         navController.navigateUp()
                     }

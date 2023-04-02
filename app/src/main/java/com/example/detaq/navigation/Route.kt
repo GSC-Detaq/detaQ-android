@@ -13,5 +13,6 @@ enum class Route {
     ConnectWithFamily,
     ConnectWristband,
     MyFamily,
-    Notification
+    Notification,
+    SosMap
 }
