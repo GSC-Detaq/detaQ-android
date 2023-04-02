@@ -9,7 +9,10 @@ import com.example.landing_data.remote.dto.request.LoginRequest
 import com.example.landing_data.remote.dto.request.RegisterRequest
 import com.example.landing_data.remote.source.LandingRemoteDataSource
 import com.example.landing_domain.repository.LandingRepository
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,11 +43,21 @@ class LandingRepositoryImpl @Inject constructor(
                     token = result.data.token
                 )
 
-                coreRemoteDataSource.updateFcmToken(
-                    request = UpdateFcmTokenRequest(
-                        fcm_token = tokenPreferences.getFcmToken()
+                val token = tokenPreferences.getFcmToken()
+
+                if (token.isNotEmpty()) {
+                    coreRemoteDataSource.updateFcmToken(
+                        request = UpdateFcmTokenRequest(
+                            fcm_token = token
+                        )
                     )
-                )
+                } else {
+                    coreRemoteDataSource.updateFcmToken(
+                        request = UpdateFcmTokenRequest(
+                            fcm_token = Firebase.messaging.token.await()
+                        )
+                    )
+                }
 
                 Resource.Success(Unit)
             }
@@ -76,11 +89,21 @@ class LandingRepositoryImpl @Inject constructor(
                     token = result.data.token
                 )
 
-                coreRemoteDataSource.updateFcmToken(
-                    request = UpdateFcmTokenRequest(
-                        fcm_token = tokenPreferences.getFcmToken()
+                val token = tokenPreferences.getFcmToken()
+
+                if (token.isNotEmpty()) {
+                    coreRemoteDataSource.updateFcmToken(
+                        request = UpdateFcmTokenRequest(
+                            fcm_token = token
+                        )
                     )
-                )
+                } else {
+                    coreRemoteDataSource.updateFcmToken(
+                        request = UpdateFcmTokenRequest(
+                            fcm_token = Firebase.messaging.token.await()
+                        )
+                    )
+                }
 
                 Resource.Success(Unit)
             }
