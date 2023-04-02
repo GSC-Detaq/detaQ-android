@@ -14,7 +14,7 @@ object ProfileUseCaseModule {
 
     @ViewModelScoped
     @Provides
-    fun provideLandingUseCases(
+    fun provideProfileUseCases(
         repository: ProfileRepository
     ): ProfileUseCases {
         return ProfileUseCases(

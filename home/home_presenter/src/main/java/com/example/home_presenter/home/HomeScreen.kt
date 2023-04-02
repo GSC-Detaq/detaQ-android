@@ -94,6 +94,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             HomeHeader(
+                notificationCounts = state.notificationCount,
                 onNotificationClick = onNotificationClick
             )
         }

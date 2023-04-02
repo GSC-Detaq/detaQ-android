@@ -14,7 +14,7 @@ object ReminderUseCaseModule {
 
     @ViewModelScoped
     @Provides
-    fun provideLandingUseCases(
+    fun provideReminderUseCases(
         repository: ReminderRepository
     ): ReminderUseCases {
         return ReminderUseCases(

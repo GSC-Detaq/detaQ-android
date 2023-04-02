@@ -8,6 +8,7 @@ data class HomeState(
     val emergencyContacts: List<Contact> = emptyList(),
     val healthFacilities: List<HealthFacility> = emptyList(),
     val articles: List<Article> = emptyList(),
+    val notificationCount: Int = 0,
     val isEditingContact: Boolean = false,
     val isInsertingContact: Boolean = false,
     val insertContactError: String? = null

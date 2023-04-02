@@ -23,6 +23,7 @@ import com.example.core_ui.R as RCore
 
 @Composable
 fun HomeHeader(
+    notificationCounts: Int,
     onNotificationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,6 +44,7 @@ fun HomeHeader(
         Spacer(modifier = Modifier.weight(1f))
 
         HomeNotificationButton(
+            notificationCounts = notificationCounts,
             onNotificationClick = onNotificationClick
         )
     }
@@ -51,7 +53,7 @@ fun HomeHeader(
 @Composable
 private fun HomeNotificationButton(
     modifier: Modifier = Modifier,
-    notificationCounts: Int = 0,
+    notificationCounts: Int,
     onNotificationClick: () -> Unit
 ) {
     IconButton(
@@ -67,6 +69,8 @@ private fun HomeNotificationButton(
             )
 
             if (notificationCounts > 0) {
+                val notificationText = if (notificationCounts > 9) "9+" else "$notificationCounts"
+
                 Box(
                     modifier = Modifier
                         .size(14.dp)
@@ -76,10 +80,10 @@ private fun HomeNotificationButton(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = notificationCounts.toString(),
+                        text = notificationText,
                         style = MaterialTheme.typography.caption.copy(
                             color = Neutral10,
-                            fontSize = 9.sp
+                            fontSize = 8.sp
                         )
                     )
                 }
@@ -93,7 +97,7 @@ private fun HomeNotificationButton(
 fun HomeNotificationButtonWithNotificationPreview() {
     DetaQTheme {
         HomeNotificationButton(
-            notificationCounts = 1,
+            notificationCounts = 20,
             onNotificationClick = {  }
         )
     }
@@ -104,6 +108,7 @@ fun HomeNotificationButtonWithNotificationPreview() {
 fun HomeNotificationButtonPreview() {
     DetaQTheme {
         HomeNotificationButton(
+            notificationCounts = 0,
             onNotificationClick = {  }
         )
     }
@@ -114,6 +119,7 @@ fun HomeNotificationButtonPreview() {
 fun HomeHeaderPreview() {
     DetaQTheme {
         HomeHeader(
+            notificationCounts = 1,
             onNotificationClick = {  }
         )
     }
