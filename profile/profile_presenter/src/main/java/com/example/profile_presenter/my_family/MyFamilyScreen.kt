@@ -56,30 +56,39 @@ fun MyFamilyScreen(
             contentPadding = PaddingValues(16.dp)
         ) {
             item {
-                state.patient?.let { patient ->
+                if (state.patients.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Text(
                         text = stringResource(id = R.string.patient),
                         style = MaterialTheme.typography.h3.copy(
                             color = Neutral100
                         )
                     )
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    MyFamilyCard(
-                        username = patient,
-                        onDeleteVisible = state.isEditing,
-                        onDelete = {
-                            viewModel.onEvent(
-                                event = MyFamilyEvent.OnDelete(patient)
-                            )
-                        }
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
 
+            items(
+                items = state.patients,
+                key = { family -> family.uid }
+            ) { family ->
+                MyFamilyCard(
+                    username = family.email,
+                    onDeleteVisible = state.isEditing,
+                    onDelete = {
+                        viewModel.onEvent(
+                            event = MyFamilyEvent.OnDelete(family.uid)
+                        )
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
             item {
-                if (state.families.isNotEmpty()) {
+                if (state.family.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
@@ -94,7 +103,7 @@ fun MyFamilyScreen(
             }
 
             items(
-                items = state.families,
+                items = state.family,
                 key = { family -> family.uid }
             ) { family ->
                 MyFamilyCard(

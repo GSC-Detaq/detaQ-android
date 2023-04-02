@@ -14,6 +14,8 @@ interface ProfileApiService {
 
     suspend fun getFamily(): FamilyResponse
 
+    suspend fun getPatient(): FamilyResponse
+
     suspend fun connectWristband(
         code: String
     ): ConnectWristbandResponse

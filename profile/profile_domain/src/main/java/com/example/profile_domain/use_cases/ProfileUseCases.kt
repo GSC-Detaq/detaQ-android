@@ -4,5 +4,6 @@ data class ProfileUseCases(
     val getUserPersonal: GetUserPersonal,
     val addNewFamily: AddNewFamily,
     val getFamily: GetFamily,
+    val getPatient: GetPatient,
     val connectWristband: ConnectWristband
 )

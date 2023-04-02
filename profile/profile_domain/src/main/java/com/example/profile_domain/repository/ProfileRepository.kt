@@ -11,5 +11,7 @@ interface ProfileRepository {
 
     suspend fun getFamily(): Resource<List<Family>>
 
+    suspend fun getPatient(): Resource<List<Family>>
+
     suspend fun connectWristband(code: String): Resource<String>
 }

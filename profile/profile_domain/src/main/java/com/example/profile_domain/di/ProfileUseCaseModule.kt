@@ -27,6 +27,9 @@ object ProfileUseCaseModule {
             getFamily = GetFamily(
                 repository = repository
             ),
+            getPatient = GetPatient(
+                repository = repository
+            ),
             connectWristband = ConnectWristband(
                 repository = repository
             )

@@ -67,6 +67,24 @@ class ProfileRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPatient(): Resource<List<Family>> {
+        return when(val result = remoteDataSource.getPatient()) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(
+                    result.data.map {
+                        it.toFamily()
+                    }
+                )
+            }
+        }
+    }
+
     override suspend fun connectWristband(code: String): Resource<String> {
         return when(
             val result = remoteDataSource.connectWristband(

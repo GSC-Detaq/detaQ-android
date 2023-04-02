@@ -42,6 +42,15 @@ class ProfileKtorApiService(
         return result.body()
     }
 
+    override suspend fun getPatient(): FamilyResponse {
+        val result = client.get {
+            url(GET_PATIENT)
+            contentType(ContentType.Application.Json)
+        }
+
+        return result.body()
+    }
+
     override suspend fun connectWristband(
         code: String
     ): ConnectWristbandResponse {
@@ -57,7 +66,8 @@ class ProfileKtorApiService(
         private const val BASE_URL = "http://${BuildConfig.BASE_URL}"
         private const val GET_USER_PERSONAL = "$BASE_URL/user/myuser"
         private const val ADD_NEW_FAMILY = "$BASE_URL/family/add?"
-        private const val GET_FAMILY = "$BASE_URL/family/getall"
+        private const val GET_FAMILY = "$BASE_URL/family/getall/family"
+        private const val GET_PATIENT = "$BASE_URL/family/getall/patient"
         private const val CONNECT_WRISTBAND = "$BASE_URL/iot/androidpair?"
     }
 }

@@ -64,6 +64,21 @@ class ProfileRemoteDataSource @Inject constructor(
         }
     }
 
+    suspend fun getPatient(): ApiResponse<List<FamilyResponse.Data>> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.getPatient()
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.data)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
+
     suspend fun connectWristband(
         code: String
     ): ApiResponse<String> {
