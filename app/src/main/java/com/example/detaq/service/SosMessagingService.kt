@@ -64,6 +64,8 @@ class SosMessagingService: FirebaseMessagingService() {
 
         val title = message.notification?.title ?: "Sos!"
         val body = message.notification?.body ?: "Sos notification!"
+        val lat = message.data["lat"] ?: "0.0"
+        val long = message.data["long"] ?: "0.0"
 
         sendNotification(
             title = title,
@@ -74,8 +76,8 @@ class SosMessagingService: FirebaseMessagingService() {
             addSosNotification(
                 title = title,
                 body = body,
-                lat = 0.0,
-                long = 0.0
+                lat = lat,
+                long = long
             )
         }
     }

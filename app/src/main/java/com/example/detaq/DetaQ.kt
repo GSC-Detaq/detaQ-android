@@ -299,6 +299,9 @@ fun DetaQ(
                 )
             ) {
                 NotificationScreen(
+                    onReminderClick = {
+                        navController.navigate(TopLevelDestination.Reminder.name)
+                    },
                     onSosClick = { _, _ ->
 
                     },

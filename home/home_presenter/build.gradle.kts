@@ -10,4 +10,7 @@ dependencies {
     "implementation"(Coil.coilCompose)
     "implementation"(Accompanist.viewPager)
     "implementation"(Accompanist.viewPagerIndicator)
+
+    "implementation"(AndroidX.paging)
+    "implementation"(AndroidX.composePaging)
 }

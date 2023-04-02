@@ -2,6 +2,7 @@ package com.example.home_domain.di
 
 import com.example.home_domain.repository.HomeRepository
 import com.example.home_domain.use_cases.GetNotificationCount
+import com.example.home_domain.use_cases.GetNotifications
 import com.example.home_domain.use_cases.HomeUseCases
 import com.example.home_domain.use_cases.UpdateNotificationStatus
 import dagger.Module
@@ -20,6 +21,9 @@ object HomeUseCaseModule {
         repository: HomeRepository
     ): HomeUseCases {
         return HomeUseCases(
+            getNotifications = GetNotifications(
+                repository = repository
+            ),
             getNotificationCount = GetNotificationCount(
                 repository = repository
             ),

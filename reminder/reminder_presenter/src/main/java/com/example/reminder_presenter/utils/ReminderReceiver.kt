@@ -17,7 +17,9 @@ import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.example.core.domain.dispatchers.DispatchersProvider
 import com.example.core.domain.model.Time
-import com.example.reminder_domain.use_cases.ReminderUseCases
+import com.example.reminder_domain.use_cases.AddMedicineReminderNotification
+import com.example.reminder_domain.use_cases.EndDoctorReminder
+import com.example.reminder_domain.use_cases.EndMedicineReminder
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +41,16 @@ class ReminderReceiver: BroadcastReceiver() {
     lateinit var dispatchers: DispatchersProvider
 
     @Inject
-    lateinit var reminderUseCases: ReminderUseCases
+    lateinit var addMedicineReminderNotification: AddMedicineReminderNotification
+
+    @Inject
+    lateinit var addDoctorReminderNotification: AddMedicineReminderNotification
+
+    @Inject
+    lateinit var endMedicineReminder: EndMedicineReminder
+
+    @Inject
+    lateinit var endDoctorReminder: EndDoctorReminder
 
     override fun onReceive(
         context: Context?,
@@ -60,12 +71,12 @@ class ReminderReceiver: BroadcastReceiver() {
         CoroutineScope(dispatchers.io).launch {
             try {
                 if (type == "1") {
-                    reminderUseCases.addMedicineReminderNotification(
+                    addMedicineReminderNotification(
                         title = title,
                         body = description
                     )
                 } else {
-                    reminderUseCases.addDoctorReminderNotification(
+                    addDoctorReminderNotification(
                         title = title,
                         body = description
                     )
@@ -79,11 +90,11 @@ class ReminderReceiver: BroadcastReceiver() {
             CoroutineScope(dispatchers.io).launch {
                 try {
                     if (type == "1") {
-                        reminderUseCases.endMedicineReminder(
+                        endMedicineReminder(
                             reminderId = reminderId
                         )
                     } else {
-                        reminderUseCases.endDoctorReminder(
+                        endDoctorReminder(
                             reminderId = reminderId
                         )
                     }

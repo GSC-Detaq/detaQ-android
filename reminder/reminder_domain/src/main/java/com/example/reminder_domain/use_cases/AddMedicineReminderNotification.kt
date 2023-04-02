@@ -2,10 +2,10 @@ package com.example.reminder_domain.use_cases
 
 import com.example.core.utils.Resource
 import com.example.reminder_domain.repository.ReminderRepository
-import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ViewModelScoped
+@Singleton
 class AddMedicineReminderNotification @Inject constructor(
     private val repository: ReminderRepository
 ) {
