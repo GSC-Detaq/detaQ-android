@@ -28,4 +28,23 @@ class HomeRemoteDataSource @Inject constructor(
             }
         }
     }
+
+    suspend fun updateNotificationStatus(
+        notificationId: String
+    ): ApiResponse<String> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.updateNotificationStatus(
+                    notificationId = notificationId
+                )
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.meta.message)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
 }

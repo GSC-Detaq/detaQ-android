@@ -26,4 +26,25 @@ class HomeRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun updateNotificationStatus(notificationId: String): Resource<String> {
+        return when(
+            val result = remoteDataSource
+                .updateNotificationStatus(
+                    notificationId = notificationId
+                )
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(
+                    result.data
+                )
+            }
+        }
+    }
 }
