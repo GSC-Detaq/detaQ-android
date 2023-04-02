@@ -6,6 +6,7 @@ import com.example.reminder_data.mapper.toDoctorReminder
 import com.example.reminder_data.mapper.toMedicineReminder
 import com.example.reminder_data.remote.dto.request.AddDoctorReminderRequest
 import com.example.reminder_data.remote.dto.request.AddMedicineReminderRequest
+import com.example.reminder_data.remote.dto.request.AddReminderNotificationRequest
 import com.example.reminder_data.remote.source.ReminderRemoteDataSource
 import com.example.reminder_domain.model.DoctorReminder
 import com.example.reminder_domain.model.MedicineReminder
@@ -65,6 +66,32 @@ class ReminderRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun addMedicineReminderNotification(
+        title: String,
+        body: String,
+    ): Resource<String> {
+        val request = AddReminderNotificationRequest(
+            title = title,
+            body = body,
+            timestamp = System.currentTimeMillis().toString()
+        )
+
+        return when(
+            val result = remoteDataSource
+                .addMedicineReminderNotification(request)
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(result.data)
+            }
+        }
+    }
+
     override suspend fun addDoctorReminder(
         activity: String,
         doctorName: String,
@@ -105,6 +132,32 @@ class ReminderRepositoryImpl @Inject constructor(
                         it.toDoctorReminder()
                     }
                 )
+            }
+        }
+    }
+
+    override suspend fun addDoctorReminderNotification(
+        title: String,
+        body: String,
+    ): Resource<String> {
+        val request = AddReminderNotificationRequest(
+            title = title,
+            body = body,
+            timestamp = System.currentTimeMillis().toString()
+        )
+
+        return when(
+            val result = remoteDataSource
+                .addDoctorReminderNotification(request)
+        ) {
+            ApiResponse.Empty -> {
+                Resource.Error("Unexpected Error")
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(result.errorMessage)
+            }
+            is ApiResponse.Success -> {
+                Resource.Success(result.data)
             }
         }
     }

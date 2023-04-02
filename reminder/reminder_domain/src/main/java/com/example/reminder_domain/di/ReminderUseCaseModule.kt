@@ -24,12 +24,18 @@ object ReminderUseCaseModule {
             getMedicineReminders = GetMedicineReminders(
                 repository = repository
             ),
+            addMedicineReminderNotification = AddMedicineReminderNotification(
+                repository = repository
+            ),
             addDoctorReminder = AddDoctorReminder(
                 repository = repository
             ),
             getDoctorReminders = GetDoctorReminders(
                 repository = repository
-            )
+            ),
+            addDoctorReminderNotification = AddDoctorReminderNotification(
+                repository = repository
+            ),
         )
     }
 }

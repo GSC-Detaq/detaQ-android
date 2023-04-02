@@ -15,10 +15,16 @@ import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
+import com.example.core.domain.dispatchers.DispatchersProvider
 import com.example.core.domain.model.Time
+import com.example.reminder_domain.use_cases.AddDoctorReminderNotification
+import com.example.reminder_domain.use_cases.AddMedicineReminderNotification
 import com.example.core_ui.R as coreR
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
 import java.util.*
@@ -30,18 +36,46 @@ class ReminderReceiver: BroadcastReceiver() {
     @Inject
     @ApplicationContext lateinit var appContext: Context
 
+    @Inject
+    lateinit var dispatchers: DispatchersProvider
+
+    @Inject
+    lateinit var addMedicineReminderNotification: AddMedicineReminderNotification
+
+    @Inject
+    lateinit var addDoctorReminderNotification: AddDoctorReminderNotification
+
     override fun onReceive(
         context: Context?,
         intent: Intent?
     ) {
         val title = intent?.getStringExtra(TITLE) ?: "Reminder"
         val description = intent?.getStringExtra(DESCRIPTION) ?: "Click to open and see!"
+        val type = intent?.getStringExtra(TYPE) ?: "1"
 
         sendNotification(
             context = context ?: appContext,
             title = title,
             message = description
         )
+
+        CoroutineScope(dispatchers.io).launch {
+            try {
+                if (type == "1") {
+                    addMedicineReminderNotification(
+                        title = title,
+                        body = description
+                    )
+                } else {
+                    addDoctorReminderNotification(
+                        title = title,
+                        body = description
+                    )
+                }
+            } finally {
+                cancel()
+            }
+        }
     }
 
     private fun sendNotification(
@@ -94,6 +128,10 @@ class ReminderReceiver: BroadcastReceiver() {
         private const val CHANNEL_NAME = "daily_reminder"
         private const val TITLE = "REMINDER_TITLE"
         private const val DESCRIPTION = "REMINDER_DESCRIPTION"
+        private const val TYPE = "REMINDER_TYPE"
+
+        // type
+        // 1 -> medicine, 2 -> doctor
 
         fun setReminders(
             context: Context,
@@ -101,6 +139,7 @@ class ReminderReceiver: BroadcastReceiver() {
             times: List<Time>,
             title: String,
             description: String,
+            type: String,
             id: String
         ) {
             dates.forEachIndexed { iDate, date ->
@@ -113,6 +152,7 @@ class ReminderReceiver: BroadcastReceiver() {
                         time = time,
                         id = reminderId,
                         title = title,
+                        type = type,
                         description = description
                     )
                 }
@@ -125,6 +165,7 @@ class ReminderReceiver: BroadcastReceiver() {
             time: Time,
             id: String,
             title: String,
+            type: String,
             description: String
         ){
             val alarmManager = context.getSystemService<AlarmManager>()
@@ -142,6 +183,7 @@ class ReminderReceiver: BroadcastReceiver() {
             val intent = Intent(context, ReminderReceiver::class.java)
             intent.putExtra(TITLE, title)
             intent.putExtra(DESCRIPTION, description)
+            intent.putExtra(TYPE, type)
 
             intent.data = Uri.parse("scheme://$id")
 

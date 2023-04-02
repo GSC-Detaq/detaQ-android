@@ -59,6 +59,7 @@ fun ReminderScreen(
                         times = addMedicineState.time,
                         title = "Eat Medicine Reminder!",
                         description = "Eat your ${addMedicineState.medicineName}! dosage: ${addMedicineState.drugDosage}",
+                        type = "1",
                         id = event.id
                     )
 
@@ -82,6 +83,7 @@ fun ReminderScreen(
                         times = listOf(addDoctorState.time),
                         title = "Doctor Appointment Reminder!",
                         description = "Meet your doctor: ${addDoctorState.doctorName} at: ${addDoctorState.time.hour}:${addDoctorState.time.minute}",
+                        type = "2",
                         id = event.id
                     )
 
