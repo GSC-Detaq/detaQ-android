@@ -5,23 +5,23 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
+import androidx.core.net.toUri
+import com.example.core.domain.dispatchers.DispatchersProvider
 import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.domain.use_cases.UpdateFcmToken
 import com.example.core_ui.R
+import com.example.sos_domain.use_cases.AddSosNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -33,13 +33,19 @@ class SosMessagingService: FirebaseMessagingService() {
     lateinit var appContext: Context
 
     @Inject
+    lateinit var dispatchers: DispatchersProvider
+
+    @Inject
     lateinit var updateFcmToken: UpdateFcmToken
+
+    @Inject
+    lateinit var addSosNotification: AddSosNotification
 
     @Inject
     lateinit var tokenPreferences: TokenPreferences
 
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.IO + job)
+    private val scope = CoroutineScope(dispatchers.io + job)
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -56,11 +62,22 @@ class SosMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
+        val title = message.notification?.title ?: "Sos!"
+        val body = message.notification?.body ?: "Sos notification!"
+
         sendNotification(
-            title = message.notification?.title ?: "Sos!",
-            message = message.notification?.body ?: "Sos notification!",
-            link = message.notification?.link
+            title = title,
+            message = body
         )
+
+        scope.launch {
+            addSosNotification(
+                title = title,
+                body = body,
+                lat = 0.0,
+                long = 0.0
+            )
+        }
     }
 
     override fun onDestroy() {
@@ -70,12 +87,10 @@ class SosMessagingService: FirebaseMessagingService() {
 
     private fun sendNotification(
         title: String,
-        message:String,
-        link: Uri?
+        message:String
     ){
         val pendingIntent = getPendingIntent(
-            context = appContext,
-            uri = link
+            context = appContext
         )
         val notificationManager = appContext.getSystemService<NotificationManager>()
 
@@ -103,14 +118,11 @@ class SosMessagingService: FirebaseMessagingService() {
     }
 
     private fun getPendingIntent(
-        context: Context,
-        uri: Uri?
+        context: Context
     ): PendingIntent? {
-        Timber.d(uri.toString())
-
         val intent = Intent(
             Intent.ACTION_VIEW,
-            uri
+            "detaq://notification".toUri()
         )
 
         return TaskStackBuilder.create(context).run {

@@ -7,4 +7,11 @@ interface SosRepository {
         lat: String,
         long: String
     ): Resource<String>
+
+    suspend fun addSosNotification(
+        title: String,
+        body: String,
+        lat: String,
+        long: String
+    ): Resource<String>
 }

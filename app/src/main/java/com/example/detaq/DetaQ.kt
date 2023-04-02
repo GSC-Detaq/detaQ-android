@@ -289,7 +289,15 @@ fun DetaQ(
                 )
             }
 
-            composable(Route.Notification.name) {
+            composable(
+                route = Route.Notification.name,
+                deepLinks = listOf(
+                    navDeepLink {
+                        action = Intent.ACTION_VIEW
+                        uriPattern = "detaq://notification"
+                    }
+                )
+            ) {
                 NotificationScreen(
                     onSosClick = { _, _ ->
 
