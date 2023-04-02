@@ -1,18 +1,27 @@
 package com.example.profile_presenter.my_family
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.core.utils.Resource
+import com.example.profile_domain.use_cases.GetFamily
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MyFamilyViewModel @Inject constructor(
-
+    private val getFamily: GetFamily
 ): ViewModel() {
     private val _state = MutableStateFlow(MyFamilyState())
     val state: StateFlow<MyFamilyState> = _state.asStateFlow()
+
+    init {
+        initFamily()
+    }
 
     fun onEvent(event: MyFamilyEvent) {
         when (event) {
@@ -22,6 +31,22 @@ class MyFamilyViewModel @Inject constructor(
                 )
             }
             is MyFamilyEvent.OnDelete -> Unit
+        }
+    }
+
+    private fun initFamily() {
+        viewModelScope.launch {
+            when (val result = getFamily()) {
+                is Resource.Error -> {
+                    Timber.d(result.message)
+                }
+                is Resource.Loading -> Unit
+                is Resource.Success -> {
+                    _state.value = state.value.copy(
+                        families = result.data ?: emptyList()
+                    )
+                }
+            }
         }
     }
 }

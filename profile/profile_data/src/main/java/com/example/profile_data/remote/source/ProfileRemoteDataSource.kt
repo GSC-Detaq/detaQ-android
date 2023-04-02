@@ -3,6 +3,7 @@ package com.example.profile_data.remote.source
 import com.example.core.data.remote.utils.tryCatch
 import com.example.core.data.utils.ApiResponse
 import com.example.core.domain.dispatchers.DispatchersProvider
+import com.example.profile_data.remote.dto.response.FamilyResponse
 import com.example.profile_data.remote.dto.response.UserResponse
 import com.example.profile_data.remote.service.ProfileApiService
 import kotlinx.coroutines.withContext
@@ -40,6 +41,21 @@ class ProfileRemoteDataSource @Inject constructor(
 
                 if (result.meta.success) {
                     ApiResponse.Success(result.meta.message)
+                }
+                else {
+                    ApiResponse.Error(result.meta.message)
+                }
+            }
+        }
+    }
+
+    suspend fun getFamily(): ApiResponse<List<FamilyResponse.Data>> {
+        return withContext(dispatchers.io) {
+            tryCatch {
+                val result = apiService.getFamily()
+
+                if (result.meta.success) {
+                    ApiResponse.Success(result.data)
                 }
                 else {
                     ApiResponse.Error(result.meta.message)

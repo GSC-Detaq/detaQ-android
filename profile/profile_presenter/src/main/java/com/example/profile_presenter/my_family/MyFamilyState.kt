@@ -1,14 +1,9 @@
 package com.example.profile_presenter.my_family
 
-data class MyFamilyState(
-    val patient: String? = dummyPatient,
-    val family: List<String> = dummyFamily,
-    val isEditing: Boolean = false
-)
+import com.example.profile_domain.model.Family
 
-private val dummyPatient = "Darren#8900"
-private val dummyFamily = listOf(
-    "Fahmi#1",
-    "Dea#2",
-    "Itsar#3"
+data class MyFamilyState(
+    val patient: String? = "Darren#8900",
+    val families: List<Family> = emptyList(),
+    val isEditing: Boolean = false
 )

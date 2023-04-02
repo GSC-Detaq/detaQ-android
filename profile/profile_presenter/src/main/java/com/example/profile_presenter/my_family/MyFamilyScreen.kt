@@ -79,7 +79,7 @@ fun MyFamilyScreen(
             }
 
             item {
-                if (state.family.isNotEmpty()) {
+                if (state.families.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
@@ -94,15 +94,15 @@ fun MyFamilyScreen(
             }
 
             items(
-                items = state.family,
-                key = { family -> family }
+                items = state.families,
+                key = { family -> family.uid }
             ) { family ->
                 MyFamilyCard(
-                    username = family,
+                    username = family.email,
                     onDeleteVisible = state.isEditing,
                     onDelete = {
                         viewModel.onEvent(
-                            event = MyFamilyEvent.OnDelete(family)
+                            event = MyFamilyEvent.OnDelete(family.uid)
                         )
                     }
                 )
