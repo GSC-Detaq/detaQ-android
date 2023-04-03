@@ -46,6 +46,9 @@ fun CountDownSentScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
+    var initSendSos: Boolean by remember {
+        mutableStateOf(false)
+    }
 
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     val locationCallback = object : LocationCallback() {
@@ -57,11 +60,25 @@ fun CountDownSentScreen(
                     )
                 )
 
-                viewModel.onEvent(
-                    event = CountDownSentEvent.SendSos(
-                        location = lo
+                if (state.userLocation != null
+                    && lo.distanceTo(state.userLocation!!) >= 100
+                ) {
+                    viewModel.onEvent(
+                        event = CountDownSentEvent.SendSos(
+                            location = lo
+                        )
                     )
-                )
+                }
+
+                if (!initSendSos) {
+                    initSendSos = true
+
+                    viewModel.onEvent(
+                        event = CountDownSentEvent.SendSos(
+                            location = lo
+                        )
+                    )
+                }
             }
         }
     }

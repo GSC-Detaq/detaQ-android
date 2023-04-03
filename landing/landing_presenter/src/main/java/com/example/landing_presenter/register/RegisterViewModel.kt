@@ -368,7 +368,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun isConfirmationEnabled(): Boolean {
-        return state.value.role == null
+        return state.value.role != null
                 && state.value.roleError == null
     }
 }

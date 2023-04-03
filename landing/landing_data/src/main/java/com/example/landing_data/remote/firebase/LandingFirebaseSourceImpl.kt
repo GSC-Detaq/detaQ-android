@@ -27,23 +27,10 @@ class LandingFirebaseSourceImpl: LandingFirebaseSource {
 
             auth
                 .signInWithCredential(credential)
-                .addOnCompleteListener { result ->
-                    when {
-                        result.isComplete -> {
-                            trySend(
-                                Resource.Success(Unit)
-                            )
-                        }
-                        result.isCanceled -> {
-                            trySend(
-                                Resource.Error(
-                                    result.exception?.message ?: "Send Otp Failed"
-                                )
-                            )
-
-                            cancel()
-                        }
-                    }
+                .addOnSuccessListener {
+                    trySend(
+                        Resource.Success(Unit)
+                    )
                 }
                 .addOnCanceledListener {
                     trySend(

@@ -87,7 +87,7 @@ fun SosMapSection(
             isEnabled = latitude != null && longitude != null
         ) {
             if (latitude != null && longitude != null) {
-                val gmmIntentUri = Uri.parse("geo:$latitude,$longitude")
+                val gmmIntentUri = Uri.parse("geo:0,0?q=$latitude,$longitude(Sos Location)")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
 

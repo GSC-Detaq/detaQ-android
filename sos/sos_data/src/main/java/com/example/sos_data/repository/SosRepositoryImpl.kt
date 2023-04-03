@@ -16,7 +16,8 @@ class SosRepositoryImpl @Inject constructor(
     override suspend fun sendSos(lat: String, long: String): Resource<String> {
         val request = SendSosRequest(
             latitude = lat,
-            longitude = long
+            longitude = long,
+            timestamp = System.currentTimeMillis().toString(),
         )
 
         return when(val result = remoteDataSource.sendSos(request)) {

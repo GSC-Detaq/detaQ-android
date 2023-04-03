@@ -23,6 +23,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDuUFaJ20nSO7tCcgrOg-dl6S9UOnPO9E4"/>
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/detaq_logo" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

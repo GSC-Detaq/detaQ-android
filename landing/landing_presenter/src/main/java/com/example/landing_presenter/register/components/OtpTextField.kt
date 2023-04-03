@@ -76,7 +76,7 @@ private fun CharView(
     }
     Text(
         modifier = Modifier
-            .size(56.dp)
+            .size(48.dp)
             .border(
                 1.dp,
                 if (isFocused) MaterialTheme.colors.primary else Neutral40,
