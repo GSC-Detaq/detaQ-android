@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core.utils.UiEvent
 import com.example.landing_presenter.register.section.CreateAccount
@@ -15,10 +16,12 @@ import com.example.landing_presenter.register.section.SelectRole
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
     onSignIn: () -> Unit,
     onConfirmClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
     var isBack by remember {
         mutableStateOf(false)
     }
@@ -27,6 +30,7 @@ fun RegisterScreen(
         viewModel.uiEvent.collect { event ->
             when(event) {
                 is UiEvent.Success -> onConfirmClick()
+                is UiEvent.ShowSnackBar -> showSnackBar(event.message.asString(context))
                 else -> Unit
             }
         }

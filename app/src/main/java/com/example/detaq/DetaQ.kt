@@ -128,6 +128,9 @@ fun DetaQ(
 
             composable(Route.Login.name) {
                 LoginScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
                     onForgotPassword = {
 
                     },
@@ -142,6 +145,9 @@ fun DetaQ(
             
             composable(Route.Register.name) {
                 RegisterScreen(
+                    showSnackBar = {
+                        appState.showSnackBar(it)
+                    },
                     onSignIn = {
                         navController.navigateUp()
                     },

@@ -2,7 +2,9 @@ package com.example.core_ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,6 +27,7 @@ fun PrimaryButton(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
+    isEnabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     val localGradient = LocalGradient.current
@@ -39,6 +42,7 @@ fun PrimaryButton(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp
         ),
+        enabled = isEnabled,
         modifier = modifier
             .background(
                 brush = localGradient.primary,

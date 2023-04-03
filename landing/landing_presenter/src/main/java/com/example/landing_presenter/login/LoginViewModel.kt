@@ -6,6 +6,7 @@ import com.example.core.domain.preferences.Preferences
 import com.example.core.domain.use_cases.ValidateEmail
 import com.example.core.utils.Resource
 import com.example.core.utils.UiEvent
+import com.example.core.utils.UiText
 import com.example.core.utils.errors.ValidationError
 import com.example.landing_domain.use_cases.LandingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,9 +44,23 @@ class LoginViewModel @Inject constructor(
                             _state.value = state.value.copy(
                                 loginError = result.message
                             )
+
+                            _state.value = state.value.copy(
+                                loginButtonEnabled = isButtonEnabled()
+                            )
+
+                            _uiEvent.send(
+                                UiEvent.ShowSnackBar(
+                                    UiText.DynamicString(result.message ?: "Unexpected Error")
+                                )
+                            )
                         }
                         is Resource.Loading -> Unit
                         is Resource.Success -> {
+                            _state.value = state.value.copy(
+                                loginButtonEnabled = isButtonEnabled()
+                            )
+
                             preferences.saveShouldShowOnBoarding(
                                 shouldShow = false
                             )
@@ -56,7 +71,8 @@ class LoginViewModel @Inject constructor(
             }
             is LoginEvent.OnEmailChange -> {
                 _state.value = state.value.copy(
-                    email = event.email
+                    email = event.email,
+                    loginError = null
                 )
 
                 val isValid = validateEmail(email = event.email)
@@ -65,17 +81,26 @@ class LoginViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         emailError = null
                     )
+
+                    _state.value = state.value.copy(
+                        loginButtonEnabled = isButtonEnabled()
+                    )
                 }
 
                 if (isValid.isFailure) {
                     _state.value = state.value.copy(
                         emailError = isValid.exceptionOrNull() as? ValidationError
                     )
+
+                    _state.value = state.value.copy(
+                        loginButtonEnabled = isButtonEnabled()
+                    )
                 }
             }
             is LoginEvent.OnPasswordChange -> {
                 _state.value = state.value.copy(
-                    password = event.password
+                    password = event.password,
+                    loginError = null
                 )
 
                 val isValid = landingUseCases.validatePassword(password = event.password)
@@ -84,11 +109,19 @@ class LoginViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         passwordError = null
                     )
+
+                    _state.value = state.value.copy(
+                        loginButtonEnabled = isButtonEnabled()
+                    )
                 }
 
                 if (isValid.isFailure) {
                     _state.value = state.value.copy(
                         passwordError = isValid.exceptionOrNull() as? ValidationError
+                    )
+
+                    _state.value = state.value.copy(
+                        loginButtonEnabled = isButtonEnabled()
                     )
                 }
             }
@@ -98,5 +131,13 @@ class LoginViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun isButtonEnabled(): Boolean {
+        return state.value.email.isNotEmpty()
+                && state.value.emailError == null
+                && state.value.password.isNotEmpty()
+                && state.value.passwordError == null
+                && state.value.loginError == null
     }
 }

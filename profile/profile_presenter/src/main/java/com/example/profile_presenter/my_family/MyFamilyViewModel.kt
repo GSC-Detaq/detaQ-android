@@ -62,7 +62,7 @@ class MyFamilyViewModel @Inject constructor(
                 is Resource.Loading -> Unit
                 is Resource.Success -> {
                     _state.value = state.value.copy(
-                        family = result.data ?: emptyList()
+                        patients = result.data ?: emptyList()
                     )
                 }
             }

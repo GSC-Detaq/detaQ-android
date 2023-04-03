@@ -30,11 +30,28 @@ class ConnectWristbandViewModel @Inject constructor(
         when (event) {
             is ConnectWristbandEvent.OnCodeChange -> {
                 _state.value = state.value.copy(
-                    code = event.code
+                    code = event.code,
+                    connectError = null
+                )
+
+                _state.value = state.value.copy(
+                    connectEnabled = isConnectEnabled()
                 )
             }
             ConnectWristbandEvent.Connect -> {
+                if (state.value.connectLoading) {
+                    return
+                }
+
                 viewModelScope.launch {
+                    _state.value = state.value.copy(
+                        connectLoading = true
+                    )
+
+                    _state.value = state.value.copy(
+                        connectEnabled = isConnectEnabled()
+                    )
+
                     val result = connectWristband(
                         code = state.value.code
                     )
@@ -42,13 +59,36 @@ class ConnectWristbandViewModel @Inject constructor(
                     when (result) {
                         is Resource.Error -> {
                             Timber.d(result.message)
-                        }
-                        is Resource.Loading -> Unit
-                        is Resource.Success -> {
+
+                            _state.value = state.value.copy(
+                                connectError = result.message,
+                                connectLoading = false
+                            )
+
+                            _state.value = state.value.copy(
+                                connectEnabled = isConnectEnabled()
+                            )
+
                             _uiEvent.send(
                                 UiEvent.ShowSnackBar(
                                     UiText.DynamicString(
-                                        result.data ?: "Add New Family Succeed"
+                                        result.message ?: "Unexpected Error"
+                                    )
+                                )
+                            )
+                        }
+                        is Resource.Loading -> Unit
+                        is Resource.Success -> {
+                            _state.value = state.value.copy(
+                                code = "",
+                                connectLoading = false,
+                                connectEnabled = false
+                            )
+
+                            _uiEvent.send(
+                                UiEvent.ShowSnackBar(
+                                    UiText.DynamicString(
+                                        result.data ?: "Connect Wristband Succeed"
                                     )
                                 )
                             )
@@ -57,5 +97,11 @@ class ConnectWristbandViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun isConnectEnabled(): Boolean {
+        return state.value.code.isNotEmpty()
+                && state.value.connectError == null
+                && !state.value.connectLoading
     }
 }

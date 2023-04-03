@@ -11,34 +11,38 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core.utils.UiEvent
 import com.example.core.utils.UiText
-import com.example.landing_presenter.components.PrimaryButton
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral50
 import com.example.core_ui.ui.theme.Neutral60
 import com.example.landing_presenter.R
-import com.example.core_ui.R as RCore
 import com.example.landing_presenter.components.BasicTextField
 import com.example.landing_presenter.components.PasswordTextField
+import com.example.landing_presenter.components.PrimaryButton
+import com.example.core_ui.R as RCore
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
+    showSnackBar: (String) -> Unit,
     onForgotPassword: () -> Unit,
     onSignUp: () -> Unit,
     onLogin: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when(event) {
                 is UiEvent.Success -> onLogin()
+                is UiEvent.ShowSnackBar -> showSnackBar(event.message.asString(context))
                 else -> Unit
             }
         }
@@ -137,7 +141,8 @@ fun LoginScreen(
         PrimaryButton(
             text = UiText.StringResource(R.string.login),
             textModifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            isEnabled = state.loginButtonEnabled
         ) {
             viewModel.onEvent(
                 LoginEvent.Login

@@ -85,7 +85,8 @@ fun ConnectFamilyScreen(
             PrimaryButton(
                 textRes = R.string.add,
                 textModifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                isEnabled = state.connectEnabled
             ) {
                 viewModel.onEvent(
                     event = ConnectFamilyEvent.AddEmail

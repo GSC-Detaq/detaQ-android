@@ -17,12 +17,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.utils.UiText
-import com.example.landing_presenter.components.PrimaryButton
 import com.example.core_ui.ui.theme.DetaQTheme
 import com.example.core_ui.ui.theme.Neutral100
 import com.example.core_ui.ui.theme.Neutral60
 import com.example.landing_presenter.R
 import com.example.landing_presenter.components.BasicTextField
+import com.example.landing_presenter.components.PrimaryButton
 import com.example.landing_presenter.register.RegisterEvent
 import com.example.landing_presenter.register.RegisterSection
 import com.example.landing_presenter.register.RegisterState
@@ -112,7 +112,8 @@ fun FillNumber(
             PrimaryButton(
                 text = UiText.StringResource(R.string.get_otp),
                 textModifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                isEnabled = state.sendOtpEnabled
             ) {
                 sendOtp(
                     number = state.number,

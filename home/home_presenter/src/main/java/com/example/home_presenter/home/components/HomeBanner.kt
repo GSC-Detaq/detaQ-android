@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,14 +39,18 @@ fun HomeBanner(
         HorizontalPager(
             count = pageCount,
             state = state,
-            contentPadding = PaddingValues(horizontal = 16.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            itemSpacing = 16.dp
         ) { page ->
+            val painter = painterResource(id = bannerResList[page])
+
             Image(
-                painter = painterResource(id = bannerResList[page]),
+                painter = painter,
                 contentDescription = "Banner $page",
                 modifier = Modifier
-                    .width(328.dp)
-                    .height(174.dp)
+                    .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Fit
             )
         }
 

@@ -130,7 +130,8 @@ fun SelectRole(
             PrimaryButton(
                 text = UiText.StringResource(R.string.confirm),
                 textModifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                isEnabled = state.confirmationEnabled
             ) {
                 onEvent(
                     RegisterEvent.Register

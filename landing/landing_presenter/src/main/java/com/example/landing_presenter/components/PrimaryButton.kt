@@ -28,6 +28,7 @@ fun PrimaryButton(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center,
+    isEnabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     val localGradient = LocalGradient.current
@@ -43,6 +44,7 @@ fun PrimaryButton(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp
         ),
+        enabled = isEnabled,
         modifier = modifier
             .background(
                 brush = localGradient.primary,

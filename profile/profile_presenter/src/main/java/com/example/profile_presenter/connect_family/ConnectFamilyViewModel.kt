@@ -33,6 +33,14 @@ class ConnectFamilyViewModel @Inject constructor(
         when(event) {
             ConnectFamilyEvent.AddEmail -> {
                 viewModelScope.launch {
+                    _state.value = state.value.copy(
+                        connectLoading = true
+                    )
+
+                    _state.value = state.value.copy(
+                        connectEnabled = isConnectEnabled()
+                    )
+
                     val result = addNewFamily(
                         email = state.value.searchText
                     )
@@ -40,9 +48,31 @@ class ConnectFamilyViewModel @Inject constructor(
                     when (result) {
                         is Resource.Error -> {
                             Timber.d(result.message)
+
+                            _state.value = state.value.copy(
+                                connectError = result.message
+                            )
+
+                            _state.value = state.value.copy(
+                                connectEnabled = isConnectEnabled()
+                            )
+
+                            _uiEvent.send(
+                                UiEvent.ShowSnackBar(
+                                    UiText.DynamicString(
+                                        result.message ?: "Unexpected Error"
+                                    )
+                                )
+                            )
                         }
                         is Resource.Loading -> Unit
                         is Resource.Success -> {
+                            _state.value = state.value.copy(
+                                searchText = "",
+                                connectError = null,
+                                connectEnabled = false
+                            )
+
                             _uiEvent.send(
                                 UiEvent.ShowSnackBar(
                                     UiText.DynamicString(
@@ -56,7 +86,8 @@ class ConnectFamilyViewModel @Inject constructor(
             }
             is ConnectFamilyEvent.OnEmailChange -> {
                 _state.value = state.value.copy(
-                    searchText = event.email
+                    searchText = event.email,
+                    connectError = null
                 )
 
                 val isValid = validateEmail(email = event.email)
@@ -65,14 +96,29 @@ class ConnectFamilyViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         searchError = null
                     )
+
+                    _state.value = state.value.copy(
+                        connectEnabled = isConnectEnabled()
+                    )
                 }
 
                 if (isValid.isFailure) {
                     _state.value = state.value.copy(
                         searchError = isValid.exceptionOrNull() as? ValidationError
                     )
+
+                    _state.value = state.value.copy(
+                        connectEnabled = isConnectEnabled()
+                    )
                 }
             }
         }
+    }
+
+    private fun isConnectEnabled(): Boolean {
+        return state.value.searchText.isNotEmpty()
+                && state.value.searchError == null
+                && state.value.connectError == null
+                && !state.value.connectLoading
     }
 }
