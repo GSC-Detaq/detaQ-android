@@ -72,7 +72,7 @@ fun MyFamilyScreen(
 
             items(
                 items = state.patients,
-                key = { family -> family.uid }
+                key = { family -> family.uid + "-patient" }
             ) { family ->
                 MyFamilyCard(
                     username = family.email,
@@ -104,7 +104,7 @@ fun MyFamilyScreen(
 
             items(
                 items = state.family,
-                key = { family -> family.uid }
+                key = { family -> family.uid + "-family" }
             ) { family ->
                 MyFamilyCard(
                     username = family.email,
