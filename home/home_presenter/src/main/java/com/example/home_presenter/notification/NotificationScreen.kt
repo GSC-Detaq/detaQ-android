@@ -11,10 +11,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.example.core.utils.UiEvent
 import com.example.core_ui.CommonHeader
 import com.example.home_presenter.R
 import com.example.home_presenter.notification.components.NotificationItem
-import timber.log.Timber
 
 @Composable
 fun NotificationScreen(
@@ -25,9 +25,15 @@ fun NotificationScreen(
 ) {
     val notifications = viewModel.notifications.collectAsLazyPagingItems()
 
-    LaunchedEffect(true) {
-        Timber.d("REFRESH")
-        notifications.refresh()
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Success -> {
+                    notifications.refresh()
+                }
+                else -> Unit
+            }
+        }
     }
 
     Scaffold(

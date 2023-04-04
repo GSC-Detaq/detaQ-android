@@ -31,7 +31,7 @@ class GetNotificationsPagingSource(
                 ApiResponse.Empty -> {
                     LoadResult.Page(
                         data = emptyList(),
-                        prevKey = if(page==1) null else page,
+                        prevKey = if(page==1) null else page.minus(1),
                         nextKey = null
                     )
                 }
@@ -51,7 +51,7 @@ class GetNotificationsPagingSource(
 
                     LoadResult.Page(
                         data = notifications.map { it.toNotification() },
-                        prevKey = if(page==1) null else page,
+                        prevKey = if(page==1) null else page.minus(1),
                         nextKey = nextKey
                     )
                 }

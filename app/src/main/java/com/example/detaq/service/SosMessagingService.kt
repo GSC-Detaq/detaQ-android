@@ -13,7 +13,6 @@ import androidx.core.net.toUri
 import com.example.core.domain.preferences.TokenPreferences
 import com.example.core.domain.use_cases.UpdateFcmToken
 import com.example.core_ui.R
-import com.example.sos_domain.use_cases.AddSosNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,9 +33,6 @@ class SosMessagingService: FirebaseMessagingService() {
 
     @Inject
     lateinit var updateFcmToken: UpdateFcmToken
-
-    @Inject
-    lateinit var addSosNotification: AddSosNotification
 
     @Inject
     lateinit var tokenPreferences: TokenPreferences
@@ -61,22 +57,11 @@ class SosMessagingService: FirebaseMessagingService() {
 
         val title = message.notification?.title ?: "Sos!"
         val body = message.notification?.body ?: "Sos notification!"
-        val lat = message.data["lat"] ?: "0.0"
-        val long = message.data["long"] ?: "0.0"
 
         sendNotification(
             title = title,
             message = body
         )
-
-        scope.launch {
-            addSosNotification(
-                title = title,
-                body = body,
-                lat = lat,
-                long = long
-            )
-        }
     }
 
     override fun onDestroy() {
