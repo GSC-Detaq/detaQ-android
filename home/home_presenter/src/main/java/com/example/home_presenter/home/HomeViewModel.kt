@@ -65,6 +65,8 @@ class HomeViewModel @Inject constructor(
                                 isInsertingContact = false
                             )
 
+                            getContacts()
+
                             _uiEvent.send(
                                 UiEvent.ShowSnackBar(
                                     UiText.DynamicString("Add Contact Success!")
