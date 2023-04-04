@@ -27,7 +27,7 @@ fun MarkedSosMap(
         position = CameraPosition.fromLatLngZoom(defaultLocation, 15f)
     }
 
-    LaunchedEffect(key1 = location) {
+    LaunchedEffect(key1 = true) {
         location?.let { location ->
             cameraPositionState.animate(
                 update = CameraUpdateFactory.newCameraPosition(

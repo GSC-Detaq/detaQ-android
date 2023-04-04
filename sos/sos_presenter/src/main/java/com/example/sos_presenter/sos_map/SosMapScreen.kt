@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,15 +20,9 @@ fun SosMapScreen(
     long: Double?,
     onBackClick: () -> Unit
 ) {
-    var markerLocation by remember {
-        mutableStateOf<LatLng?>(null)
-    }
-
-    LaunchedEffect(key1 = true) {
-        markerLocation = if(lat != null && long != null) LatLng(
-            lat, long
-        ) else null
-    }
+    val markerLocation = if(lat != null && long != null) LatLng(
+        lat, long
+    ) else null
 
     Scaffold(
         topBar = {
