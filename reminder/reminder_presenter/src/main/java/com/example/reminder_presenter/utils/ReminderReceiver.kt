@@ -227,7 +227,7 @@ class ReminderReceiver: BroadcastReceiver() {
                 context,
                 0,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             alarmManager?.setExactAndAllowWhileIdle(
@@ -255,7 +255,7 @@ class ReminderReceiver: BroadcastReceiver() {
                 context,
                 0,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             alarmManager?.cancel(pendingIntent)
