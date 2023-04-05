@@ -59,7 +59,7 @@ class ReminderReceiver: BroadcastReceiver() {
         val title = intent?.getStringExtra(TITLE) ?: "Reminder"
         val description = intent?.getStringExtra(DESCRIPTION) ?: "Click to open and see!"
         val type = intent?.getStringExtra(TYPE) ?: "1"
-        val endTime = intent?.getLongExtra(END_TIME, 0) ?: 0
+        val endTime = intent?.getBooleanExtra(END_TIME, false) ?: false
         val reminderId = intent?.getStringExtra(REMINDER_ID) ?: ""
 
         sendNotification(
@@ -81,14 +81,8 @@ class ReminderReceiver: BroadcastReceiver() {
                         body = description
                     )
                 }
-            } finally {
-                cancel()
-            }
-        }
 
-        if (endTime >= System.currentTimeMillis()) {
-            CoroutineScope(dispatchers.io).launch {
-                try {
+                if (endTime) {
                     if (type == "1") {
                         endMedicineReminder(
                             reminderId = reminderId
@@ -98,9 +92,9 @@ class ReminderReceiver: BroadcastReceiver() {
                             reminderId = reminderId
                         )
                     }
-                } finally {
-                    cancel()
                 }
+            } finally {
+                cancel()
             }
         }
     }
@@ -171,32 +165,29 @@ class ReminderReceiver: BroadcastReceiver() {
             type: String,
             id: String
         ) {
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.YEAR, dates.last().year)
-            calendar.set(Calendar.MONTH, dates.last().month.value - 1)
-            calendar.set(Calendar.DAY_OF_MONTH, dates.last().dayOfMonth)
-            calendar.set(Calendar.HOUR_OF_DAY, times.last().hour)
-            calendar.set(Calendar.MINUTE, times.last().minute)
-            calendar.set(Calendar.SECOND, 0)
-
-            val calendarInMillis = calendar.timeInMillis
-
             dates.forEachIndexed { iDate, date ->
-                times.forEachIndexed { iTime, time ->
-                    val reminderId = "$id-$iDate-$iTime"
-
-                    setReminder(
-                        context = context,
-                        date = date,
-                        time = time,
-                        id = reminderId,
-                        title = title,
-                        type = type,
-                        description = description,
-                        endTime = calendarInMillis,
-                        reminderId = id
+                times
+                    .sortedWith(
+                        compareBy(
+                            { it.hour },
+                            { it.minute }
+                        )
                     )
-                }
+                    .forEachIndexed { iTime, time ->
+                        val reminderId = "$id-$iDate-$iTime"
+
+                        setReminder(
+                            context = context,
+                            date = date,
+                            time = time,
+                            id = reminderId,
+                            title = title,
+                            type = type,
+                            description = description,
+                            isLast = iDate == dates.size-1 && iTime == times.size-1,
+                            reminderId = id
+                        )
+                    }
             }
         }
 
@@ -208,7 +199,7 @@ class ReminderReceiver: BroadcastReceiver() {
             title: String,
             description: String,
             type: String,
-            endTime: Long,
+            isLast: Boolean,
             reminderId: String
         ){
             val alarmManager = context.getSystemService<AlarmManager>()
@@ -227,7 +218,7 @@ class ReminderReceiver: BroadcastReceiver() {
             intent.putExtra(TITLE, title)
             intent.putExtra(DESCRIPTION, description)
             intent.putExtra(TYPE, type)
-            intent.putExtra(END_TIME, endTime)
+            intent.putExtra(END_TIME, isLast)
             intent.putExtra(REMINDER_ID, reminderId)
 
             intent.data = Uri.parse("scheme://$id")
